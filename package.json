@@ -25,7 +25,17 @@
     "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "prettier": "prettier --write './src/**/*.{js,ts,tsx}'",
     "prettier:check": "prettier --check './src/**/*.{js,ts,tsx}'",
-    "test:cov": "jest --coverage --detectOpenHandles --verbose"
+    "test:cov": "jest --coverage --detectOpenHandles --verbose",
+    "test:empData": "react-scripts test useEMPData.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:generalInfo": "react-scripts test useGeneralInfo.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:disputeParams": "react-scripts test useDisputeParams.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:collateralInfo": "react-scripts test useCollateralInfo.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:erc20": "react-scripts test useERC20At.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:collateralToken": "react-scripts test useCollateralToken.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:syntheticToken": "react-scripts test useSyntheticToken.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:web3Provider": "react-scripts test useWeb3Provider.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:totals": "react-scripts test useTotals.test.tsx --env=jsdom --verbose --silent=false --runInBand",
+    "test:usePosition": "react-scripts test usePosition.test.tsx --env=jsdom --verbose --silent=false --runInBand"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -68,10 +78,8 @@
     "webpack-merge": "^5.1.4"
   },
   "dependencies": {
-    "@remixproject/plugin": "^0.3.4",
-    "@remixproject/plugin-api": "^0.3.4",
-    "@remixproject/plugin-iframe": "^0.3.4",
-    "@remixproject/plugin-utils": "^0.3.4"
+    "@uma/core": "^2.0.1",
+    "ethers": "^5.0.31"
   },
   "peerDependencies": {
     "react": "^16.13.1",

@@ -1,1 +1,5 @@
-export * from './debug'
+export * from "./debug"
+export * from "./transaction"
+export * from "./InjectedWeb3Provider"
+export * from "./delay"
+export * from "./conversions"

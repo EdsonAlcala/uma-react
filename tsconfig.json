@@ -13,7 +13,8 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "moduleResolution": "node",
-        "declaration": true
+        "declaration": true,
+        "resolveJsonModule": true
     },
     "include": [
         "src/**/*"
