@@ -1,5 +1,5 @@
 defaults: &defaults
-  working_directory: ~/remix-react
+  working_directory: ~/uma-react
   docker:
     - image: circleci/node:12.16
 
@@ -99,4 +99,4 @@ workflows:
           context: Packages
           filters:
             branches:
-              only: main
+              only: master
