@@ -29,7 +29,6 @@ export const createPosition = async (empAddress: EthereumAddress, collateralAmou
   const expiringMultipartyInterface = allUMAInterfaces.get("ExpiringMultiParty") as ethers.utils.Interface
 
   const contract = new ethers.Contract(empAddress, expiringMultipartyInterface, signer)
-
   const receipt = await contract.create(
     { rawValue: toWei(`${collateralAmount}`) },
     { rawValue: toWei(`${syntheticTokens}`) }
@@ -37,5 +36,6 @@ export const createPosition = async (empAddress: EthereumAddress, collateralAmou
 
   await receipt.wait()
 
+  console.log("Position created")
   return Promise.resolve(receipt)
 }

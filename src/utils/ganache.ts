@@ -4,6 +4,7 @@ const ganache = require("ganache-core");
 import { ethers } from "ethers";
 import { KOVAN_NETWORK, MAINNET_NETWORK } from "../constants";
 import { IGanacheOptions } from "../types";
+import { getDai } from "./getDai";
 
 export enum Status {
   Running = "Running",
@@ -78,6 +79,12 @@ export class Ganache {
         console.log(`Test private key:\n`);
         console.log(`\t${PRIV_KEY}`);
         console.log(`\nTest chain started on port ${this.options.port}, listening...`);
+
+
+        // get dai
+        const provider = new ethers.providers.Web3Provider(this.server.provider);
+        const wallet = new ethers.Wallet(PRIV_KEY);
+        await getDai(wallet.connect(provider));
 
         resolve(blockchain);
       });

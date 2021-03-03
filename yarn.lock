@@ -1207,6 +1207,11 @@
     ethers "^4.0.0-beta.1"
     source-map-support "^0.5.19"
 
+"@openzeppelin/contracts@^2.5.0":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.1.tgz#c76e3fc57aa224da3718ec351812a4251289db31"
+  integrity sha512-qIy6tLx8rtybEsIOAlrM4J/85s2q2nPkDqj/Rx46VakBZ0LwtFhXIVub96LXHczQX0vaqmAueDqNPXtbSXSaYQ==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -1351,6 +1356,13 @@
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.11.1.tgz#fa840af64840c930f24a9c82c08d4a092a068add"
   integrity sha512-H8BSBoKE8EubJa0ONqecA2TviT3TnHeC4NpgnAHSUiuhZoQBfPB4L2P9bs8R6AoTW10Endvh3vc+fomVMIDIYQ==
+
+"@studydefi/money-legos@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@studydefi/money-legos/-/money-legos-2.4.1.tgz#57d613f51aaa0a03fb9e14301ffda5804a57b0a6"
+  integrity sha512-60LErLtI+q0bCuwnhGQxK2pdsKPrwMYeQaIekXP2FOBUm6+k0qGl3Q5tly0eX2PkdC8ycxWeQSUvTIAHhmr4aQ==
+  dependencies:
+    "@openzeppelin/contracts" "^2.5.0"
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
