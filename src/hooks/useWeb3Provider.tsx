@@ -2,7 +2,7 @@ import React, { PropsWithChildren, useContext, useEffect, useState } from "react
 import { ethers } from "ethers"
 import { Observable } from "rxjs"
 import { debounceTime } from "rxjs/operators"
-import { Block, EthereumAddress, Signer, Web3Provider } from "../types"
+import { Block, EthereumAddress, Network, Signer, Web3Provider } from "../types"
 
 interface IWeb3Provider {
   signer: Signer | undefined
@@ -10,6 +10,7 @@ interface IWeb3Provider {
   block$: Observable<Block> | undefined
   address: EthereumAddress
   setAddress: (newAddress: EthereumAddress) => void
+  network: Network | undefined
 }
 
 const Web3Context = React.createContext<IWeb3Provider>({
@@ -20,6 +21,7 @@ const Web3Context = React.createContext<IWeb3Provider>({
   setAddress: (newAddress: EthereumAddress) => {
     throw new Error("Not implemented")
   },
+  network: undefined
 })
 
 interface ReactWeb3ProviderProps {
@@ -34,6 +36,7 @@ export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProp
   const [signer, setSigner] = useState<Signer | undefined>(undefined)
   const [block$, setBlock$] = useState<Observable<Block> | undefined>(undefined)
   const [address, setAddress] = useState("")
+  const [network, setNetwork] = useState<Network | undefined>(undefined);
 
   useEffect(() => {
     if (injectedProvider) {
@@ -60,6 +63,13 @@ export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProp
         setAddress(result)
       }
 
+      const getNetwork = async () => {
+        const result = await ethersJSProvider.getNetwork()
+        setNetwork(result)
+      }
+
+      getNetwork().catch((error) => console.log("getNetwork failed"))
+
       getSelectedAddress().catch((error) => console.log("getSelectedAddress failed"))
     }
   }, [injectedProvider])
@@ -69,9 +79,10 @@ export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProp
       value={{
         provider,
         signer,
-        block$,
         address,
         setAddress,
+        network,
+        block$,
       }}
     >
       {children}
