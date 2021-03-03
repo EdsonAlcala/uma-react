@@ -63,7 +63,8 @@ export class Ganache {
     public async start(): Promise<void> {
         this.server = ganache.server(this.options)
         return new Promise((resolve, reject) => {
-            this.server.listen(this.options.port, async (err: Error, blockchain: any) => { // eslint-disable-line
+            this.server.listen(this.options.port, async (err: Error, blockchain: any) => {
+                // eslint-disable-line
                 if (err) {
                     console.log('ERROR', err)
                     reject("Couldn't start ganache")
