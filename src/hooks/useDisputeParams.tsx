@@ -1,41 +1,61 @@
+import { BigNumber } from "ethers"
 import { useEffect, useState } from "react"
+import { fromWei } from "../utils"
 
 import { useEMPProvider } from "./useEMPProvider"
 
 interface DisputeParams {
-  // liquidationBond: number
-  // disputeBond: number
-  // disputeRewardForSponsor: number
-  // disputeRewardForDisputer: number
-  withdrawalLiveness: string
-  liquidationLiveness: string
+  // liquidationBond: BigNumber // TODO Requires final fee
+  disputeBondPercentage: BigNumber
+  disputerDisputeRewardPercentage: BigNumber
+  sponsorDisputeRewardPercentage: BigNumber
+  withdrawalLiveness: BigNumber
+  liquidationLiveness: BigNumber
+  // liquidationBondFormatted: number // TODO Requires final fee
+  // disputeBondPercentageFormatted: number // TODO Requires final fee
+  disputerDisputeRewardPercentageFormatted: string
+  sponsorDisputeRewardPercentageFormatted: string
+  withdrawalLivenessInMinutes: string
+  liquidationLivenessInMinutes: string
 }
 
-export const useDisputeParams = (): DisputeParams => {
+export const useDisputeParams = (): DisputeParams | undefined => {
   const { empState } = useEMPProvider()
 
-  const [liquidationLiveness, setLiquidationLiveness] = useState<string>("")
-  const [withdrawalLiveness, setWithdrawalLiveness] = useState<string>("")
+  const [disputeParams, setDisputeParams] = useState<DisputeParams | undefined>(undefined)
 
   useEffect(() => {
     if (empState) {
-      const { liquidationLiveness: liqLiveness, withdrawalLiveness: withLiveness } = empState
+      const { liquidationLiveness, withdrawalLiveness, disputeBondPercentage, disputerDisputeRewardPercentage, sponsorDisputeRewardPercentage } = empState
 
-      if (liqLiveness && withLiveness) {
-        const withdrawalLivenessInMinutes = (Number(withLiveness) / 60).toFixed(2)
-        const liquidationLivenessInMinutes = (Number(liqLiveness) / 60).toFixed(2)
+      if (liquidationLiveness && withdrawalLiveness) {
+        const withdrawalLivenessInMinutes = (Number(withdrawalLiveness) / 60).toFixed(2)
+        const liquidationLivenessInMinutes = (Number(liquidationLiveness) / 60).toFixed(2)
 
-        setLiquidationLiveness(liquidationLivenessInMinutes)
-        setWithdrawalLiveness(withdrawalLivenessInMinutes)
+        const disputerDisputeRewardPercentageFormatted = disputerDisputeRewardPercentage ?
+          `${parseFloat(fromWei(disputerDisputeRewardPercentage)) * 100}%`
+          : "N/A"
+
+        const sponsorDisputeRewardPercentageFormatted = sponsorDisputeRewardPercentage ?
+          `${parseFloat(fromWei(sponsorDisputeRewardPercentage)) * 100}%`
+          : "N/A"
+
+        setDisputeParams({
+          liquidationLiveness,
+          withdrawalLiveness,
+          disputeBondPercentage,
+          disputerDisputeRewardPercentage,
+          sponsorDisputeRewardPercentage,
+          disputerDisputeRewardPercentageFormatted,
+          sponsorDisputeRewardPercentageFormatted,
+          liquidationLivenessInMinutes,
+          withdrawalLivenessInMinutes
+        })
       } else {
-        setLiquidationLiveness("")
-        setWithdrawalLiveness("")
+        setDisputeParams(undefined)
       }
     }
   }, [empState])
 
-  return {
-    liquidationLiveness,
-    withdrawalLiveness,
-  }
+  return disputeParams
 }

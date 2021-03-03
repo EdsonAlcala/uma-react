@@ -62,15 +62,16 @@ export const getAllEMPData = async (empInstance: ethers.Contract) => {
     liquidationLiveness: res[10] as BigNumber,
     withdrawalLiveness: res[11] as BigNumber,
     currentTime: res[12] as BigNumber,
-    isExpired: Number(res[13]) >= Number(res[0]),
-    contractState: Number(res[14]),
-    finderAddress: res[15] as EthereumAddress,
-    expiryPrice: res[16] as BigNumber,
-    disputeBondPercentage: res[17] as BigNumber,
-    disputerDisputeRewardPercentage: res[18] as BigNumber,
-    sponsorDisputeRewardPercentage: res[19] as BigNumber,
+    isExpired: Number(res[12]) >= Number(res[0]),
+    contractState: Number(res[13]),
+    finderAddress: res[14] as EthereumAddress,
+    expiryPrice: res[15] as BigNumber,
+    disputeBondPercentage: res[16] as BigNumber,
+    disputerDisputeRewardPercentage: res[17] as BigNumber,
+    sponsorDisputeRewardPercentage: res[18] as BigNumber,
   }
 
+  console.log("New state", newState)
   return newState
 }
 
