@@ -52,7 +52,6 @@
     "@types/styled-components": "^5.1.3",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
-    "@uma/core": "^2.0.1",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.3.0",
     "declaration-bundler-webpack-plugin": "^1.0.3",
@@ -84,10 +83,10 @@
     "webpack-merge": "^5.1.4"
   },
   "dependencies": {
+    "@uma/core": "^2.0.1",
     "ethers": "^5.0.31"
   },
   "peerDependencies": {
-    "@uma/core": "2.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
