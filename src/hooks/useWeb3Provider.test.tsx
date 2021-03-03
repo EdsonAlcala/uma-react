@@ -6,7 +6,7 @@ import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
-import { Ganache } from '../utils'
+import { Ganache } from '../utils/ganache'
 
 import { useWeb3Provider, ReactWeb3Provider } from './useWeb3Provider'
 

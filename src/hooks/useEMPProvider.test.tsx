@@ -2,7 +2,9 @@ import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
-import { Ganache, getUMAInterfaces, deployEMP } from '../utils'
+import { getUMAInterfaces, deployEMP } from '../utils'
+import { Ganache } from '../utils/ganache'
+
 import { buildFakeEMP } from './faker'
 import { EMPProvider, useEMPProvider } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'

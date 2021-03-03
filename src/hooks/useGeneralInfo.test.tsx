@@ -6,8 +6,9 @@ import { ReactWeb3Provider } from './useWeb3Provider'
 import { useGeneralInfo } from './useGeneralInfo'
 import { EMPProvider } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
-import { deployEMP, Ganache, getUMAInterfaces } from '../utils'
+import { deployEMP, getUMAInterfaces } from '../utils'
 import { buildFakeEMP } from './faker'
+import { Ganache } from '../utils/ganache'
 
 describe('useGeneralInfo tests', () => {
     let ganacheInstance: Ganache

@@ -2,8 +2,9 @@ import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
-import { deployEMP, Ganache, getUMAInterfaces } from '../utils'
+import { deployEMP, getUMAInterfaces } from '../utils'
 import { EMPData, EthereumAddress } from '../types'
+import { Ganache } from '../utils/ganache'
 
 import { ReactWeb3Provider } from './useWeb3Provider'
 import { getAllEMPData } from './useEMPProvider'

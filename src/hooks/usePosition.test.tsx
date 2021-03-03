@@ -3,7 +3,8 @@ import { ethers } from 'ethers'
 import React from 'react'
 import { EthereumAddress } from '../types'
 
-import { deployEMP, Ganache, getUMAInterfaces } from '../utils'
+import { deployEMP, getUMAInterfaces } from '../utils'
+import { Ganache } from '../utils/ganache'
 
 import { ReactWeb3Provider } from './useWeb3Provider'
 import { createPosition } from './utils'

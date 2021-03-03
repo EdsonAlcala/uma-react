@@ -2,7 +2,8 @@ import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 import React from 'react'
 
-import { deployEMP, Ganache, getUMAInterfaces } from '../utils'
+import { deployEMP, getUMAInterfaces } from '../utils'
+import { Ganache } from '../utils/ganache'
 
 import { ReactWeb3Provider } from './useWeb3Provider'
 import { useDisputeParams } from './useDisputeParams'

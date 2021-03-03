@@ -1,6 +1,5 @@
 export * from './conversions'
 export * from './delay'
-export * from './ganache'
 export * from './umaAbis'
 export * from './umaAddresses'
 export * from './umaInterfaces'

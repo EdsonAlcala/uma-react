@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import React from 'react'
 
 import { EthereumAddress } from '../types'
-import { Ganache } from '../utils'
+import { Ganache } from '../utils/ganache'
 
 import { ReactWeb3Provider } from './useWeb3Provider'
 import { useERC20At } from './useERC20At'
