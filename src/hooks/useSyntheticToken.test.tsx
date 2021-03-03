@@ -6,12 +6,12 @@ import { deployEMP, Ganache, getUMAInterfaces } from "../utils"
 import { EMPData, EthereumAddress } from "../types"
 
 import { ReactWeb3Provider } from "./useWeb3Provider"
-import { useCollateralToken } from "./useCollateralToken"
 import { getAllEMPData } from "./useEMPProvider"
 import { UMARegistryProvider } from "./useUMARegistry"
 import { buildFakeEMP } from "./faker"
+import { useSyntheticToken } from "./useSyntheticToken"
 
-describe("useCollateralToken tests", () => {
+describe("useSyntheticToken tests", () => {
   let empAddress: EthereumAddress
   let signer: ethers.Signer;
   let network: ethers.providers.Network;
@@ -54,7 +54,7 @@ describe("useCollateralToken tests", () => {
         <ReactWeb3Provider injectedProvider={injectedProvider}>{children}</ReactWeb3Provider>
       </UMARegistryProvider>
     )
-    const result = renderHook(() => useCollateralToken(empAddress, userAddress, empData), { wrapper })
+    const result = renderHook(() => useSyntheticToken(empAddress, userAddress, empData), { wrapper })
     return result
   }
 
@@ -70,9 +70,9 @@ describe("useCollateralToken tests", () => {
     await waitForNextUpdate()
 
     expect(result.current).toBeDefined()
-    expect(result.current!.name).toEqual("Dai Stablecoin")
+    expect(result.current!.name).toEqual("yUSD")
     expect(result.current!.decimals).toEqual(18)
-    expect(result.current!.symbol).toEqual("DAI")
+    expect(result.current!.symbol).toEqual("yUSD")
   })
 
   afterAll(async () => {

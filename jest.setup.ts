@@ -2,4 +2,4 @@
 
 require('dotenv').config()
 
-jest.setTimeout(20000)
+jest.setTimeout(100000)

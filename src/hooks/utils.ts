@@ -1,29 +1,9 @@
 import { ethers } from "ethers"
 import { buildFakeEMP } from "./faker"
-import { getUMAAddresses, getUMAInterfaces } from "./useUMARegistry"
+import { getUMAAddresses, getUMAInterfaces } from "../utils"
 import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
 import { EthereumAddress } from "../types"
 import { toWei } from "web3-utils"
-
-export const deploySampleEMP = async (signer) => {
-  const fakeEMP = buildFakeEMP()
-  const allUMAInterfaces = getUMAInterfaces()
-
-  const expiringMultiPartyCreatorAddress = getUMAAddresses().get("ExpiringMultiPartyCreator") as string
-
-  const expiringMultipartyCreatorInterface = allUMAInterfaces.get("ExpiringMultiPartyCreator") as ethers.utils.Interface
-
-  const expiringMultipartyCreator = new ethers.Contract(
-    expiringMultiPartyCreatorAddress,
-    expiringMultipartyCreatorInterface,
-    signer
-  )
-  const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(fakeEMP)
-  const txn = await expiringMultipartyCreator.createExpiringMultiParty(fakeEMP)
-  await txn.wait()
-
-  return expiringMultiPartyAddress
-}
 
 export const deployERC20 = async (signer) => {
   const newToken = {

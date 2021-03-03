@@ -1,33 +1,22 @@
-import { BigNumber, utils } from "ethers"
-import { toWei } from "web3-utils"
-import { getUMAAddresses } from "./useUMARegistry"
+import { DAI } from "../constants"
+import { EMPParameters } from "../types"
+import { getTestCollaterals } from "../utils/getTestCollateral"
+import { getTestPriceIdentifier } from "../utils/getTestPriceIdentifier"
 
-export const buildFakeEMP = () => {
-  const allUMAAddresses = getUMAAddresses()
-
+export const buildFakeEMP: () => EMPParameters = () => {
+  const daiCollateralInfo = getTestCollaterals().find((s) => s.symbol === DAI);
+  if (!daiCollateralInfo) {
+    throw new Error("Couldn't find collateral info");
+  }
   return {
-    expirationTimestamp: BigNumber.from(new Date(2030, 10, 10).getTime()),
-    collateralAddress: allUMAAddresses.get("WETH") as string,
-    priceFeedIdentifier: utils.formatBytes32String("ETH/USD"),
+    expirationTimestamp: new Date(2030, 10, 10).getTime(),
+    collateralAddress: daiCollateralInfo.address,
+    priceFeedIdentifier: getTestPriceIdentifier(),
     syntheticName: "yUSD",
     syntheticSymbol: "yUSD",
-    collateralRequirement: {
-      rawValue: toWei(`1.25`),
-    },
-    disputeBondPct: {
-      rawValue: toWei("0.1"),
-    },
-    sponsorDisputeRewardPct: {
-      rawValue: toWei("0.1"),
-    },
-    disputerDisputeRewardPct: {
-      rawValue: toWei("0.1"),
-    },
-    minSponsorTokens: {
-      rawValue: toWei("100"),
-    },
-    liquidationLiveness: BigNumber.from(7200),
-    withdrawalLiveness: BigNumber.from(7200),
-    excessTokenBeneficiary: allUMAAddresses.get("Store"),
+    collateralRequirement: 125,
+    minSponsorTokens: 100,
+    liquidationLiveness: 7200,
+    withdrawalLiveness: 7200
   }
 }

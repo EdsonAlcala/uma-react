@@ -33,12 +33,14 @@ export const UMARegistryProvider: React.FC<PropsWithChildren<{}>> = ({ children 
   }
 
   useEffect(() => {
+    const umaInterfaces = getUMAInterfaces();
+    setInterfaces(umaInterfaces);
+  }, [])
+
+  useEffect(() => {
     if (network) {
       const umaAddresses = getUMAAddresses(network.chainId);
       setContracts(umaAddresses);
-
-      const umaInterfaces = getUMAInterfaces();
-      setInterfaces(umaInterfaces);
     }
   }, [network]);
 

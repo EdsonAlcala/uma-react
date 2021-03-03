@@ -95,9 +95,7 @@ export const deployEMP = async (
 
   const receipt: ContractReceipt = await txn.wait();
 
-  console.log("Receipt", receipt);
+  // console.log("Receipt", receipt);
 
   return { receipt, expiringMultiPartyAddress };
 };
-
-export default deployEMP;

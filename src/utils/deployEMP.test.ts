@@ -3,19 +3,14 @@
  */
 
 import { ethers } from "ethers";
-import {
-  DAI,
-  KOVAN_NETWORK,
-  MAINNET_NETWORK,
-  MAINNET_PRICE_IDENTIFIER,
-  KOVAN_PRICE_IDENTIFIER
-} from "../constants";
+
+import { DAI } from "../constants";
 import { EMPParameters, EthereumAddress } from "../types";
-import deployEMP from "./deployEMP";
+
+import { getTestPriceIdentifier } from "./getTestPriceIdentifier";
+import { getTestCollaterals } from './getTestCollateral'
+import { deployEMP } from "./deployEMP";
 import { Ganache } from "./ganache";
-import { kovanCollaterals } from "./kovanCollaterals";
-import { mainnetCollaterals } from "./mainnetCollaterals";
-import { getUMAAddresses } from "./umaAddresses";
 
 describe("Deploy EMP Tests", () => {
   let signer: ethers.Signer;
@@ -41,35 +36,18 @@ describe("Deploy EMP Tests", () => {
     await ganacheInstance.stop();
   });
 
-  const getCollaterals = () => {
-    if (process.env.FORK_MODE === KOVAN_NETWORK) {
-      return kovanCollaterals;
-    } else if (process.env.FORK_MODE === MAINNET_NETWORK) {
-      return mainnetCollaterals;
-    } else {
-      throw new Error("Not fork mode specified");
-    }
-  };
 
-  const getPriceIdentifier = () => {
-    if (process.env.FORK_MODE === KOVAN_NETWORK) {
-      return KOVAN_PRICE_IDENTIFIER;
-    } else if (process.env.FORK_MODE === MAINNET_NETWORK) {
-      return MAINNET_PRICE_IDENTIFIER;
-    } else {
-      throw new Error("Not fork mode specified");
-    }
-  };
+
 
   test("that deploy EMP correctly", async () => {
-    const daiCollateralInfo = getCollaterals().find((s) => s.symbol === DAI);
+    const daiCollateralInfo = getTestCollaterals().find((s) => s.symbol === DAI);
     if (!daiCollateralInfo) {
       throw new Error("Couldn't find collateral info");
     }
     const values: EMPParameters = {
       expirationTimestamp: new Date(2022, 10, 10).getTime(),
       collateralAddress: daiCollateralInfo.address,
-      priceFeedIdentifier: getPriceIdentifier(),
+      priceFeedIdentifier: getTestPriceIdentifier(),
       syntheticName: "yUMA-JUN2021",
       syntheticSymbol: "Yield UMA June",
       collateralRequirement: 125,

@@ -6,9 +6,9 @@ export interface EMPData {
   priceIdentifier: Bytes
   tokenCurrency: string
   collateralRequirement: BigNumber
-  disputeBondPct: BigNumber
-  disputerDisputeRewardPct: BigNumber
-  sponsorDisputeRewardPct: BigNumber
+  disputeBondPercentage: BigNumber
+  disputerDisputeRewardPercentage: BigNumber
+  sponsorDisputeRewardPercentage: BigNumber
   minSponsorTokens: BigNumber
   timerAddress: string
   cumulativeFeeMultiplier: BigNumber

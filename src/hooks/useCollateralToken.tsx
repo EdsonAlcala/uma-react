@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { BigNumber, ethers } from "ethers"
 
-import { EMPState, EthereumAddress, TokenState } from "../types"
+import { EMPData, EthereumAddress, TokenData } from "../types"
 
 import { useERC20At } from "./useERC20At"
 import { fromWei } from "../utils"
@@ -10,15 +10,15 @@ import { useWeb3Provider } from "./useWeb3Provider"
 export const useCollateralToken = (
   empAddress: EthereumAddress,
   address: EthereumAddress,
-  empState?: EMPState
-): TokenState | undefined => {
+  empState?: EMPData
+): TokenData | undefined => {
   // external
   const { block$ } = useWeb3Provider()
   const tokenAddress = empState ? empState.collateralCurrency : undefined
   const { instance } = useERC20At(tokenAddress)
 
   // state
-  const [collateralState, setCollateralState] = useState<TokenState | undefined>(undefined)
+  const [collateralState, setCollateralState] = useState<TokenData | undefined>(undefined)
 
   const getBalance = async (contractInstance: ethers.Contract, addressParam: EthereumAddress, newDecimals: number) => {
     const balanceRaw: BigNumber = await contractInstance.balanceOf(addressParam)

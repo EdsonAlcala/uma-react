@@ -12,7 +12,7 @@ export const useERC20At = (tokenAddress: EthereumAddress | undefined) => {
   const [instance, setInstance] = useState<ethers.Contract | undefined>(undefined)
 
   useEffect(() => {
-    if (signer && tokenAddress && getContractInterface) {
+    if (signer && tokenAddress) {
       if (!getContractInterface("ERC20")) {
         throw new Error("UMARegistryProvider is not defined")
       }
@@ -23,7 +23,7 @@ export const useERC20At = (tokenAddress: EthereumAddress | undefined) => {
       )
       setInstance(newInstance)
     }
-  }, [signer, tokenAddress, getContractInterface])
+  }, [signer, tokenAddress])
 
   return {
     instance,
