@@ -1,15 +1,9 @@
-import { act, renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks"
 import { ethers } from "ethers"
 import React from "react"
-import { EthereumAddress } from "../types"
 
-import {
-  UMASnapshotContainer,
-  getInjectedProvider,
-  PROVIDER_URL,
-  stopUMASnapshotContainerOrSkip,
-  startUMASnapshotContainerOrSkip,
-} from "../utils"
+import { EthereumAddress } from "../types"
+import { Ganache } from "../utils"
 
 import { ReactWeb3Provider } from "./useWeb3Provider"
 import { useERC20At } from "./useERC20At"
@@ -18,17 +12,29 @@ import { UMARegistryProvider } from "./useUMARegistry"
 
 describe("useERC20At tests", () => {
   let tokenAddress: EthereumAddress
-  let umaSnapshotContainer: UMASnapshotContainer | undefined
+  let ganacheInstance: Ganache;
   let injectedProvider: ethers.providers.Web3Provider
 
   beforeAll(async () => {
-    umaSnapshotContainer = await startUMASnapshotContainerOrSkip()
-    injectedProvider = new ethers.providers.Web3Provider(getInjectedProvider(PROVIDER_URL))
-    const signer = injectedProvider.getSigner()
+    ganacheInstance = new Ganache({
+      port: 8549,
+      gasLimit: 10000000,
+    });
+    await ganacheInstance.start();
+
+    const ganacheProvider = ganacheInstance.server.provider;
+    injectedProvider = new ethers.providers.Web3Provider(ganacheProvider);
+
+    const network = await injectedProvider.getNetwork()
+    const signer = injectedProvider.getSigner();
 
     // deploy token
     tokenAddress = await deployERC20(signer)
   })
+
+  afterAll(async () => {
+    await ganacheInstance.stop();
+  });
 
   const render = () => {
     const wrapper = ({ children }: any) => (
@@ -41,12 +47,11 @@ describe("useERC20At tests", () => {
   }
 
   test("properties are defined", async () => {
-    const { result } = render()
+    const { result, waitForNextUpdate } = render()
+
+    await waitForNextUpdate()
+    await waitForNextUpdate()
 
     expect(result.current.instance).toBeDefined()
-  })
-
-  afterAll(async () => {
-    await stopUMASnapshotContainerOrSkip(umaSnapshotContainer)
   })
 })
