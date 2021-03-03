@@ -34,7 +34,6 @@
     "test:empProvider": "jest useEMPProvider.test.tsx --verbose --silent=false --runInBand",
     "test:totals": "jest useTotals.test.tsx --verbose --silent=false --runInBand",
     "test:position": "jest usePosition.test.tsx --verbose --silent=false --runInBand",
-    "test:empData": "jest useEMPData.test.tsx --verbose --silent=false --runInBand",
     "test:generalInfo": "jest useGeneralInfo.test.tsx --verbose --silent=false --runInBand",
     "test:disputeParams": "jest useDisputeParams.test.tsx --verbose --silent=false --runInBand",
     "test:collateralInfo": "jest useCollateralInfo.test.tsx --verbose --silent=false --runInBand",
