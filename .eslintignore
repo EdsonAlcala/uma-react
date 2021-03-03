@@ -2,3 +2,6 @@ node_modules
 dist
 coverage
 *d.ts
+chain-runner.ts
+jest.setup.ts
+getDai.ts

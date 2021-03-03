@@ -6,13 +6,13 @@ import ExpiringMultiPartyArtifact from '@uma/core/build/contracts/ExpiringMultiP
 
 import { UMAContractName } from '../types'
 
-export const getUMAInterfaces = () => {
+export const getUMAInterfaces = (): Map<UMAContractName, ethers.utils.Interface> => {
     const interfaces = new Map<UMAContractName, ethers.utils.Interface>()
-    interfaces.set('ERC20', new ethers.utils.Interface(ERC20Artifact.abi as any))
-    interfaces.set('ExpiringMultiParty', new ethers.utils.Interface(ExpiringMultiPartyArtifact.abi as any))
+    interfaces.set('ERC20', new ethers.utils.Interface(ERC20Artifact.abi as any)) // eslint-disable-line
+    interfaces.set('ExpiringMultiParty', new ethers.utils.Interface(ExpiringMultiPartyArtifact.abi as any)) // eslint-disable-line
     interfaces.set(
         'ExpiringMultiPartyCreator',
-        new ethers.utils.Interface(ExpiringMultiPartyCreatorArtifact.abi as any),
+        new ethers.utils.Interface(ExpiringMultiPartyCreatorArtifact.abi as any), // eslint-disable-line
     )
 
     return interfaces

@@ -1,5 +1,4 @@
 export * from './conversions'
-export * from './debug'
 export * from './delay'
 export * from './ganache'
 export * from './umaAbis'

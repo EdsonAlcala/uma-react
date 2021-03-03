@@ -4,9 +4,9 @@ const { parseUnits: toWei } = utils
 
 export const fromWei = ethers.utils.formatUnits
 
-export const weiToNum = (x: BigNumberish, u = 18) => parseFloat(fromWei(x, u))
+export const weiToNum = (x: BigNumberish, u = 18) => parseFloat(fromWei(x, u)) // eslint-disable-line
 
-export const toNumberAsString = (x: number) => `${x}`
+export const toNumberAsString = (x: number) => `${x}` // eslint-disable-line
 
 const DEFAULT_PRECISION = 18
 
@@ -14,6 +14,7 @@ const DEFAULT_PRECISION = 18
 // before passing the result as a transaction arg, as Solidity cannot deal with non-Integers.
 // If the argument to pass into `toWei()` has too much precision (specifically more than `precisionToUse`),
 // then `toWei()` might return a string number with decimals, which Solidity cannot handle.
+// eslint-disable-next-line
 export function toWeiSafe(numberToConvertToWei: string, desiredPrecision?: number) {
     const precisionToUse = desiredPrecision ? desiredPrecision : DEFAULT_PRECISION
 

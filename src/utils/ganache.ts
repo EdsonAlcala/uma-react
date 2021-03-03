@@ -1,4 +1,4 @@
-// tslint:disable-next-line
+// eslint-disable-next-line
 const ganache = require('ganache-core')
 
 import { ethers } from 'ethers'
@@ -35,7 +35,7 @@ const getNetworkId: () => number = () => {
 
 export class Ganache {
     public status: Status
-    public server: any
+    public server: any // eslint-disable-line
 
     private options: IGanacheOptions = {
         port: 8549,
@@ -63,7 +63,7 @@ export class Ganache {
     public async start(): Promise<void> {
         this.server = ganache.server(this.options)
         return new Promise((resolve, reject) => {
-            this.server.listen(this.options.port, async (err: Error, blockchain: any) => {
+            this.server.listen(this.options.port, async (err: Error, blockchain: any) => { // eslint-disable-line
                 if (err) {
                     console.log('ERROR', err)
                     reject("Couldn't start ganache")

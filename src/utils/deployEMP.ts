@@ -1,11 +1,20 @@
 import { BigNumber, ethers, utils, ContractReceipt } from 'ethers'
 import { toWei } from 'web3-utils'
 
-import { EthereumAddress, Percentage, Timestamp, EMPParameters } from '../types'
+import { EMPParameters, EthereumAddress } from '../types'
 import { getUMAAbis } from './umaAbis'
 import { getUMAAddresses } from './umaAddresses'
 
-export const deployEMP = async (values: EMPParameters, network: ethers.providers.Network, signer: ethers.Signer) => {
+interface EMPDeployResult {
+    receipt: ContractReceipt
+    expiringMultiPartyAddress: EthereumAddress
+}
+
+export const deployEMP = async (
+    values: EMPParameters,
+    network: ethers.providers.Network,
+    signer: ethers.Signer,
+): Promise<EMPDeployResult> => {
     const {
         expirationTimestamp,
         collateralAddress,

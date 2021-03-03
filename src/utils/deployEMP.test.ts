@@ -5,7 +5,7 @@
 import { ethers } from 'ethers'
 
 import { DAI } from '../constants'
-import { EMPParameters, EthereumAddress } from '../types'
+import { EMPParameters } from '../types'
 
 import { getTestPriceIdentifier } from './getTestPriceIdentifier'
 import { getTestCollaterals } from './getTestCollateral'
@@ -16,7 +16,6 @@ describe('Deploy EMP Tests', () => {
     let signer: ethers.Signer
     let network: ethers.providers.Network
     let ganacheInstance: Ganache
-    let storeAddress: EthereumAddress
 
     beforeAll(async () => {
         ganacheInstance = new Ganache({

@@ -6,11 +6,11 @@ import ExpiringMultiPartyArtifact from '@uma/core/build/contracts/ExpiringMultiP
 
 import { UMAContractName } from '../types'
 
-export const getUMAAbis = () => {
+export const getUMAAbis = (): Map<UMAContractName, Fragment[]> => {
     const abis = new Map<UMAContractName, Fragment[]>()
-    abis.set('ERC20', ERC20Artifact.abi as any)
-    abis.set('ExpiringMultiParty', ExpiringMultiPartyArtifact.abi as any)
-    abis.set('ExpiringMultiPartyCreator', ExpiringMultiPartyCreatorArtifact.abi as any)
+    abis.set('ERC20', ERC20Artifact.abi as any) // eslint-disable-line
+    abis.set('ExpiringMultiParty', ExpiringMultiPartyArtifact.abi as any) // eslint-disable-line
+    abis.set('ExpiringMultiPartyCreator', ExpiringMultiPartyCreatorArtifact.abi as any) // eslint-disable-line
 
     return abis
 }
