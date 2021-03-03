@@ -1,4 +1,4 @@
-import { NumberAsString } from "./Common"
+import { NumberAsString } from './Common'
 
 export interface PositionData {
     collateral: NumberAsString

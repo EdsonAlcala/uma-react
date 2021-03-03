@@ -1,16 +1,15 @@
-import React from "react";
-import { renderHook } from "@testing-library/react-hooks";
-import { ethers } from "ethers";
+import React from 'react'
+import { renderHook } from '@testing-library/react-hooks'
+import { ethers } from 'ethers'
 
-import { Ganache, getUMAInterfaces, deployEMP } from "../utils";
-import { buildFakeEMP } from "./faker";
-import { EMPProvider, useEMPProvider } from "./useEMPProvider";
-import { UMARegistryProvider } from "./useUMARegistry";
-import { ReactWeb3Provider } from "./useWeb3Provider";
+import { Ganache, getUMAInterfaces, deployEMP } from '../utils'
+import { buildFakeEMP } from './faker'
+import { EMPProvider, useEMPProvider } from './useEMPProvider'
+import { UMARegistryProvider } from './useUMARegistry'
+import { ReactWeb3Provider } from './useWeb3Provider'
 
 describe('useEMPProvider tests', () => {
-
-    let ganacheInstance: Ganache;
+    let ganacheInstance: Ganache
     let injectedProvider: ethers.providers.Web3Provider
     let instance: ethers.Contract
 
@@ -18,14 +17,14 @@ describe('useEMPProvider tests', () => {
         ganacheInstance = new Ganache({
             port: 8549,
             gasLimit: 10000000,
-        });
-        await ganacheInstance.start();
+        })
+        await ganacheInstance.start()
 
-        const ganacheProvider = ganacheInstance.server.provider;
-        injectedProvider = new ethers.providers.Web3Provider(ganacheProvider);
+        const ganacheProvider = ganacheInstance.server.provider
+        injectedProvider = new ethers.providers.Web3Provider(ganacheProvider)
 
         const network = await injectedProvider.getNetwork()
-        const signer = injectedProvider.getSigner();
+        const signer = injectedProvider.getSigner()
 
         const sampleEMP = buildFakeEMP()
         const { expiringMultiPartyAddress } = await deployEMP(sampleEMP, network, signer)
@@ -38,8 +37,8 @@ describe('useEMPProvider tests', () => {
     })
 
     afterAll(async () => {
-        await ganacheInstance.stop();
-    });
+        await ganacheInstance.stop()
+    })
 
     const render = () => {
         const wrapper = ({ children }: any) => (
@@ -48,7 +47,6 @@ describe('useEMPProvider tests', () => {
                     <EMPProvider empInstance={instance}>{children}</EMPProvider>
                 </ReactWeb3Provider>
             </UMARegistryProvider>
-
         )
         const result = renderHook(() => useEMPProvider(), { wrapper })
         return result

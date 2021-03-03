@@ -1,5 +1,5 @@
-import { BigNumberish, ethers } from "ethers"
-import { utils } from "ethers"
+import { BigNumberish, ethers } from 'ethers'
+import { utils } from 'ethers'
 const { parseUnits: toWei } = utils
 
 export const fromWei = ethers.utils.formatUnits
@@ -15,13 +15,13 @@ const DEFAULT_PRECISION = 18
 // If the argument to pass into `toWei()` has too much precision (specifically more than `precisionToUse`),
 // then `toWei()` might return a string number with decimals, which Solidity cannot handle.
 export function toWeiSafe(numberToConvertToWei: string, desiredPrecision?: number) {
-  const precisionToUse = desiredPrecision ? desiredPrecision : DEFAULT_PRECISION
+    const precisionToUse = desiredPrecision ? desiredPrecision : DEFAULT_PRECISION
 
-  // Try converting just the raw string first to avoid unneccessary stripping of precision.
-  try {
-    return toWei(numberToConvertToWei, precisionToUse)
-  } catch (err) {
-    // This shouldn't throw an error, and if it does then its unexpected and we want to know about it.
-    return toWei(Number(numberToConvertToWei).toFixed(precisionToUse), precisionToUse)
-  }
+    // Try converting just the raw string first to avoid unneccessary stripping of precision.
+    try {
+        return toWei(numberToConvertToWei, precisionToUse)
+    } catch (err) {
+        // This shouldn't throw an error, and if it does then its unexpected and we want to know about it.
+        return toWei(Number(numberToConvertToWei).toFixed(precisionToUse), precisionToUse)
+    }
 }
