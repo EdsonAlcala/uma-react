@@ -20,6 +20,10 @@ jobs:
     steps:
       - checkout
       - *restore_cache
+      - run: 
+          name: Install Pre dependencies
+          command: |
+            apt-get -y install libudev-dev libusb-1.0-0-dev
       - run:
           name: Install Dependencies
           command: |
