@@ -1,16 +1,16 @@
 import React, { PropsWithChildren, useContext, useEffect, useState } from "react"
 import { BigNumber, Bytes, ethers } from "ethers"
 
-import { EMPState, EthereumAddress, TokenState } from "../types"
+import { EMPData, EthereumAddress, TokenData } from "../types"
 
 import { useWeb3Provider } from "./useWeb3Provider"
 import { useCollateralToken } from "./useCollateralToken"
 import { useSyntheticToken } from "./useSyntheticToken"
 
 interface IEMPProvider {
-  empState: EMPState | undefined
-  collateralState: TokenState | undefined
-  syntheticState: TokenState | undefined
+  empState: EMPData | undefined
+  collateralState: TokenData | undefined
+  syntheticState: TokenData | undefined
   instance: ethers.Contract
 }
 
@@ -26,7 +26,6 @@ interface EMPProviderProps {
 }
 
 export const getAllEMPData = async (empInstance: ethers.Contract) => {
-  console.log("Calling EMPProvider#getAllEMPData")
   const res = await Promise.all([
     empInstance.expirationTimestamp(),
     empInstance.collateralCurrency(),
@@ -44,12 +43,12 @@ export const getAllEMPData = async (empInstance: ethers.Contract) => {
     empInstance.contractState(),
     empInstance.finder(),
     empInstance.expiryPrice(),
-    // empInstance.disputeBondPercentage(),
-    // empInstance.disputerDisputeRewardPercentage(),
-    // empInstance.sponsorDisputeRewardPercentage(),
+    empInstance.disputeBondPercentage(),
+    empInstance.disputerDisputeRewardPercentage(),
+    empInstance.sponsorDisputeRewardPercentage(),
   ])
 
-  const newState: Partial<EMPState> = {
+  const newState: EMPData = {
     expirationTimestamp: res[0] as BigNumber,
     collateralCurrency: res[1] as EthereumAddress,
     priceIdentifier: res[2] as Bytes,
@@ -67,18 +66,18 @@ export const getAllEMPData = async (empInstance: ethers.Contract) => {
     contractState: Number(res[14]),
     finderAddress: res[15] as EthereumAddress,
     expiryPrice: res[16] as BigNumber,
-    // disputeBondPct: res[17] as BigNumber,
-    // disputerDisputeRewardPct: res[18] as BigNumber,
-    // sponsorDisputeRewardPct: res[19] as BigNumber,
+    disputeBondPercentage: res[17] as BigNumber,
+    disputerDisputeRewardPercentage: res[18] as BigNumber,
+    sponsorDisputeRewardPercentage: res[19] as BigNumber,
   }
 
   return newState
 }
 
 export const EMPProvider: React.FC<PropsWithChildren<EMPProviderProps>> = ({ children, empInstance }) => {
-  const [empState, setEMPState] = useState<EMPState | undefined>(undefined)
-  const [collateralState, setCollateralState] = useState<TokenState | undefined>(undefined)
-  const [syntheticState, setSyntheticState] = useState<TokenState | undefined>(undefined)
+  const [empState, setEMPState] = useState<EMPData | undefined>(undefined)
+  const [collateralState, setCollateralState] = useState<TokenData | undefined>(undefined)
+  const [syntheticState, setSyntheticState] = useState<TokenData | undefined>(undefined)
   const [instance, setInstance] = useState(empInstance)
 
   const { block$, address } = useWeb3Provider()
@@ -88,9 +87,8 @@ export const EMPProvider: React.FC<PropsWithChildren<EMPProviderProps>> = ({ chi
 
   useEffect(() => {
     getAllEMPData(empInstance)
-      .then((newState) => setEMPState(newState as any))
+      .then((newState) => setEMPState(newState))
       .catch((error) => {
-        // TODO: Remove this any
         console.log("Error on getAllEMPData", error)
       })
   }, [empInstance]) // eslint-disable-line
@@ -109,14 +107,12 @@ export const EMPProvider: React.FC<PropsWithChildren<EMPProviderProps>> = ({ chi
 
   useEffect(() => {
     if (collateralStateResult) {
-      console.log("updating collateral state")
       setCollateralState(collateralStateResult)
     }
   }, [collateralStateResult])
 
   useEffect(() => {
     if (syntheticStateResult) {
-      console.log("updating synthetic state")
       setSyntheticState(syntheticStateResult)
     }
   }, [syntheticStateResult])
