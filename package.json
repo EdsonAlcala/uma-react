@@ -19,7 +19,7 @@
     "build": "webpack --config webpack.production.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest --detectOpenHandles --verbose",
+    "test": "jest --detectOpenHandles --verbose --forceExit",
     "test:dev": "jest --runInBand --detectOpenHandles --verbose",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
