@@ -2,47 +2,51 @@ import React from "react"
 import { renderHook } from "@testing-library/react-hooks"
 import { ethers } from "ethers"
 
-import { EthereumAddress } from "../types"
-import {
-  UMASnapshotContainer,
-  getInjectedProvider,
-  PROVIDER_URL,
-  startUMASnapshotContainerOrSkip,
-  stopUMASnapshotContainerOrSkip,
-} from "../utils"
+import { deployEMP, Ganache, getUMAInterfaces, } from "../utils"
 
 import { ReactWeb3Provider } from "./useWeb3Provider"
-import { deploySampleEMP } from "./utils"
 import { useTotals } from "./useTotals"
 import { EMPProvider } from "./useEMPProvider"
-import { getUMAInterfaces, UMARegistryProvider } from "./useUMARegistry"
+import { UMARegistryProvider } from "./useUMARegistry"
+import { buildFakeEMP } from "./faker"
 
 describe("useTotals tests", () => {
-  let umaSnapshotContainer: UMASnapshotContainer | undefined
+  let ganacheInstance: Ganache;
   let injectedProvider: ethers.providers.Web3Provider
-  let empAddress: EthereumAddress
-  let empInstance: ethers.Contract
+  let instance: ethers.Contract
 
   beforeAll(async () => {
-    umaSnapshotContainer = await startUMASnapshotContainerOrSkip()
-    injectedProvider = new ethers.providers.Web3Provider(getInjectedProvider(PROVIDER_URL))
-    const signer = injectedProvider.getSigner()
-    const allInterfaces = getUMAInterfaces()
+    ganacheInstance = new Ganache({
+      port: 8549,
+      gasLimit: 10000000,
+    });
+    await ganacheInstance.start();
 
-    // create sample EMP
-    empAddress = await deploySampleEMP(signer)
-    empInstance = new ethers.Contract(
-      empAddress,
-      allInterfaces.get("ExpiringMultiParty") as ethers.utils.Interface,
-      signer
-    )
+    const ganacheProvider = ganacheInstance.server.provider;
+    injectedProvider = new ethers.providers.Web3Provider(ganacheProvider);
+
+    const network = await injectedProvider.getNetwork()
+    const signer = injectedProvider.getSigner();
+
+    const sampleEMP = buildFakeEMP()
+    const { expiringMultiPartyAddress } = await deployEMP(sampleEMP, network, signer)
+    const allInterfaces = getUMAInterfaces()
+    const empInterface = allInterfaces.get('ExpiringMultiParty')
+    if (!empInterface) {
+      throw new Error("Couldn't find the EMP interface")
+    }
+    instance = new ethers.Contract(expiringMultiPartyAddress, empInterface, signer)
   })
+
+  afterAll(async () => {
+    await ganacheInstance.stop();
+  });
 
   const render = () => {
     const wrapper = ({ children }: any) => (
       <UMARegistryProvider>
         <ReactWeb3Provider injectedProvider={injectedProvider}>
-          <EMPProvider empInstance={empInstance}>{children}</EMPProvider>
+          <EMPProvider empInstance={instance}>{children}</EMPProvider>
         </ReactWeb3Provider>
       </UMARegistryProvider>
     )
@@ -61,12 +65,12 @@ describe("useTotals tests", () => {
 
     await waitForNextUpdate()
 
+    await waitForNextUpdate()
+
+    await waitForNextUpdate()
+
     expect(result.current!.gcr).toBeDefined()
     expect(result.current!.totalCollateral).toBeDefined()
     expect(result.current!.totalSyntheticTokens).toBeDefined()
-  })
-
-  afterAll(async () => {
-    await stopUMASnapshotContainerOrSkip(umaSnapshotContainer)
   })
 })

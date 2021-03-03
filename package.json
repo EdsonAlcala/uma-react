@@ -32,12 +32,12 @@
     "test:collateralToken": "jest useCollateralToken.test.tsx --verbose --silent=false --runInBand --detectOpenHandles",
     "test:syntheticToken": "jest useSyntheticToken.test.tsx --verbose --silent=false --runInBand",
     "test:empProvider": "jest useEMPProvider.test.tsx --verbose --silent=false --runInBand",
+    "test:totals": "jest useTotals.test.tsx --verbose --silent=false --runInBand",
     "test:empData": "jest useEMPData.test.tsx --verbose --silent=false --runInBand",
     "test:generalInfo": "jest useGeneralInfo.test.tsx --verbose --silent=false --runInBand",
     "test:disputeParams": "jest useDisputeParams.test.tsx --verbose --silent=false --runInBand",
     "test:collateralInfo": "jest useCollateralInfo.test.tsx --verbose --silent=false --runInBand",
     "test:erc20": "jest useERC20At.test.tsx --verbose --silent=false --runInBand",
-    "test:totals": "jest useTotals.test.tsx --verbose --silent=false --runInBand",
     "test:usePosition": "jest usePosition.test.tsx --verbose --silent=false --runInBand",
     "chain": "FORK_MODE=Mainnet ts-node -O '{\"module\":\"commonjs\"}' chain-runner.ts"
   },

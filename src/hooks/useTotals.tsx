@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 
-import { Totals } from "../types"
+import { TotalsData } from "../types"
 import { weiToNum } from "../utils"
 
 import { useEMPProvider } from "./useEMPProvider"
 
-export const useTotals = (): Totals | undefined => {
+export const useTotals = (): TotalsData | undefined => {
   const { empState, collateralState, syntheticState } = useEMPProvider()
-  const [totalState, setTotalState] = useState<Totals | undefined>(undefined)
+  const [totalState, setTotalState] = useState<TotalsData | undefined>(undefined)
 
   useEffect(() => {
     if (empState && collateralState && syntheticState) {
