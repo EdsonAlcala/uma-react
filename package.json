@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "start:dev": "webpack-dev-server --open --mode development --config webpack.development.js",
+    "start:demo": "start:dev",
     "build": "webpack --config webpack.production.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -83,6 +84,8 @@
     "webpack-merge": "^5.1.4"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@uma/core": "^2.0.1",
     "ethers": "^5.0.31"
   },
