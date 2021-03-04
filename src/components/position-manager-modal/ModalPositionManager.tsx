@@ -1,13 +1,29 @@
 import React from 'react';
+import { Dialog, DialogContent } from '@material-ui/core';
+
+import { useStyles } from '../common';
+import { PositionManager } from '../position-manager/Main';
 
 export interface ModalPositionManagerProps {
     open: boolean
     handleClose: () => void
 }
 
-export const ModalPositionManager: React.FC<ModalPositionManagerProps> = () => {
+export const ModalPositionManager: React.FC<ModalPositionManagerProps> = ({ open, handleClose }) => {
+    const classes = useStyles();
+
     return (
-        <h3>Modal Position Manager</h3>
+        <Dialog
+            fullWidth={true}
+            maxWidth="md"
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="max-width-dialog-title">
+            <DialogContent className={classes.root}>
+                <PositionManager empAddress="TODO" />
+            </DialogContent>
+
+        </Dialog>
     );
 }
 

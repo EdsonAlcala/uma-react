@@ -2,6 +2,7 @@ import { Box, makeStyles, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
 
 import { EthereumAddress } from '../../types';
+import { useStyles } from '../common';
 import { Deposit, Mint, Redeem, Withdraw } from './views';
 
 export interface MainProps {
@@ -18,7 +19,7 @@ export const PositionManager: React.FC<MainProps> = () => {
     const classes = useStyles();
 
     return (
-        <Box className={classes.root}>
+        <React.Fragment>
             <Tabs
                 orientation="vertical"
                 value={tab}
@@ -42,7 +43,7 @@ export const PositionManager: React.FC<MainProps> = () => {
             <TabPanel value={tab} index={3}>
                 <Redeem />
             </TabPanel>
-        </Box>
+        </React.Fragment>
     );
 }
 
@@ -65,23 +66,6 @@ const a11yProps = (index: any) => {
         "aria-controls": `vertical-tabpanel-${index}`,
     };
 }
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        backgroundColor: theme.palette.background.paper,
-        display: "flex",
-        height: 250,
-        padding: 0,
-        paddingTop: "0",
-        border: "1px solid black",
-        alignItems: "center"
-    },
-    tabs: {
-        textAlign: "center",
-        borderRight: `0.1px solid ${theme.palette.divider}`
-    },
-}));
-
 
 const TabPanel = (props: any) => { // TODO improve typing
 
