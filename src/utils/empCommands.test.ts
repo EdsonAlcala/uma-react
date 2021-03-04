@@ -41,10 +41,25 @@ describe("empCommands", () => {
             allInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface,
             signer,
         )
-        empData = (await getAllEMPData(empInstance)) as EMPData
     })
 
     afterAll(async () => {
         await ganacheInstance.stop()
+    })
+
+    test('create', async () => {
+
+    })
+
+    test('deposit', async () => {
+
+    })
+
+    test('withdraw', async () => {
+
+    })
+
+    test('redeem', async () => {
+
     })
 })
