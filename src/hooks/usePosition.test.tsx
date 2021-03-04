@@ -11,7 +11,7 @@ import { createPosition } from './utils'
 import { usePosition } from './usePosition'
 import { EMPProvider } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
-import { buildFakeEMP } from './faker'
+import { buildFakeEMP } from '../fakers'
 
 describe('usePosition tests', () => {
     let ganacheInstance: Ganache

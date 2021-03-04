@@ -9,7 +9,7 @@ import { ReactWeb3Provider } from './useWeb3Provider'
 import { useTotals } from './useTotals'
 import { EMPProvider } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
-import { buildFakeEMP } from './faker'
+import { buildFakeEMP } from '../fakers'
 
 describe('useTotals tests', () => {
     let ganacheInstance: Ganache

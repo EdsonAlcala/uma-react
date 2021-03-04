@@ -9,7 +9,7 @@ import { ReactWeb3Provider } from './useWeb3Provider'
 import { useDisputeParams } from './useDisputeParams'
 import { UMARegistryProvider } from './useUMARegistry'
 import { EMPProvider } from './useEMPProvider'
-import { buildFakeEMP } from './faker'
+import { buildFakeEMP } from '../fakers'
 
 describe('useDisputeParams tests', () => {
     let ganacheInstance: Ganache

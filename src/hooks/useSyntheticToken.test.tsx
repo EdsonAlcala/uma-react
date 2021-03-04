@@ -9,7 +9,7 @@ import { Ganache } from '../utils/ganache'
 import { ReactWeb3Provider } from './useWeb3Provider'
 import { getAllEMPData } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
-import { buildFakeEMP } from './faker'
+import { buildFakeEMP } from '../fakers'
 import { useSyntheticToken } from './useSyntheticToken'
 
 describe('useSyntheticToken tests', () => {

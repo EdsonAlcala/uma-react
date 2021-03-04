@@ -10,7 +10,7 @@ import { ReactWeb3Provider } from './useWeb3Provider'
 import { useCollateralToken } from './useCollateralToken'
 import { getAllEMPData } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
-import { buildFakeEMP } from './faker'
+import { buildFakeEMP } from '../fakers'
 
 describe('useCollateralToken tests', () => {
     let empAddress: EthereumAddress

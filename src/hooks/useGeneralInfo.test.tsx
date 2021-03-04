@@ -7,7 +7,7 @@ import { useGeneralInfo } from './useGeneralInfo'
 import { EMPProvider } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
 import { deployEMP, getUMAInterfaces } from '../utils'
-import { buildFakeEMP } from './faker'
+import { buildFakeEMP } from '../fakers'
 import { Ganache } from '../utils/ganache'
 
 describe('useGeneralInfo tests', () => {

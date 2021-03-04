@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 import { getUMAInterfaces, deployEMP } from '../utils'
 import { Ganache } from '../utils/ganache'
 
-import { buildFakeEMP } from './faker'
+import { buildFakeEMP } from '../fakers'
 import { EMPProvider, useEMPProvider } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
 import { ReactWeb3Provider } from './useWeb3Provider'
