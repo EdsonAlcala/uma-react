@@ -1,7 +1,8 @@
+import { Box } from '@material-ui/core'
 import React, { useState } from 'react'
 import ReactDom from 'react-dom'
 
-import { ModalPositionManager, PositionManager } from '../components'
+import { ModalPositionManager, PositionManager, useStyles } from '../components'
 
 // call yarn start:demo
 const App: React.FC = () => {
@@ -15,12 +16,16 @@ const App: React.FC = () => {
         setOpenModal(false)
     }
 
+    const classes = useStyles()
+
     return (
         <React.Fragment>
             <h1>Demo App</h1>
 
             <h3>Position Manager</h3>
-            <PositionManager empAddress="" />
+            <Box className={classes.root} border="1px solid black">
+                <PositionManager empAddress="" />
+            </Box>
 
             <hr />
 
