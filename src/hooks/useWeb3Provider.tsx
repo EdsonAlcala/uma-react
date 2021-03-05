@@ -6,7 +6,7 @@ import { Block, EthereumAddress, Network, Signer, Web3Provider } from '../types'
 
 interface IWeb3Provider {
     signer: Signer | undefined
-    provider: Web3Provider | undefined
+    provider: Web3Provider | undefined | ethers.providers.JsonRpcProvider
     block$: Observable<Block> | undefined
     address: EthereumAddress
     setAddress: (newAddress: EthereumAddress) => void
@@ -25,14 +25,14 @@ const Web3Context = React.createContext<IWeb3Provider>({
 })
 
 interface ReactWeb3ProviderProps {
-    injectedProvider: ethers.providers.Web3Provider
+    injectedProvider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider
 }
 
 export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProps>> = ({
     children,
     injectedProvider,
 }) => {
-    const [provider, setWeb3Provider] = useState<Web3Provider | undefined>(undefined)
+    const [provider, setWeb3Provider] = useState<Web3Provider | undefined | ethers.providers.JsonRpcProvider>(undefined)
     const [signer, setSigner] = useState<Signer | undefined>(undefined)
     const [block$, setBlock$] = useState<Observable<Block> | undefined>(undefined)
     const [address, setAddress] = useState('')
