@@ -71,7 +71,6 @@ export const getAllEMPData = async (empInstance: ethers.Contract) => {
         sponsorDisputeRewardPercentage: res[18] as BigNumber,
     }
 
-    console.log('New state', newState)
     return newState
 }
 
