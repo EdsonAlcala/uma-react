@@ -3,11 +3,11 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 
-import { deployEMP, Loader, ModalPositionManager, PositionManager, useStyles } from '..'
+import { deployEMP, getUMAInterfaces, Loader, ModalPositionManager, PositionManager, toWeiSafe, useStyles } from '..'
 import { ReactWeb3Provider } from '..'
 import { buildFakeEMP } from '../fakers'
 import { EMPProvider, useEMPAt, useWeb3Provider } from '..'
-import { UMARegistryProvider } from '../hooks'
+import { getAllEMPData, UMARegistryProvider } from '..'
 
 // call yarn start:dev
 const App: React.FC = () => {
@@ -19,7 +19,7 @@ const App: React.FC = () => {
 
     // internal
     const [openModal, setOpenModal] = useState(false)
-
+    const [positionHasBeenCreated, setPositionHasBeenCreated] = useState(false)
     const handleManageClick = () => {
         setOpenModal(true)
     }
@@ -47,7 +47,37 @@ const App: React.FC = () => {
         }
     }, [provider])
 
-    if (!empInstance) {
+    useEffect(() => {
+        if (empInstance) {
+            const setupGCR = async () => {
+                try {
+                    // setup allowance first
+                    const empData = await getAllEMPData(empInstance)
+                    const allInterfaces = getUMAInterfaces()
+                    const signer = provider.getSigner()
+                    const collateralInstance = new ethers.Contract(empData.collateralCurrency, allInterfaces.get('ERC20'), signer)
+                    const receipt = await collateralInstance.approve(empAddress, ethers.constants.MaxUint256)
+                    await receipt.wait()
+
+                    // create position
+                    const collateralDecimals = await collateralInstance.decimals();
+                    const collateralWei = toWeiSafe("125", collateralDecimals); // collateral = input by user
+                    const tokensWei = toWeiSafe("100", collateralDecimals); // tokens = input by user
+                    const tx = await empInstance.create([collateralWei], [tokensWei]);
+                    await tx.wait();
+                    setPositionHasBeenCreated(true)
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            setupGCR()
+                .then(() => console.log("Created initial position and setup GCR"))
+                .catch((error) => console.log("Error creating initial position", error))
+        }
+    }, [empInstance])
+
+    if (!empInstance && !positionHasBeenCreated) {
         return (<Loader />)
     }
     return (
