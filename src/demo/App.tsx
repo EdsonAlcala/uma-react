@@ -8,14 +8,17 @@ import { ReactWeb3Provider } from '..'
 import { buildFakeEMP } from '../fakers'
 import { EMPProvider, useEMPAt, useWeb3Provider } from '..'
 import { getAllEMPData, UMARegistryProvider } from '..'
+import { useLocalStorage } from './useLocalStorage'
 
 // call yarn start:dev
 const App: React.FC = () => {
     // external
     const { provider } = useWeb3Provider()
 
-    const [empAddress, setEMPAddress] = useState<string | undefined>(undefined)
+    const [empAddress, setEMPAddress] = useLocalStorage('empAddress', undefined)
     const { instance: empInstance } = useEMPAt(empAddress)
+
+    console.log("EMP Address", empAddress)
 
     // internal
     const [openModal, setOpenModal] = useState(false)
@@ -31,7 +34,7 @@ const App: React.FC = () => {
     const classes = useStyles()
 
     useEffect(() => {
-        if (provider) {
+        if (provider && !empAddress) {
             const deployLocalEMP = async () => {
                 const fakeEMP = buildFakeEMP()
                 const network = await provider.getNetwork()
@@ -44,11 +47,13 @@ const App: React.FC = () => {
             deployLocalEMP()
                 .then(() => console.log("Local EMP deployed successfully"))
                 .catch((error) => console.log("Error deploying local EMP", error))
+        } else {
+            console.log("Doing nothing, using cached version")
         }
     }, [provider])
 
     useEffect(() => {
-        if (empInstance) {
+        if (empInstance && !empAddress) {
             const setupGCR = async () => {
                 try {
                     // setup allowance first
@@ -58,6 +63,8 @@ const App: React.FC = () => {
                     const collateralInstance = new ethers.Contract(empData.collateralCurrency, allInterfaces.get('ERC20'), signer)
                     const receipt = await collateralInstance.approve(empAddress, ethers.constants.MaxUint256)
                     await receipt.wait()
+
+                    console.log("Approve correctly")
 
                     // create position
                     const collateralDecimals = await collateralInstance.decimals();
@@ -74,18 +81,27 @@ const App: React.FC = () => {
             setupGCR()
                 .then(() => console.log("Created initial position and setup GCR"))
                 .catch((error) => console.log("Error creating initial position", error))
+        } else {
+            console.log("Doing nothing, using cached version")
         }
     }, [empInstance])
 
     if (!empInstance && !positionHasBeenCreated) {
         return (<Loader />)
     }
+
+    const cleanLocalCache = () => {
+        setEMPAddress("")
+    }
+
     return (
         <React.Fragment>
             <UMARegistryProvider>
                 <EMPProvider empInstance={empInstance}>
                     <h1>Demo App</h1>
-
+                    <Box position="absolute" right="0" top="0">
+                        <button onClick={cleanLocalCache}>Clean Local Cache</button>
+                    </Box>
                     <h3>Position Manager</h3>
                     <Box className={classes.root} border="1px solid black">
                         <PositionManager empAddress="" />
