@@ -11,3 +11,5 @@ export const SUPPORTED_NETWORK_IDS: number[] = [1, 42]
 export const MAINNET_PRICE_IDENTIFIER = 'ALTDOM'
 
 export const UMA = "UMA"
+
+export const YIELD_DOLLAR_UMA = "YD-UMA-JUN21"
