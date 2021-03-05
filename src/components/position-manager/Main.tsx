@@ -31,18 +31,23 @@ export const PositionManager: React.FC<MainProps> = () => {
                 <StyledTab label="Withdraw" {...a11yProps(2)} />
                 <StyledTab label="Redeem" {...a11yProps(3)} />
             </Tabs>
-            <TabPanel value={tab} index={0}>
-                <Mint />
-            </TabPanel>
-            <TabPanel value={tab} index={1}>
-                <Deposit />
-            </TabPanel>
-            <TabPanel value={tab} index={2}>
-                <Withdraw />
-            </TabPanel>
-            <TabPanel value={tab} index={3}>
-                <Redeem />
-            </TabPanel>
+            <Box width="100%"
+                justifyContent="center"
+                alignItems="center"
+                display="flex">
+                <TabPanel value={tab} index={0}>
+                    <Mint />
+                </TabPanel>
+                <TabPanel value={tab} index={1}>
+                    <Deposit />
+                </TabPanel>
+                <TabPanel value={tab} index={2}>
+                    <Withdraw />
+                </TabPanel>
+                <TabPanel value={tab} index={3}>
+                    <Redeem />
+                </TabPanel>
+            </Box>
         </React.Fragment>
     );
 }
@@ -74,6 +79,7 @@ const TabPanel = (props: any) => { // TODO improve typing
     return (
         <Box
             height="100%"
+            width="100%"
             role="tabpanel"
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
