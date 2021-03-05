@@ -4,7 +4,7 @@
 
 import { ethers } from 'ethers'
 
-import { DAI } from '../constants'
+import { UMA } from '../constants'
 import { EMPParameters } from '../types'
 
 import { getTestPriceIdentifier } from './getTestPriceIdentifier'
@@ -36,13 +36,13 @@ describe('Deploy EMP Tests', () => {
     })
 
     test('that deploy EMP correctly', async () => {
-        const daiCollateralInfo = getTestCollaterals().find((s) => s.symbol === DAI)
-        if (!daiCollateralInfo) {
+        const umaCollateralInfo = getTestCollaterals().find((s) => s.symbol === UMA)
+        if (!umaCollateralInfo) {
             throw new Error("Couldn't find collateral info")
         }
         const values: EMPParameters = {
             expirationTimestamp: new Date(2022, 10, 10).getTime(),
-            collateralAddress: daiCollateralInfo.address,
+            collateralAddress: umaCollateralInfo.address,
             priceFeedIdentifier: getTestPriceIdentifier(),
             syntheticName: 'yUMA-JUN2021',
             syntheticSymbol: 'Yield UMA June',

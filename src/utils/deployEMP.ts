@@ -59,8 +59,6 @@ export const deployEMP = async (
             : '0x0000000000000000000000000000000000000000',
     }
 
-    console.log('Params', params)
-
     const umaABIs = getUMAAbis()
     const umaAddresses = getUMAAddresses(network.chainId)
 
