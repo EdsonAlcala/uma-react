@@ -22,6 +22,7 @@ const App: React.FC = () => {
 
     // internal
     const [openModal, setOpenModal] = useState(false)
+    const [shouldCreatePosition, setShouldCreatePosition] = useState(false)
     const [positionHasBeenCreated, setPositionHasBeenCreated] = useState(false)
     const handleManageClick = () => {
         setOpenModal(true)
@@ -42,6 +43,7 @@ const App: React.FC = () => {
                 const result = await deployEMP(fakeEMP, network, signer)
                 const { expiringMultiPartyAddress } = result
                 setEMPAddress(expiringMultiPartyAddress)
+                setShouldCreatePosition(true)
             }
 
             deployLocalEMP()
@@ -49,11 +51,12 @@ const App: React.FC = () => {
                 .catch((error) => console.log("Error deploying local EMP", error))
         } else {
             console.log("Doing nothing, using cached version")
+            setPositionHasBeenCreated(true)
         }
-    }, [provider])
+    }, [provider, empAddress])
 
     useEffect(() => {
-        if (empInstance && !empAddress) {
+        if (empInstance && empAddress && shouldCreatePosition) {
             const setupGCR = async () => {
                 try {
                     // setup allowance first
@@ -68,7 +71,7 @@ const App: React.FC = () => {
 
                     // create position
                     const collateralDecimals = await collateralInstance.decimals();
-                    const collateralWei = toWeiSafe("125", collateralDecimals); // collateral = input by user
+                    const collateralWei = toWeiSafe("7", collateralDecimals); // collateral = input by user
                     const tokensWei = toWeiSafe("100", collateralDecimals); // tokens = input by user
                     const tx = await empInstance.create([collateralWei], [tokensWei]);
                     await tx.wait();
@@ -77,21 +80,21 @@ const App: React.FC = () => {
                     console.error(error);
                 }
             }
-
             setupGCR()
                 .then(() => console.log("Created initial position and setup GCR"))
                 .catch((error) => console.log("Error creating initial position", error))
         } else {
             console.log("Doing nothing, using cached version")
         }
-    }, [empInstance])
+    }, [empInstance, empAddress, shouldCreatePosition])
 
-    if (!empInstance && !positionHasBeenCreated) {
+    if (!empInstance || !positionHasBeenCreated) {
         return (<Loader />)
     }
 
     const cleanLocalCache = () => {
         setEMPAddress("")
+        alert("Cleaned")
     }
 
     return (
@@ -101,6 +104,7 @@ const App: React.FC = () => {
                     <h1>Demo App</h1>
                     <Box position="absolute" right="0" top="0">
                         <button onClick={cleanLocalCache}>Clean Local Cache</button>
+                        {/* <button onClick={createPositionAndSetupGCR}>Create initial position / Setup GCR</button> */}
                     </Box>
                     <h3>Position Manager</h3>
                     <Box className={classes.root} border="1px solid black">

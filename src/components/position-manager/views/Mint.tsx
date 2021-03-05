@@ -1,28 +1,17 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid, InputAdornment, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
+import CallMadeIcon from '@material-ui/icons/CallMade';
 
-import { useEMPProvider, usePosition, useTotals, useWeb3Provider } from '../../../hooks';
-import { fromWei, toWeiSafe, create } from '../../../utils';
+import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed, useEtherscan } from '../../../hooks';
+import { fromWei, toWeiSafe, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol } from '../../../utils';
 
 import { Loader } from '../../common'
 import styled from 'styled-components';
+import { ethers } from 'ethers';
 
 export interface MintProps {
 
 }
-
-// Properties
-// tokenSymbol
-// minSponsorTokensFromWei
-// tokens (user input)
-// resultantTokensBelowMin
-
-// functions
-// setTokensToMax
-// setBackingCollateralToMin
-// price...
-
-// I need the position 
 
 const isUndefined = (value: any) => value === undefined
 
@@ -30,17 +19,19 @@ export const Mint: React.FC<MintProps> = () => {
     // internal state
     const [collateral, setCollateral] = useState<string>("0");
     const [tokens, setTokens] = useState<string>("0");
-    const [hash, setHash] = useState<string | null>(null);
-    const [success, setSuccess] = useState<boolean | null>(null);
-    const [error, setError] = useState<Error | null>(null);
+    const [hash, setHash] = useState<string | undefined>(undefined);
+    const [success, setSuccess] = useState<boolean | undefined>(undefined);
+    const [error, setError] = useState<Error | undefined>(undefined);
 
     // read data
     const { address: userAddress } = useWeb3Provider()
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
     const totalsState = useTotals()
+    const { latestPrice } = usePriceFeed(syntheticState ? syntheticState.symbol : undefined)
+    const { getEtherscanUrl } = useEtherscan()
 
-    if (isUndefined(collateralState) || isUndefined(syntheticState) || isUndefined(empState) || isUndefined(positionState) || isUndefined(totalsState)) {
+    if (isUndefined(collateralState) || isUndefined(syntheticState) || isUndefined(empState) || isUndefined(positionState) || isUndefined(totalsState) && isUndefined(latestPrice)) {
         return (
             <Loader />
         )
@@ -59,14 +50,17 @@ export const Mint: React.FC<MintProps> = () => {
     const collateralAllowanceAsNumber = Number(collateralAllowance)
 
     // expiring multi party 
-    const { minSponsorTokens, collateralRequirement } = empState
+    const { minSponsorTokens, collateralRequirement, priceIdentifier } = empState
     const minSponsorTokensFromWei = parseFloat(
         fromWei(minSponsorTokens, collateralDecimals) // TODO: This should be using the decimals of the token...
     );
+    const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier);
 
     // totals
     const { gcr } = totalsState
     const gcrAsNumber = Number(gcr)
+
+    console.log("GCR", gcr)
 
     // input data
     const collateralToDeposit = Number(collateral) || 0;
@@ -82,7 +76,7 @@ export const Mint: React.FC<MintProps> = () => {
     const needAllowance = collateralAllowance !== "Infinity" && collateralAllowanceAsNumber < collateralToDeposit;
 
     // computed general
-    const latestPrice = 100 | 0; // TODO: I need price feed
+    // const latestPrice = 100 | 0; // TODO: I need price feed
     const transactionCR = tokensToCreate > 0 ? collateralToDeposit / tokensToCreate : 0;
     const transactionCRBelowGCR = transactionCR < gcrAsNumber;
     const resultantCR = resultantTokens > 0 ? resultantCollateral / resultantTokens : 0;
@@ -92,6 +86,25 @@ export const Mint: React.FC<MintProps> = () => {
     const cannotMint = transactionCRBelowGCR && resultantCRBelowGCR;
     const collateralRequirementFromWei = parseFloat(fromWei(collateralRequirement));
     const resultantCRBelowRequirement = parseFloat(pricedResultantCR) >= 0 && parseFloat(pricedResultantCR) < collateralRequirementFromWei;
+
+    // price related
+    const prettyLatestPrice = Number(latestPrice).toFixed(4);
+    // GCR: total contract collateral / total contract tokens.
+    const pricedGCR = latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : undefined;
+    const pricedTransactionCR = latestPrice !== 0 ? (transactionCR / latestPrice).toFixed(4) : "0";
+    console.log("resultantCollateral", resultantCollateral)
+    console.log("resultantTokens", resultantTokens)
+    console.log("collateralRequirementFromWei", collateralRequirementFromWei)
+
+    const resultantLiquidationPrice = getLiquidationPrice(
+        resultantCollateral,
+        resultantTokens,
+        collateralRequirementFromWei,
+        isPricefeedInvertedFromTokenSymbol(tokenSymbol)
+    ).toFixed(4);
+
+    const liquidationPriceWarningThreshold = 0.1;
+    const liquidationPriceDangerouslyFarBelowCurrentPrice = parseFloat(resultantLiquidationPrice) < (1 - liquidationPriceWarningThreshold) * latestPrice;
 
     // internal functions
     const setTokensToMax = (_gcr: number, _transactionCollateral: number, _resultantPositionCollateral: number, _positionTokens: number, _positionCollateral: number) => {
@@ -146,16 +159,19 @@ export const Mint: React.FC<MintProps> = () => {
     };
 
     const mintTokens = async () => {
+        console.log("Minting tokens")
         if (collateralToDeposit >= 0 && tokensToCreate > 0) {
-            setHash(null);
-            setSuccess(null);
-            setError(null);
+            setHash(undefined);
+            setSuccess(undefined);
+            setError(undefined);
             try {
                 const collateralWei = toWeiSafe(collateral, collateralDecimals); // collateral = input by user
                 const tokensWei = toWeiSafe(tokens); // tokens = input by user
                 const tx = await empInstance.create([collateralWei], [tokensWei]);
                 setHash(tx.hash as string);
                 await tx.wait();
+
+                console.log("Minting tokens successfully")
                 setSuccess(true);
             } catch (error) {
                 console.error(error);
@@ -167,142 +183,143 @@ export const Mint: React.FC<MintProps> = () => {
     };
 
     return (
-        <Grid container>
-            <Grid item xs={6}>
-                <Grid container spacing={3}>
-                    <Grid item md={12} sm={12} xs={12}>
-                        <label>Mint new synthetic tokens ({tokenSymbol})</label>
-                    </Grid>
-                    <Grid item md={10} sm={10} xs={10}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            type="number"
-                            variant="outlined"
-                            label={`Tokens (${tokenSymbol})`}
-                            inputProps={{ min: "0" }}
-                            value={tokens}
-                            error={resultantTokensBelowMin}
-                            helperText={
-                                resultantTokensBelowMin &&
-                                `Below minimum of ${minSponsorTokensFromWei}`
-                            }
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setTokens(e.target.value)
-                            }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <Tooltip
-                                            placement="top"
-                                            title="Maximum amount of tokens with entered collateral"
-                                        >
-                                            <Button
-                                                style={{ fontSize: "0.8em" }}
-                                                fullWidth
-                                                onClick={() =>
-                                                    setTokensToMax(
-                                                        gcrAsNumber,
-                                                        collateralToDeposit,
-                                                        resultantCollateral,
-                                                        positionTokensAsNumber,
-                                                        positionCollateralAsNumber
-                                                    )
-                                                }>
-                                                <MinLink>Max</MinLink>
-                                            </Button>
-                                        </Tooltip>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Grid>
+        <React.Fragment>
+            <Grid container>
+                <Grid item xs={6}>
+                    <Grid container spacing={3}>
+                        <Grid item md={12} sm={12} xs={12}>
+                            <label>Mint new synthetic tokens ({tokenSymbol})</label>
+                        </Grid>
+                        <Grid item md={10} sm={10} xs={10}>
+                            <TextField
+                                size="small"
+                                fullWidth
+                                type="number"
+                                variant="outlined"
+                                label={`Tokens (${tokenSymbol})`}
+                                inputProps={{ min: "0" }}
+                                value={tokens}
+                                error={resultantTokensBelowMin}
+                                helperText={
+                                    resultantTokensBelowMin &&
+                                    `Below minimum of ${minSponsorTokensFromWei}`
+                                }
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setTokens(e.target.value)
+                                }
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <Tooltip
+                                                placement="top"
+                                                title="Maximum amount of tokens with entered collateral"
+                                            >
+                                                <Button
+                                                    style={{ fontSize: "0.8em" }}
+                                                    fullWidth
+                                                    onClick={() =>
+                                                        setTokensToMax(
+                                                            gcrAsNumber,
+                                                            collateralToDeposit,
+                                                            resultantCollateral,
+                                                            positionTokensAsNumber,
+                                                            positionCollateralAsNumber
+                                                        )
+                                                    }>
+                                                    <MinLink>Max</MinLink>
+                                                </Button>
+                                            </Tooltip>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
 
-                    <Grid item md={10} sm={10} xs={10}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            type="number"
-                            variant="outlined"
-                            label={`Collateral (${collateralSymbol})`}
-                            inputProps={{ min: "0", max: collateralBalance }}
-                            value={collateral}
-                            error={isBalanceBelowCollateralToDeposit}
-                            helperText={
-                                isBalanceBelowCollateralToDeposit &&
-                                `${collateralSymbol} balance is too low`
-                            }
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setCollateral(e.target.value)
-                            }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <Tooltip
-                                            placement="top"
-                                            title="Minimum amount of collateral with entered tokens"
-                                        >
-                                            <Button
-                                                fullWidth
-                                                style={{ fontSize: "0.8em" }}
-                                                onClick={() =>
-                                                    setBackingCollateralToMin(
-                                                        gcrAsNumber,
-                                                        tokensToCreate,
-                                                        resultantTokens,
-                                                        positionTokensAsNumber,
-                                                        positionCollateralAsNumber
-                                                    )
-                                                }>
-                                                <MinLink>Min</MinLink>
-                                            </Button>
-                                        </Tooltip>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Grid>
+                        <Grid item md={10} sm={10} xs={10}>
+                            <TextField
+                                size="small"
+                                fullWidth
+                                type="number"
+                                variant="outlined"
+                                label={`Collateral (${collateralSymbol})`}
+                                inputProps={{ min: "0", max: collateralBalance }}
+                                value={collateral}
+                                error={isBalanceBelowCollateralToDeposit}
+                                helperText={
+                                    isBalanceBelowCollateralToDeposit &&
+                                    `${collateralSymbol} balance is too low`
+                                }
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setCollateral(e.target.value)
+                                }
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <Tooltip
+                                                placement="top"
+                                                title="Minimum amount of collateral with entered tokens"
+                                            >
+                                                <Button
+                                                    fullWidth
+                                                    style={{ fontSize: "0.8em" }}
+                                                    onClick={() =>
+                                                        setBackingCollateralToMin(
+                                                            gcrAsNumber,
+                                                            tokensToCreate,
+                                                            resultantTokens,
+                                                            positionTokensAsNumber,
+                                                            positionCollateralAsNumber
+                                                        )
+                                                    }>
+                                                    <MinLink>Min</MinLink>
+                                                </Button>
+                                            </Tooltip>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
 
-                    <Grid item md={10} sm={10} xs={10}>
-                        <Box py={0}>
-                            {needAllowance && (
-                                <ColorButton
-                                    color="primary"
-                                    size="small"
-                                    fullWidth
-                                    variant="contained"
-                                    onClick={setMaxAllowance}
-                                >
-                                    Max Approve
-                                </ColorButton>
-                            )}
+                        <Grid item md={10} sm={10} xs={10}>
+                            <Box py={0}>
+                                {needAllowance && (
+                                    <ColorButton
+                                        color="primary"
+                                        size="small"
+                                        fullWidth
+                                        variant="contained"
+                                        onClick={setMaxAllowance}
+                                    >
+                                        Max Approve
+                                    </ColorButton>
+                                )}
 
-                            {!needAllowance && (
-                                <ColorButton
-                                    color="primary"
-                                    disableElevation
-                                    fullWidth
-                                    variant="contained"
-                                    onClick={mintTokens}
-                                    disabled={
-                                        cannotMint ||
-                                        isBalanceBelowCollateralToDeposit ||
-                                        resultantCRBelowRequirement ||
-                                        resultantTokensBelowMin ||
-                                        collateralToDeposit < 0 ||
-                                        tokensToCreate <= 0
-                                    }
-                                >
-                                    {`Mint ${tokensToCreate} ${tokenSymbol}`}
-                                </ColorButton>
-                            )}
-                        </Box>
+                                {!needAllowance && (
+                                    <ColorButton
+                                        color="primary"
+                                        disableElevation
+                                        fullWidth
+                                        variant="contained"
+                                        onClick={mintTokens}
+                                        disabled={
+                                            cannotMint ||
+                                            isBalanceBelowCollateralToDeposit ||
+                                            resultantCRBelowRequirement ||
+                                            resultantTokensBelowMin ||
+                                            collateralToDeposit < 0 ||
+                                            tokensToCreate <= 0
+                                        }
+                                    >
+                                        {`Mint ${tokensToCreate} ${tokenSymbol}`}
+                                    </ColorButton>
+                                )}
+                            </Box>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-            <Grid item xs={6}>
-                <Box pt={5}>
-                    {/* <Typography style={{ padding: "0 0 1em 0" }}>
+                <Grid item xs={6}>
+                    <Box pt={5}>
+                        <Typography style={{ padding: "0 0 1em 0" }}>
                             {`Transaction Collateral Ratio: `}
                             <Tooltip
                                 placement="right"
@@ -331,8 +348,7 @@ export const Mint: React.FC<MintProps> = () => {
                                     parseFloat(resultantLiquidationPrice) > 0 &&
                                     `This is >${liquidationPriceWarningThreshold * 100
                                     }% below the current price: ${prettyLatestPrice}`
-                                }
-                            >
+                                }>
                                 <span
                                     style={{
                                         color:
@@ -340,10 +356,9 @@ export const Mint: React.FC<MintProps> = () => {
                                                 parseFloat(resultantLiquidationPrice) > 0
                                                 ? "red"
                                                 : "unset",
-                                    }}
-                                >
+                                    }}>
                                     {resultantLiquidationPrice} ({priceIdentifierUtf8})
-                    </span>
+                            </span>
                             </Tooltip>
                         </Typography>
                         <Typography style={{ padding: "0 0 1em 0" }}>
@@ -352,7 +367,7 @@ export const Mint: React.FC<MintProps> = () => {
                                 placement="right"
                                 title={
                                     resultantCRBelowRequirement &&
-                                    `This must be above the requirement: ${collReqFromWei}`
+                                    `This must be above the requirement: ${collateralRequirementFromWei}`
                                 }
                             >
                                 <span
@@ -366,15 +381,50 @@ export const Mint: React.FC<MintProps> = () => {
                         </Typography>
                         <Typography
                             style={{ padding: "0 0 1em 0" }}
-                        >{`GCR: ${pricedGCR}`}</Typography> */}
-                </Box>
+                        >{`GCR: ${pricedGCR}`}</Typography>
+                    </Box>
+                </Grid>
+                <Grid item xs={12}>
+
+                    <Box color="black" display="flex" flexDirection="column" mt="1em" fontSize="0.9em">
+                        {hash &&
+                            <React.Fragment>
+                                <Typography>
+                                    <label style={{ color: "rgb(98, 93, 247)" }}>Transaction successful</label>
+                                </Typography>
+                                <Box>
+                                    <Link
+                                        href={getEtherscanUrl(hash)}
+                                        target="_blank"
+                                        rel="noopener noreferrer">
+                                        <span style={{ fontSize: "1em", display: "inline-flex", alignItems: "center", marginTop: "0.5em" }}>
+                                            View on Etherscan {" "} <CallMadeIcon style={{ fontSize: "1.3em" }} />
+                                        </span>
+                                    </Link>
+                                </Box>
+                            </React.Fragment>}
+
+                        {error &&
+                            <React.Fragment>
+                                <Typography>
+                                    <label style={{ color: "red" }}>{error.message}</label>
+                                </Typography>
+                            </React.Fragment>
+                        }
+                    </Box>
+                </Grid>
             </Grid>
-        </Grid>
+        </React.Fragment>
     )
 }
 
 const MinLink = styled.div`
   text-decoration-line: underline;
+`;
+
+const Link = styled.a`
+  text-decoration: none;
+  color: black;
 `;
 
 const ColorButton = withStyles((theme) => ({

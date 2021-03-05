@@ -67,7 +67,7 @@ export const PRICEFEED_PARAMS: PricefeedParamsMap = {
     ],
   },
   umausd: {
-    invertedPrice: false,
+    invertedPrice: true,
     source: [
       "https://api.binance.com/api/v3/avgPrice?symbol=UMAUSDT",
       "https://api.pro.coinbase.com/products/UMA-USD/trades?limit=1",
