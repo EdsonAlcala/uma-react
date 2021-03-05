@@ -43,7 +43,7 @@ export class Ganache {
         _chainId: getNetworkId(),
         _chainIdRpc: getNetworkId(),
         network_id: getNetworkId(),
-        gasLimit: 200000000,
+        gasLimit: 200000000000,
         allowUnlimitedContractSize: true,
         fork: getForkUrl(),
         accounts: [

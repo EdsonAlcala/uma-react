@@ -10,6 +10,12 @@ export const deposit = async (instance: ethers.Contract, collateralToDeposit: Bi
     const receipt = await instance.deposit([collateralToDeposit])
     await receipt.wait();
     return receipt
+
+    // TODO: Think how to pass options elegantly, like the typechain...
+    // {
+    // gasPrice: 200000,
+    // gasLimit: 2000000
+    // }
 }
 
 export const redeem = async (instance: ethers.Contract, tokensToRedeem: BigNumber) => {
@@ -20,6 +26,12 @@ export const redeem = async (instance: ethers.Contract, tokensToRedeem: BigNumbe
 
 export const withdraw = async (instance: ethers.Contract, collateralToWithdraw: BigNumber) => {
     const receipt = await instance.withdraw([collateralToWithdraw])
+    await receipt.wait();
+    return receipt
+}
+
+export const requestWithdrawal = async (instance: ethers.Contract, collateralToWithdraw: BigNumber) => {
+    const receipt = await instance.requestWithdrawal([collateralToWithdraw])
     await receipt.wait();
     return receipt
 }
