@@ -67,12 +67,16 @@ const App: React.FC = () => {
                     const receipt = await collateralInstance.approve(empAddress, ethers.constants.MaxUint256)
                     await receipt.wait()
 
+                    const tokenInstance = new ethers.Contract(empData.tokenCurrency, allInterfaces.get('ERC20'), signer)
                     console.log("Approve correctly")
 
                     // create position
                     const collateralDecimals = await collateralInstance.decimals();
+                    const tokenDecimals = await tokenInstance.decimals()
+
                     const collateralWei = toWeiSafe("7", collateralDecimals); // collateral = input by user
-                    const tokensWei = toWeiSafe("100", collateralDecimals); // tokens = input by user
+                    const tokensWei = toWeiSafe("100", tokenDecimals); // tokens = input by user
+
                     const tx = await empInstance.create([collateralWei], [tokensWei]);
                     await tx.wait();
                     setPositionHasBeenCreated(true)

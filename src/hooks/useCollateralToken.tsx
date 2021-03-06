@@ -29,14 +29,6 @@ export const useCollateralToken = (
         return balanceRaw
     }
 
-    const setMaxAllowance = async () => {
-        if (instance) {
-            const receipt = await instance.approve(empAddress, ethers.constants.MaxUint256)
-            await receipt.wait()
-            return receipt
-        }
-    }
-
     const getAllowance = async (
         contractInstance: ethers.Contract,
         addressParam: EthereumAddress,
@@ -71,7 +63,7 @@ export const useCollateralToken = (
             allowance: newAllowance,
             balance: fromWei(balanceRaw, newDecimals),
             balanceBN: balanceRaw,
-            setMaxAllowance,
+            // setMaxAllowance,
             instance: contractInstance,
         })
     }

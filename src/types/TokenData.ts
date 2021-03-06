@@ -9,6 +9,7 @@ export interface TokenData {
     balanceBN: BigNumber
     allowance: NumberAsString | 'Infinity'
     totalSupply: BigNumber
-    setMaxAllowance: () => Promise<ContractReceipt>
     instance: ethers.Contract
 }
+
+

@@ -35,7 +35,7 @@ export const Redeem: React.FC<RedeemProps> = () => {
 
         // tokens
         const { decimals: tokenDecimals, symbol: tokenSymbol, balance: tokenBalance, balanceBN: tokenBalanceBN, allowance: tokenAllowance } = syntheticState
-        const { decimals: collateralDecimals, symbol: collateralSymbol, balance: collateralBalance, allowance: collateralAllowance, setMaxAllowance } = collateralState
+        const { decimals: collateralDecimals, symbol: collateralSymbol, balance: collateralBalance, allowance: collateralAllowance, instance: collateralInstance } = collateralState
 
         const collateralBalanceAsNumber = Number(collateralBalance)
         const collateralAllowanceAsNumber = Number(collateralAllowance)
@@ -111,6 +111,22 @@ export const Redeem: React.FC<RedeemProps> = () => {
                 setTokens(tokenBalance.toString());
             }
         };
+
+        const setMaxAllowance = async () => {
+            setIsSubmitting(true)
+            setHash(undefined);
+            setError(undefined);
+            try {
+                const receipt = await collateralInstance.approve(empInstance.address, ethers.constants.MaxUint256)
+                setHash(receipt.hash as string);
+                await receipt.wait()
+                console.log("Set max allowance successfully")
+            } catch (error) {
+                console.error(error);
+                setError(error);
+            }
+            setIsSubmitting(false)
+        }
 
         // optional render views
         if (positionCollateralAsNumber === 0) {
@@ -192,14 +208,14 @@ export const Redeem: React.FC<RedeemProps> = () => {
                             <Grid item md={10} sm={10} xs={10}>
                                 <Box py={0}>
                                     {needAllowance && (
-                                        <Button
-                                            fullWidth
-                                            variant="contained"
+                                        <FormButton
+                                            size="small"
                                             onClick={setMaxAllowance}
-                                            style={{ marginRight: `12px` }}
-                                        >
+                                            isSubmitting={isSubmitting}
+                                            submittingText="Approving..."
+                                            text="Max Approve">
                                             Max Approve
-                                        </Button>
+                                        </FormButton>
                                     )}
                                     {!needAllowance && (
                                         <FormButton

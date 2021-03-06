@@ -37,7 +37,7 @@ export const Mint: React.FC<MintProps> = () => {
 
         // tokens
         const { decimals: tokenDecimals, symbol: tokenSymbol } = syntheticState
-        const { decimals: collateralDecimals, symbol: collateralSymbol, balance: collateralBalance, allowance: collateralAllowance, setMaxAllowance } = collateralState
+        const { instance: collateralInstance, decimals: collateralDecimals, symbol: collateralSymbol, balance: collateralBalance, allowance: collateralAllowance } = collateralState
 
         const collateralBalanceAsNumber = Number(collateralBalance)
         const collateralAllowanceAsNumber = Number(collateralAllowance)
@@ -151,17 +151,16 @@ export const Mint: React.FC<MintProps> = () => {
         };
 
         const mintTokens = async () => {
+            setIsSubmitting(true)
             if (collateralToDeposit >= 0 && tokensToCreate > 0) {
                 setHash(undefined);
                 setError(undefined);
-                setIsSubmitting(true)
                 try {
                     const collateralWei = toWeiSafe(collateral, collateralDecimals); // collateral = input by user
                     const tokensWei = toWeiSafe(tokens); // tokens = input by user
                     const tx = await empInstance.create([collateralWei], [tokensWei]);
                     setHash(tx.hash as string);
                     await tx.wait();
-
                     console.log("Minting tokens successfully")
                 } catch (error) {
                     console.error(error);
@@ -172,6 +171,22 @@ export const Mint: React.FC<MintProps> = () => {
             }
             setIsSubmitting(false)
         };
+
+        const setMaxAllowance = async () => {
+            setIsSubmitting(true)
+            setHash(undefined);
+            setError(undefined);
+            try {
+                const receipt = await collateralInstance.approve(empInstance.address, ethers.constants.MaxUint256)
+                setHash(receipt.hash as string);
+                await receipt.wait()
+                console.log("Set max allowance successfully")
+            } catch (error) {
+                console.error(error);
+                setError(error);
+            }
+            setIsSubmitting(false)
+        }
 
         return (
             <React.Fragment>
@@ -280,8 +295,8 @@ export const Mint: React.FC<MintProps> = () => {
                                         <FormButton
                                             size="small"
                                             onClick={setMaxAllowance}
-                                            isSubmitting={false}
-                                            submittingText="TODO"
+                                            isSubmitting={isSubmitting}
+                                            submittingText="Approving..."
                                             text="Max Approve">
                                             Max Approve
                                         </FormButton>
