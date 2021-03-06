@@ -17,7 +17,7 @@ export const Mint: React.FC<MintProps> = () => {
     // internal state
     const [collateral, setCollateral] = useState<string>("0");
     const [tokens, setTokens] = useState<string>("0");
-    const [hash, setHash] = useState<string | undefined>("0x07b1d16b1f6e567bb578830e27533c66c48146e56061153fc7d693dae454ff9f");
+    const [hash, setHash] = useState<string | undefined>(undefined);
     const [error, setError] = useState<Error | undefined>(undefined);
     const [isSubmitting, setIsSubmitting] = useState(false)
 
