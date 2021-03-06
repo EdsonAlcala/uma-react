@@ -183,6 +183,7 @@ export const Redeem: React.FC<RedeemProps> = () => {
                                     fullWidth
                                     variant="outlined"
                                     type="number"
+                                    size="small"
                                     label={`Redeem (${tokenSymbol})`}
                                     inputProps={{ min: "0", max: tokenBalance }}
                                     error={balanceBelowTokensToRedeem || invalidRedeemAmount}
@@ -205,6 +206,7 @@ export const Redeem: React.FC<RedeemProps> = () => {
                                     }}
                                 />
                             </Grid>
+
                             <Grid item md={10} sm={10} xs={10}>
                                 <Box py={0}>
                                     {needAllowance && (
@@ -232,13 +234,16 @@ export const Redeem: React.FC<RedeemProps> = () => {
                                 </Box>
                             </Grid>
 
+                            <Grid item md={10} sm={10} xs={10} style={{ paddingTop: "0" }}>
+                                <TransactionResultArea hash={hash} error={error} />
+                            </Grid>
                         </Grid>
                     </Grid>
 
                     <Grid item xs={6}>
-                        <Box pt={5}>
-                            <Typography>{`${collateralSymbol} you will receive: ${proportionCollateralReceived}`}</Typography>
-                            <Typography>
+                        <Box height="100%" flexDirection="column" display="flex" justifyContent="center">
+                            <Typography style={{ padding: "0 0 1em 0" }}>{`${collateralSymbol} you will receive: ${proportionCollateralReceived}`}</Typography>
+                            <Typography style={{ padding: "0 0 1em 0" }}>
                                 <Tooltip
                                     placement="right"
                                     title={
@@ -253,11 +258,8 @@ export const Redeem: React.FC<RedeemProps> = () => {
                                     </span>
                                 </Tooltip>
                             </Typography>
-                            <Typography>{`Remaining ${collateralSymbol} in your position after redemption: ${resultantCollateral}`}</Typography>
+                            <Typography style={{ padding: "0 0 1em 0" }}>{`Remaining ${collateralSymbol} in your position after redemption: ${resultantCollateral}`}</Typography>
                         </Box>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TransactionResultArea hash={hash} error={error} />
                     </Grid>
                 </Grid>
             </React.Fragment>

@@ -17,7 +17,7 @@ export const Mint: React.FC<MintProps> = () => {
     // internal state
     const [collateral, setCollateral] = useState<string>("0");
     const [tokens, setTokens] = useState<string>("0");
-    const [hash, setHash] = useState<string | undefined>(undefined);
+    const [hash, setHash] = useState<string | undefined>("0x07b1d16b1f6e567bb578830e27533c66c48146e56061153fc7d693dae454ff9f");
     const [error, setError] = useState<Error | undefined>(undefined);
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -319,10 +319,14 @@ export const Mint: React.FC<MintProps> = () => {
                                         />)}
                                 </Box>
                             </Grid>
+
+                            <Grid item md={10} sm={10} xs={10} style={{ paddingTop: "0" }}>
+                                <TransactionResultArea hash={hash} error={error} />
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={6}>
-                        <Box pt={5}>
+                        <Box height="100%" flexDirection="column" display="flex" justifyContent="center">
                             <Typography style={{ padding: "0 0 1em 0" }}>
                                 {`Transaction Collateral Ratio: `}
                                 <Tooltip
@@ -387,9 +391,6 @@ export const Mint: React.FC<MintProps> = () => {
                                 style={{ padding: "0 0 1em 0" }}
                             >{`GCR: ${pricedGCR}`}</Typography>
                         </Box>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TransactionResultArea hash={hash} error={error} />
                     </Grid>
                 </Grid>
             </React.Fragment>

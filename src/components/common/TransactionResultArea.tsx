@@ -14,7 +14,7 @@ export const TransactionResultArea: React.FC<TransactionResultAreaProps> = ({ ha
     const { getEtherscanUrl } = useEtherscan()
 
     return (
-        <Box color="black" display="flex" flexDirection="column" mt="1em" fontSize="0.9em">
+        <Box color="black" display="flex" flexDirection="column" fontSize="0.9em">
             {hash &&
                 <React.Fragment>
                     <Typography>
