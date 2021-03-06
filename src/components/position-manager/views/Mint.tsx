@@ -5,8 +5,9 @@ import { ethers } from 'ethers';
 
 import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed } from '../../../hooks';
 import { fromWei, toWeiSafe, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, } from '../../../utils';
+import { INFINITY } from '../../../constants';
 
-import { Loader, TransactionResultArea } from '../../common'
+import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
 
 
 export interface MintProps {
@@ -67,7 +68,7 @@ export const Mint: React.FC<MintProps> = () => {
         // computed collateral
         const resultantCollateral = positionCollateralAsNumber + collateralToDeposit;
         const isBalanceBelowCollateralToDeposit = collateralBalanceAsNumber < collateralToDeposit;
-        const needAllowance = collateralAllowance !== "Infinity" && collateralAllowanceAsNumber < collateralToDeposit;
+        const needAllowance = collateralAllowance !== INFINITY && collateralAllowanceAsNumber < collateralToDeposit;
 
         // computed general
         const transactionCR = tokensToCreate > 0 ? collateralToDeposit / tokensToCreate : 0;
@@ -182,8 +183,11 @@ export const Mint: React.FC<MintProps> = () => {
                     <Grid item xs={6}>
                         <Grid container spacing={3}>
                             <Grid item md={12} sm={12} xs={12}>
-                                <label style={{ fontFamily: "sans-serif", fontSize: "1.1em" }}>Mint new synthetic tokens ({tokenSymbol})</label>
+                                <FormTitle>
+                                    {`Mint new synthetic tokens (${tokenSymbol})`}
+                                </FormTitle>
                             </Grid>
+
                             <Grid item md={10} sm={10} xs={10}>
                                 <TextField
                                     size="small"
@@ -277,22 +281,18 @@ export const Mint: React.FC<MintProps> = () => {
                             <Grid item md={10} sm={10} xs={10}>
                                 <Box py={0}>
                                     {needAllowance && (
-                                        <ColorButton
-                                            color="primary"
+                                        <FormButton
                                             size="small"
-                                            fullWidth
-                                            variant="contained"
-                                            onClick={setMaxAllowance}>
+                                            onClick={setMaxAllowance}
+                                            isSubmitting={false}
+                                            submittingText="TODO"
+                                            text="Max Approve">
                                             Max Approve
-                                        </ColorButton>
+                                        </FormButton>
                                     )}
 
                                     {!needAllowance && (
-                                        <ColorButton
-                                            color="primary"
-                                            disableElevation
-                                            fullWidth
-                                            variant="contained"
+                                        <FormButton
                                             onClick={mintTokens}
                                             disabled={
                                                 cannotMint ||
@@ -301,11 +301,11 @@ export const Mint: React.FC<MintProps> = () => {
                                                 resultantTokensBelowMin ||
                                                 collateralToDeposit < 0 ||
                                                 tokensToCreate <= 0
-                                            }>
-                                            {isSubmitting ? "Minting tokens..." : `Mint ${tokensToCreate} ${tokenSymbol}`}
-                                            {isSubmitting && <CircularProgress style={{ marginLeft: "0.5em", color: "white" }} size={24} />}
-                                        </ColorButton>
-                                    )}
+                                            }
+                                            isSubmitting={isSubmitting}
+                                            submittingText="Minting tokens..."
+                                            text={`Mint ${tokensToCreate} ${tokenSymbol}`}
+                                        />)}
                                 </Box>
                             </Grid>
                         </Grid>
@@ -393,23 +393,3 @@ export const Mint: React.FC<MintProps> = () => {
 const MinLink = styled.div`
   text-decoration-line: underline;
 `;
-
-const Link = styled.a`
-  text-decoration: none;
-  color: black;
-`;
-
-const ColorButton = withStyles((theme) => ({
-    root: {
-        textTransform: "capitalize",
-        color: "#fff !important",
-        backgroundColor: "#ff4a4a",
-        "&:hover": {
-            opacity: 0.9,
-            backgroundColor: "#ff4a4a",
-        },
-        "&.MuiButtonBase-root:disabled": {
-            color: "rgba(0, 0, 0, 0.26) !important",
-        },
-    },
-}))(Button);

@@ -3,8 +3,8 @@ import { Box, Button, Grid, TextField, Typography } from '@material-ui/core';
 import { ethers } from 'ethers';
 
 import { fromWei, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, toWeiSafe } from '../../../utils';
-import { useEMPProvider, useEtherscan, usePosition, usePriceFeed, useWeb3Provider } from '../../../hooks';
-import { Loader, TransactionResultArea } from '../../common';
+import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../../../hooks';
+import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common';
 import { INFINITY, YES } from '../../../constants';
 
 export interface DepositProps {
@@ -24,7 +24,6 @@ export const Deposit: React.FC<DepositProps> = () => {
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
     const { latestPrice } = usePriceFeed(syntheticState ? syntheticState.symbol : undefined)
-    const { getEtherscanUrl } = useEtherscan()
 
     if (collateralState && syntheticState && empState && positionState && empInstance && latestPrice) {
         // position
@@ -39,9 +38,6 @@ export const Deposit: React.FC<DepositProps> = () => {
 
         // expiring multi party 
         const { minSponsorTokens, collateralRequirement, priceIdentifier } = empState
-        const minSponsorTokensFromWei = parseFloat(
-            fromWei(minSponsorTokens, collateralDecimals) // TODO: This should be using the decimals of the token...
-        );
         const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier);
 
         const collateralBalanceAsNumber = Number(collateralBalance)
@@ -68,6 +64,7 @@ export const Deposit: React.FC<DepositProps> = () => {
         const needAllowance = collateralAllowance !== INFINITY && collateralAllowanceAsNumber < collateralToDeposit;
 
         const depositCollateral = async () => {
+            setIsSubmitting(true)
             if (collateralToDeposit > 0) {
                 setHash(null);
                 setSuccess(null);
@@ -85,6 +82,7 @@ export const Deposit: React.FC<DepositProps> = () => {
             } else {
                 setError(new Error("Collateral amount must be positive."));
             }
+            setIsSubmitting(false)
         };
 
         if (hasPendingWithdraw) {
@@ -105,27 +103,34 @@ export const Deposit: React.FC<DepositProps> = () => {
                 <Grid container>
                     <Grid item xs={6}>
                         <Grid container spacing={3}>
-                            <Grid item md={4} sm={6} xs={12}>
-                                <Box py={0}>
-                                    <TextField
-                                        fullWidth
-                                        type="number"
-                                        variant="outlined"
-                                        inputProps={{ min: "0", max: collateralBalance }}
-                                        label={`Collateral (${collateralSymbol})`}
-                                        error={balanceBelowCollateralToDeposit}
-                                        helperText={
-                                            balanceBelowCollateralToDeposit &&
-                                            `Your ${collateralSymbol} balance too low`
-                                        }
-                                        value={collateral}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                            setCollateral(e.target.value)
-                                        }
-                                    />
-                                </Box>
+
+                            <Grid item md={12} sm={12} xs={12}>
+                                <FormTitle>
+                                    {`Deposit (${collateralSymbol})`}
+                                </FormTitle>
                             </Grid>
-                            <Grid item md={4} sm={6} xs={12}>
+
+                            <Grid item md={10} sm={10} xs={10}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    type="number"
+                                    variant="outlined"
+                                    inputProps={{ min: "0", max: collateralBalance }}
+                                    label={`Collateral (${collateralSymbol})`}
+                                    error={balanceBelowCollateralToDeposit}
+                                    helperText={
+                                        balanceBelowCollateralToDeposit &&
+                                        `Your ${collateralSymbol} balance too low`
+                                    }
+                                    value={collateral}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setCollateral(e.target.value)
+                                    }
+                                />
+                            </Grid>
+
+                            <Grid item md={10} sm={10} xs={10}>
                                 <Box py={0}>
                                     {needAllowance && (
                                         <Button
@@ -137,16 +142,20 @@ export const Deposit: React.FC<DepositProps> = () => {
                                         </Button>
                                     )}
                                     {!needAllowance && (
-                                        <Button
+                                        <FormButton
                                             fullWidth
                                             variant="contained"
                                             onClick={depositCollateral}
                                             disabled={
                                                 balanceBelowCollateralToDeposit ||
                                                 collateralToDeposit <= 0
-                                            }>
-                                            {`Deposit ${collateralToDeposit} ${collateralSymbol} into your position`}
-                                        </Button>
+                                            }
+                                            isSubmitting={isSubmitting}
+                                            submittingText="Depositing collateral..."
+                                            text={`Deposit ${collateralToDeposit} ${collateralSymbol} into your position`}
+                                        >
+
+                                        </FormButton>
                                     )}
                                 </Box>
                             </Grid>
