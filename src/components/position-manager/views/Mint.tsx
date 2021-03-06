@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, InputAdornment, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
+import { Box, Button, CircularProgress, Grid, InputAdornment, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
 import CallMadeIcon from '@material-ui/icons/CallMade';
 
 import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed, useEtherscan } from '../../../hooks';
@@ -22,6 +22,7 @@ export const Mint: React.FC<MintProps> = () => {
     const [hash, setHash] = useState<string | undefined>(undefined);
     const [success, setSuccess] = useState<boolean | undefined>(undefined);
     const [error, setError] = useState<Error | undefined>(undefined);
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     // read data
     const { address: userAddress } = useWeb3Provider()
@@ -159,11 +160,11 @@ export const Mint: React.FC<MintProps> = () => {
     };
 
     const mintTokens = async () => {
-        console.log("Minting tokens")
         if (collateralToDeposit >= 0 && tokensToCreate > 0) {
             setHash(undefined);
             setSuccess(undefined);
             setError(undefined);
+            setIsSubmitting(true)
             try {
                 const collateralWei = toWeiSafe(collateral, collateralDecimals); // collateral = input by user
                 const tokensWei = toWeiSafe(tokens); // tokens = input by user
@@ -180,6 +181,7 @@ export const Mint: React.FC<MintProps> = () => {
         } else {
             setError(new Error("Collateral and Token amounts must be positive"));
         }
+        setIsSubmitting(false)
     };
 
     return (
@@ -188,7 +190,7 @@ export const Mint: React.FC<MintProps> = () => {
                 <Grid item xs={6}>
                     <Grid container spacing={3}>
                         <Grid item md={12} sm={12} xs={12}>
-                            <label>Mint new synthetic tokens ({tokenSymbol})</label>
+                            <label style={{ fontFamily: "sans-serif", fontSize: "1.1em" }}>Mint new synthetic tokens ({tokenSymbol})</label>
                         </Grid>
                         <Grid item md={10} sm={10} xs={10}>
                             <TextField
@@ -288,8 +290,7 @@ export const Mint: React.FC<MintProps> = () => {
                                         size="small"
                                         fullWidth
                                         variant="contained"
-                                        onClick={setMaxAllowance}
-                                    >
+                                        onClick={setMaxAllowance}>
                                         Max Approve
                                     </ColorButton>
                                 )}
@@ -308,9 +309,9 @@ export const Mint: React.FC<MintProps> = () => {
                                             resultantTokensBelowMin ||
                                             collateralToDeposit < 0 ||
                                             tokensToCreate <= 0
-                                        }
-                                    >
-                                        {`Mint ${tokensToCreate} ${tokenSymbol}`}
+                                        }>
+                                        {isSubmitting ? "Minting tokens..." : `Mint ${tokensToCreate} ${tokenSymbol}`}
+                                        {isSubmitting && <CircularProgress style={{ marginLeft: "0.5em", color: "white" }} size={24} />}
                                     </ColorButton>
                                 )}
                             </Box>
@@ -387,6 +388,7 @@ export const Mint: React.FC<MintProps> = () => {
                 <Grid item xs={12}>
 
                     <Box color="black" display="flex" flexDirection="column" mt="1em" fontSize="0.9em">
+
                         {hash &&
                             <React.Fragment>
                                 <Typography>

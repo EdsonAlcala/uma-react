@@ -62,6 +62,10 @@ const StyledTab = withStyles((theme) => ({
             opacity: 1,
             fontWeight: "500",
         },
+        "&.Mui-selected": {
+            fontWeight: "500",
+            fontSize: "1em"
+        }
     },
 }))((props: any) => <Tab disableRipple {...props} />);
 
