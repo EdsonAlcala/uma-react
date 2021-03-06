@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Grid, InputAdornment, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
-import styled from 'styled-components';
+import { Box, Button, Grid, InputAdornment, TextField, Tooltip, Typography } from '@material-ui/core';
 import { ethers } from 'ethers';
 
 import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed } from '../../../hooks';
 import { fromWei, toWeiSafe, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, } from '../../../utils';
 import { INFINITY } from '../../../constants';
 
-import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
+import { FormButton, FormTitle, Loader, MinLink, TransactionResultArea } from '../../common'
 
 
 export interface MintProps {
@@ -19,7 +18,6 @@ export const Mint: React.FC<MintProps> = () => {
     const [collateral, setCollateral] = useState<string>("0");
     const [tokens, setTokens] = useState<string>("0");
     const [hash, setHash] = useState<string | undefined>(undefined);
-    const [success, setSuccess] = useState<boolean | undefined>(undefined);
     const [error, setError] = useState<Error | undefined>(undefined);
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -155,7 +153,6 @@ export const Mint: React.FC<MintProps> = () => {
         const mintTokens = async () => {
             if (collateralToDeposit >= 0 && tokensToCreate > 0) {
                 setHash(undefined);
-                setSuccess(undefined);
                 setError(undefined);
                 setIsSubmitting(true)
                 try {
@@ -166,7 +163,6 @@ export const Mint: React.FC<MintProps> = () => {
                     await tx.wait();
 
                     console.log("Minting tokens successfully")
-                    setSuccess(true);
                 } catch (error) {
                     console.error(error);
                     setError(error);
@@ -389,7 +385,3 @@ export const Mint: React.FC<MintProps> = () => {
         <Loader />
     )
 }
-
-const MinLink = styled.div`
-  text-decoration-line: underline;
-`;

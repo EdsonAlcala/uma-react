@@ -6,6 +6,7 @@ export interface TokenData {
     name: string
     decimals: number
     balance: NumberAsString
+    balanceBN: BigNumber
     allowance: NumberAsString | 'Infinity'
     totalSupply: BigNumber
     setMaxAllowance: () => Promise<ContractReceipt>

@@ -103,7 +103,6 @@ export const Deposit: React.FC<DepositProps> = () => {
                 <Grid container>
                     <Grid item xs={6}>
                         <Grid container spacing={3}>
-
                             <Grid item md={12} sm={12} xs={12}>
                                 <FormTitle>
                                     {`Deposit (${collateralSymbol})`}

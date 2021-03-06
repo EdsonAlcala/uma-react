@@ -23,8 +23,7 @@ export const useSyntheticToken = (
         newDecimals: number,
     ) => {
         const balanceRaw: BigNumber = await contractInstance.balanceOf(addressParam)
-        const newBalance = fromWei(balanceRaw, newDecimals)
-        return newBalance
+        return balanceRaw
     }
 
     const setMaxAllowance = async () => {
@@ -56,7 +55,7 @@ export const useSyntheticToken = (
             contractInstance.totalSupply(),
         ])
 
-        const [newBalance, newAllowance] = await Promise.all([
+        const [balanceRaw, newAllowance] = await Promise.all([
             getBalance(contractInstance, address, newDecimals),
             getAllowance(contractInstance, address, newDecimals),
         ])
@@ -67,7 +66,8 @@ export const useSyntheticToken = (
             decimals: newDecimals,
             totalSupply: newTotalSupply,
             allowance: newAllowance,
-            balance: newBalance,
+            balance: fromWei(balanceRaw, newDecimals),
+            balanceBN: balanceRaw,
             setMaxAllowance,
             instance: contractInstance,
         })
