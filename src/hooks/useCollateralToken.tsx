@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 
 import { EMPData, EthereumAddress, TokenData } from '../types'
-
-import { useERC20At } from './useERC20At'
 import { fromWei } from '../utils'
+import { INFINITY } from '../constants'
+
 import { useWeb3Provider } from './useWeb3Provider'
+import { useERC20At } from './useERC20At'
 
 export const useCollateralToken = (
     empAddress: EthereumAddress,
@@ -45,7 +46,7 @@ export const useCollateralToken = (
     ) => {
         const allowanceRaw: BigNumber = await contractInstance.allowance(addressParam, empAddress)
         const newAllowance = allowanceRaw.eq(ethers.constants.MaxUint256)
-            ? 'Infinity'
+            ? INFINITY
             : fromWei(allowanceRaw, newDecimals)
 
         return newAllowance

@@ -13,3 +13,7 @@ export const MAINNET_PRICE_IDENTIFIER = 'UMAUSD'
 export const UMA = "UMA"
 
 export const YIELD_DOLLAR_UMA = "YD-UMA-JUN21"
+
+export const INFINITY = "Infinity"
+
+export const YES = "Yes"

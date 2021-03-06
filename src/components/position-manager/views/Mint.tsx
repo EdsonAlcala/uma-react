@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Button, CircularProgress, Grid, InputAdornment, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
-import CallMadeIcon from '@material-ui/icons/CallMade';
-
-import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed, useEtherscan } from '../../../hooks';
-import { fromWei, toWeiSafe, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, } from '../../../utils';
-
-import { Loader } from '../../common'
 import styled from 'styled-components';
 import { ethers } from 'ethers';
+
+import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed } from '../../../hooks';
+import { fromWei, toWeiSafe, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, } from '../../../utils';
+
+import { Loader, TransactionResultArea } from '../../common'
+
 
 export interface MintProps {
 
@@ -28,7 +28,6 @@ export const Mint: React.FC<MintProps> = () => {
     const positionState = usePosition(userAddress)
     const totalsState = useTotals()
     const { latestPrice } = usePriceFeed(syntheticState ? syntheticState.symbol : undefined)
-    const { getEtherscanUrl } = useEtherscan()
 
     if (collateralState && syntheticState && empState && positionState && totalsState && latestPrice) {
 
@@ -71,7 +70,6 @@ export const Mint: React.FC<MintProps> = () => {
         const needAllowance = collateralAllowance !== "Infinity" && collateralAllowanceAsNumber < collateralToDeposit;
 
         // computed general
-        // const latestPrice = 100 | 0; // TODO: I need price feed
         const transactionCR = tokensToCreate > 0 ? collateralToDeposit / tokensToCreate : 0;
         const transactionCRBelowGCR = transactionCR < gcrAsNumber;
         const resultantCR = resultantTokens > 0 ? resultantCollateral / resultantTokens : 0;
@@ -380,33 +378,7 @@ export const Mint: React.FC<MintProps> = () => {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-
-                        <Box color="black" display="flex" flexDirection="column" mt="1em" fontSize="0.9em">
-                            {hash &&
-                                <React.Fragment>
-                                    <Typography>
-                                        <label style={{ color: "rgb(98, 93, 247)", fontSize: "0.9em" }}>Transaction successful</label>
-                                    </Typography>
-                                    <Box>
-                                        <Link
-                                            href={getEtherscanUrl(hash)}
-                                            target="_blank"
-                                            rel="noopener noreferrer">
-                                            <span style={{ fontSize: "1em", display: "inline-flex", alignItems: "center", marginTop: "0.5em" }}>
-                                                View on Etherscan {" "} <CallMadeIcon style={{ fontSize: "1.3em" }} />
-                                            </span>
-                                        </Link>
-                                    </Box>
-                                </React.Fragment>}
-
-                            {error &&
-                                <React.Fragment>
-                                    <Typography>
-                                        <label style={{ color: "red" }}>{error.message}</label>
-                                    </Typography>
-                                </React.Fragment>
-                            }
-                        </Box>
+                        <TransactionResultArea hash={hash} error={error} />
                     </Grid>
                 </Grid>
             </React.Fragment>
