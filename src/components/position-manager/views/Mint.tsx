@@ -388,11 +388,10 @@ export const Mint: React.FC<MintProps> = () => {
                 <Grid item xs={12}>
 
                     <Box color="black" display="flex" flexDirection="column" mt="1em" fontSize="0.9em">
-
                         {hash &&
                             <React.Fragment>
                                 <Typography>
-                                    <label style={{ color: "rgb(98, 93, 247)" }}>Transaction successful</label>
+                                    <label style={{ color: "rgb(98, 93, 247)", fontSize: "0.9em" }}>Transaction successful</label>
                                 </Typography>
                                 <Box>
                                     <Link
