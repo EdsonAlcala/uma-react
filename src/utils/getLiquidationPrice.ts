@@ -1,4 +1,4 @@
-export const getLiquidationPrice = (collateral: number, tokens: number, crThreshold: number, inverted: boolean = false) => {
+export const getLiquidationPrice = (collateral: number, tokens: number, crThreshold: number, inverted = false): number => {
     if (tokens <= 0 || crThreshold <= 0 || collateral <= 0) {
         // If liquidation price is 0, then the position can always be liquidated (i.e. it is an invalid position).
         return 0

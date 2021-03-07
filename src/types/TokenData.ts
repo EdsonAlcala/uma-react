@@ -1,4 +1,4 @@
-import { BigNumber, ContractReceipt, ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { NumberAsString } from './Common'
 
 export interface TokenData {

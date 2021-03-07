@@ -1,12 +1,12 @@
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber, ContractReceipt, ethers } from 'ethers'
 
-export const create = async (instance: ethers.Contract, collateral: BigNumber, tokens: BigNumber) => {
+export const create = async (instance: ethers.Contract, collateral: BigNumber, tokens: BigNumber): Promise<ContractReceipt> => {
     const receipt = await instance.create([collateral], [tokens])
     await receipt.wait()
     return receipt
 }
 
-export const deposit = async (instance: ethers.Contract, collateralToDeposit: BigNumber) => {
+export const deposit = async (instance: ethers.Contract, collateralToDeposit: BigNumber): Promise<ContractReceipt> => {
     const receipt = await instance.deposit([collateralToDeposit])
     await receipt.wait()
     return receipt
@@ -18,19 +18,19 @@ export const deposit = async (instance: ethers.Contract, collateralToDeposit: Bi
     // }
 }
 
-export const redeem = async (instance: ethers.Contract, tokensToRedeem: BigNumber) => {
+export const redeem = async (instance: ethers.Contract, tokensToRedeem: BigNumber): Promise<ContractReceipt> => {
     const receipt = await instance.redeem([tokensToRedeem])
     await receipt.wait()
     return receipt
 }
 
-export const withdraw = async (instance: ethers.Contract, collateralToWithdraw: BigNumber) => {
+export const withdraw = async (instance: ethers.Contract, collateralToWithdraw: BigNumber): Promise<ContractReceipt> => {
     const receipt = await instance.withdraw([collateralToWithdraw])
     await receipt.wait()
     return receipt
 }
 
-export const requestWithdrawal = async (instance: ethers.Contract, collateralToWithdraw: BigNumber) => {
+export const requestWithdrawal = async (instance: ethers.Contract, collateralToWithdraw: BigNumber): Promise<ContractReceipt> => {
     const receipt = await instance.requestWithdrawal([collateralToWithdraw])
     await receipt.wait()
     return receipt

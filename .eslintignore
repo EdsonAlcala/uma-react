@@ -5,3 +5,5 @@ coverage
 chain-runner.ts
 jest.setup.ts
 getDai.ts
+getUMA.ts
+getOffchainPrice.ts

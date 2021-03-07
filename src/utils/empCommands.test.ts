@@ -1,9 +1,9 @@
-import { BigNumber, ContractReceipt, ethers } from 'ethers'
+import { ContractReceipt, ethers } from 'ethers'
 
 import { buildFakeEMP } from '../fakers'
 import { EMPData, EthereumAddress } from '../types'
 
-import { create, deposit, withdraw, redeem, requestWithdrawal } from './empCommands'
+import { create, deposit, redeem, requestWithdrawal } from './empCommands'
 import { getUMAInterfaces } from './umaInterfaces'
 import { deployEMP } from './deployEMP'
 import { Ganache } from './ganache'
@@ -90,9 +90,6 @@ describe('empCommands', () => {
     })
 
     test('deposit', async () => {
-        const numberOfCollateral = 1000
-        const numberOfTokens = 100
-
         const newCollateralToDeposit = 100
         const depositResult = await deposit(empInstance, toWeiSafe(newCollateralToDeposit.toString(), collateralDecimals))
         expect(depositResult).toBeDefined()
