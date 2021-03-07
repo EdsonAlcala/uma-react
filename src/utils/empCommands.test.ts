@@ -89,7 +89,7 @@ describe('empCommands', () => {
         expect(result).toBeDefined()
     })
 
-    test('deposit', async () => {
+    test.skip('deposit', async () => {
         const newCollateralToDeposit = 100
         const depositResult = await deposit(empInstance, toWeiSafe(newCollateralToDeposit.toString(), collateralDecimals))
         expect(depositResult).toBeDefined()
