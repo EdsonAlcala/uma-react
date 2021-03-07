@@ -60,9 +60,7 @@ export const useUMARegistry = () => {
     const context = useContext(UMAContext)
 
     if (context === null) {
-        throw new Error(
-            'useUMARegistry() can only be used inside of <UMARegistryProvider />, please declare it at a higher level',
-        )
+        throw new Error('useUMARegistry() can only be used inside of <UMARegistryProvider />, please declare it at a higher level')
     }
     return context
 }

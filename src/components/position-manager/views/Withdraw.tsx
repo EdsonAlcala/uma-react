@@ -1,21 +1,19 @@
-import { ethers } from 'ethers';
-import React, { useState } from 'react';
-import { useEMPProvider, usePosition, usePriceFeed, useTotals, useWeb3Provider } from '../../../hooks';
-import { fromWei, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, toWeiSafe } from '../../../utils';
-import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, YES } from '../../../constants';
+import { ethers } from 'ethers'
+import React, { useState } from 'react'
+import { useEMPProvider, usePosition, usePriceFeed, useTotals, useWeb3Provider } from '../../../hooks'
+import { fromWei, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, toWeiSafe } from '../../../utils'
+import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, YES } from '../../../constants'
 
-import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common';
-import { Box, Button, Grid, LinearProgress, TextField, Tooltip, Typography } from '@material-ui/core';
+import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
+import { Box, Button, Grid, LinearProgress, TextField, Tooltip, Typography } from '@material-ui/core'
 
-export interface WithdrawProps {
-
-}
+export interface WithdrawProps {}
 
 export const Withdraw: React.FC<WithdrawProps> = () => {
     // internal state
-    const [collateral, setCollateral] = useState<string>("0");
-    const [hash, setHash] = useState<string | undefined>(undefined);
-    const [error, setError] = useState<Error | undefined>(undefined);
+    const [collateral, setCollateral] = useState<string>('0')
+    const [hash, setHash] = useState<string | undefined>(undefined)
+    const [error, setError] = useState<Error | undefined>(undefined)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     // read data
@@ -27,159 +25,155 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
 
     if (collateralState && syntheticState && empState && positionState && totalsState && latestPrice) {
         // position
-        const { syntheticTokens: positionTokens, collateral: positionCollateral, withdrawalAmount, withdrawalPassTime, pendingWithdraw } = positionState
+        const {
+            syntheticTokens: positionTokens,
+            collateral: positionCollateral,
+            withdrawalAmount,
+            withdrawalPassTime,
+            pendingWithdraw,
+        } = positionState
         const positionTokensAsNumber = Number(positionTokens)
         const positionCollateralAsNumber = Number(positionCollateral)
-        const withdrawAmountAsNumber = Number(withdrawalAmount);
+        const withdrawAmountAsNumber = Number(withdrawalAmount)
         const withdrawalPassTimeAsNumber = Number(withdrawalPassTime)
 
         // tokens
         const { decimals: tokenDecimals, symbol: tokenSymbol } = syntheticState
-        const { instance: collateralInstance, decimals: collateralDecimals, symbol: collateralSymbol, balance: collateralBalance, allowance: collateralAllowance } = collateralState
+        const {
+            instance: collateralInstance,
+            decimals: collateralDecimals,
+            symbol: collateralSymbol,
+            balance: collateralBalance,
+            allowance: collateralAllowance,
+        } = collateralState
 
         const collateralBalanceAsNumber = Number(collateralBalance)
         const collateralAllowanceAsNumber = Number(collateralAllowance)
 
-        // expiring multi party 
+        // expiring multi party
         const { minSponsorTokens, collateralRequirement, priceIdentifier, isExpired, currentTime, withdrawalLiveness } = empState
         const minSponsorTokensFromWei = parseFloat(
-            fromWei(minSponsorTokens, collateralDecimals) // TODO: This should be using the decimals of the token...
-        );
-        const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier);
+            fromWei(minSponsorTokens, collateralDecimals), // TODO: This should be using the decimals of the token...
+        )
+        const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier)
 
         // totals
         const { gcr } = totalsState
         const gcrAsNumber = Number(gcr)
 
         // computed general
-        const collateralRequirementFromWei = parseFloat(fromWei(collateralRequirement));
+        const collateralRequirementFromWei = parseFloat(fromWei(collateralRequirement))
 
-        // input data 
-        const collateralToWithdraw = Number(collateral) || 0;
+        // input data
+        const collateralToWithdraw = Number(collateral) || 0
 
         // price related
-        const prettyLatestPrice = Number(latestPrice).toFixed(4);
+        const prettyLatestPrice = Number(latestPrice).toFixed(4)
 
-        const resultantCollateral = positionCollateralAsNumber - collateralToWithdraw;
-        const resultantCR = positionTokensAsNumber > 0 ? resultantCollateral / positionTokensAsNumber : 0;
-        const isResultantCRBelowGCR = resultantCR < gcrAsNumber;
-        const pricedResultantCR = latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : "0";
-        const pricedGCR = latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : null;
+        const resultantCollateral = positionCollateralAsNumber - collateralToWithdraw
+        const resultantCR = positionTokensAsNumber > 0 ? resultantCollateral / positionTokensAsNumber : 0
+        const isResultantCRBelowGCR = resultantCR < gcrAsNumber
+        const pricedResultantCR = latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
+        const pricedGCR = latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : null
         const resultantLiquidationPrice = getLiquidationPrice(
             resultantCollateral,
             positionTokensAsNumber,
             collateralRequirementFromWei,
-            isPricefeedInvertedFromTokenSymbol(tokenSymbol)
-        ).toFixed(4);
+            isPricefeedInvertedFromTokenSymbol(tokenSymbol),
+        ).toFixed(4)
         const isLiquidationPriceDangerouslyFarBelowCurrentPrice =
-            parseFloat(resultantLiquidationPrice) <
-            (1 - LIQUIDATION_PRICE_WARNING_THRESHOLD) * latestPrice;
+            parseFloat(resultantLiquidationPrice) < (1 - LIQUIDATION_PRICE_WARNING_THRESHOLD) * latestPrice
 
         // Fast withdrawal amount: can withdraw instantly as long as CR > GCR
-        const fastWithdrawableCollateral = positionCollateralAsNumber > gcrAsNumber * positionTokensAsNumber
-            ? (positionCollateralAsNumber - gcrAsNumber * positionTokensAsNumber).toFixed(4) : "0";
+        const fastWithdrawableCollateral =
+            positionCollateralAsNumber > gcrAsNumber * positionTokensAsNumber
+                ? (positionCollateralAsNumber - gcrAsNumber * positionTokensAsNumber).toFixed(4)
+                : '0'
 
         // Pending withdrawal request information:
-        const withdrawLivenessString = Math.floor(
-            Number(withdrawalLiveness) / (60 * 60)
-        );
-        const hasPendingWithdraw = pendingWithdraw === YES;
-        const pendingWithdrawTimeRemaining = withdrawalPassTimeAsNumber - Number(currentTime);
+        const withdrawLivenessString = Math.floor(Number(withdrawalLiveness) / (60 * 60))
+        const hasPendingWithdraw = pendingWithdraw === YES
+        const pendingWithdrawTimeRemaining = withdrawalPassTimeAsNumber - Number(currentTime)
         const progressBarPercent =
-            pendingWithdrawTimeRemaining > 0
-                ? ((Number(withdrawalLiveness) - pendingWithdrawTimeRemaining) /
-                    Number(withdrawalLiveness)) * 100
-                : 100;
-        const canExecutePendingWithdraw = hasPendingWithdraw && pendingWithdrawTimeRemaining <= 0;
+            pendingWithdrawTimeRemaining > 0 ? ((Number(withdrawalLiveness) - pendingWithdrawTimeRemaining) / Number(withdrawalLiveness)) * 100 : 100
+        const canExecutePendingWithdraw = hasPendingWithdraw && pendingWithdrawTimeRemaining <= 0
         const pendingWithdrawTimeString =
             pendingWithdrawTimeRemaining > 0
                 ? Math.max(0, Math.floor(pendingWithdrawTimeRemaining / 3600)) +
-                ":" +
-                (
-                    "00" +
-                    Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))
-                ).slice(-2) +
-                ":" +
-                (
-                    "00" + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)
-                ).slice(-2)
-                : "None";
+                  ':' +
+                  ('00' + Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))).slice(-2) +
+                  ':' +
+                  ('00' + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)).slice(-2)
+                : 'None'
 
         // Error conditions for calling withdraw:
-        const resultantCRBelowRequirement =
-            parseFloat(pricedResultantCR) >= 0 &&
-            parseFloat(pricedResultantCR) < collateralRequirementFromWei;
-        const withdrawAboveBalance = collateralToWithdraw > positionCollateralAsNumber;
+        const resultantCRBelowRequirement = parseFloat(pricedResultantCR) >= 0 && parseFloat(pricedResultantCR) < collateralRequirementFromWei
+        const withdrawAboveBalance = collateralToWithdraw > positionCollateralAsNumber
 
         // internal functions
         const cancelWithdraw = async () => {
             setIsSubmitting(true)
             if (hasPendingWithdraw) {
-                setHash(null);
-                setError(null);
+                setHash(null)
+                setError(null)
                 try {
-                    const tx = await empInstance.cancelWithdrawal();
-                    setHash(tx.hash as string);
-                    await tx.wait();
+                    const tx = await empInstance.cancelWithdrawal()
+                    setHash(tx.hash as string)
+                    await tx.wait()
                 } catch (error) {
-                    console.error(error);
-                    setError(error);
+                    console.error(error)
+                    setError(error)
                 }
             } else {
-                setError(new Error("No pending withdraw to cancel."));
+                setError(new Error('No pending withdraw to cancel.'))
             }
             setIsSubmitting(false)
-        };
-
+        }
 
         const withdrawCollateral = async () => {
             setIsSubmitting(true)
             if (collateralToWithdraw > 0) {
-                setHash(null);
-                setError(null);
+                setHash(null)
+                setError(null)
                 try {
-                    const collateralToWithdrawWei = toWeiSafe(collateral, collateralDecimals);
+                    const collateralToWithdrawWei = toWeiSafe(collateral, collateralDecimals)
                     if (isResultantCRBelowGCR) {
-                        const tx = await empInstance.requestWithdrawal([collateralToWithdrawWei]);
-                        setHash(tx.hash as string);
-                        await tx.wait();
+                        const tx = await empInstance.requestWithdrawal([collateralToWithdrawWei])
+                        setHash(tx.hash as string)
+                        await tx.wait()
                     } else {
-                        const tx = await empInstance.withdraw([collateralToWithdrawWei]);
-                        setHash(tx.hash as string);
-                        await tx.wait();
+                        const tx = await empInstance.withdraw([collateralToWithdrawWei])
+                        setHash(tx.hash as string)
+                        await tx.wait()
                     }
                 } catch (error) {
-                    console.error(error);
-                    setError(error);
+                    console.error(error)
+                    setError(error)
                 }
             } else {
-                setError(new Error("Collateral amount must be positive."));
+                setError(new Error('Collateral amount must be positive.'))
             }
             setIsSubmitting(false)
-        };
+        }
 
         const executeWithdraw = async () => {
             setIsSubmitting(true)
             if (canExecutePendingWithdraw) {
-                setHash(null);
-                setError(null);
+                setHash(null)
+                setError(null)
                 try {
-                    const tx = await empInstance.withdrawPassedRequest();
-                    setHash(tx.hash as string);
-                    await tx.wait();
+                    const tx = await empInstance.withdrawPassedRequest()
+                    setHash(tx.hash as string)
+                    await tx.wait()
                 } catch (error) {
-                    console.error(error);
-                    setError(error);
+                    console.error(error)
+                    setError(error)
                 }
             } else {
-                setError(
-                    new Error(
-                        "Cannot execute pending withdraw until liveness period has passed."
-                    )
-                );
+                setError(new Error('Cannot execute pending withdraw until liveness period has passed.'))
             }
             setIsSubmitting(false)
-        };
+        }
 
         if (hasPendingWithdraw) {
             // If EMP is expired, user can only cancel pending withdrawal requests.
@@ -196,23 +190,17 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
 
                                 <Grid item xs={8}>
                                     <Typography>
-                                        <strong>Requested withdrawal amount: </strong>{" "}
-                                        {`${withdrawAmountAsNumber} ${collateralSymbol}`}
+                                        <strong>Requested withdrawal amount: </strong> {`${withdrawAmountAsNumber} ${collateralSymbol}`}
                                     </Typography>
                                 </Grid>
 
                                 <Grid item xs={8}>
-                                    <Typography>
-                                        You may cancel any pending withdrawal requests that you made
-                                        prior to the EMP expiration.
-                                    </Typography>
+                                    <Typography>You may cancel any pending withdrawal requests that you made prior to the EMP expiration.</Typography>
                                 </Grid>
 
                                 <Grid item xs={8}>
                                     <Typography>
-                                        Post expiry, the only way to
-                                        remove collateral from this contract is to Settle or Redeem
-                                        synthetic tokens.
+                                        Post expiry, the only way to remove collateral from this contract is to Settle or Redeem synthetic tokens.
                                     </Typography>
                                 </Grid>
 
@@ -227,13 +215,12 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                );
+                )
             } else {
                 return (
                     <Grid container>
                         <Grid item xs={8}>
                             <Grid container spacing={3}>
-
                                 <Grid item xs={8}>
                                     <Typography>
                                         <i>You have a pending withdraw on your position!</i>
@@ -242,9 +229,8 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
 
                                 <Grid item xs={8}>
                                     <Typography>
-                                        Once the liveness period has passed you can execute your
-                                        withdrawal request. You can cancel the withdraw request at any
-                                        time before you execute it.
+                                        Once the liveness period has passed you can execute your withdrawal request. You can cancel the withdraw
+                                        request at any time before you execute it.
                                     </Typography>
                                 </Grid>
 
@@ -256,21 +242,14 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
                                                 {pendingWithdrawTimeString}
                                             </Box>
                                             <Box width="100%" mr={1}>
-                                                <LinearProgress
-                                                    variant="determinate"
-                                                    value={progressBarPercent}
-                                                />{" "}
+                                                <LinearProgress variant="determinate" value={progressBarPercent} />{' '}
                                             </Box>
                                             <Box>
-                                                <Typography
-                                                    variant="body2"
-                                                    color="textSecondary"
-                                                >{`${progressBarPercent.toFixed(4)}%`}</Typography>
+                                                <Typography variant="body2" color="textSecondary">{`${progressBarPercent.toFixed(4)}%`}</Typography>
                                             </Box>
                                         </Box>
                                         <br></br>
-                                        <strong>Requested withdrawal amount: </strong>{" "}
-                                        {`${withdrawalAmount} ${collateralSymbol}`}
+                                        <strong>Requested withdrawal amount: </strong> {`${withdrawalAmount} ${collateralSymbol}`}
                                     </Typography>
                                 </Grid>
 
@@ -279,14 +258,16 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
                                         placement="bottom"
                                         title={
                                             !canExecutePendingWithdraw &&
-                                            "Once the withdrawal liveness period passes you will be able to click this button"
-                                        }>
+                                            'Once the withdrawal liveness period passes you will be able to click this button'
+                                        }
+                                    >
                                         <span>
                                             <Button
                                                 variant="contained"
                                                 onClick={executeWithdraw}
                                                 disabled={!canExecutePendingWithdraw}
-                                                style={{ marginRight: `12px` }}>
+                                                style={{ marginRight: `12px` }}
+                                            >
                                                 {`Withdraw ${withdrawalAmount} ${collateralSymbol} from your position`}
                                             </Button>
                                         </span>
@@ -306,123 +287,106 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
             return (
                 <Box textAlign="center">
                     <Typography>
-                        <i>
-                            You cannot withdraw from an expired EMP. You may remove
-                            collateral by settling or redeeming synthetic tokens.
-                        </i>
+                        <i>You cannot withdraw from an expired EMP. You may remove collateral by settling or redeeming synthetic tokens.</i>
                     </Typography>
                 </Box>
-            );
+            )
         }
 
-        return (<React.Fragment>
-            <Grid container>
-                <Grid item xs={6}>
-                    <Grid container spacing={3}>
-                        <Grid item md={12} sm={12} xs={12}>
-                            <FormTitle>
-                                {`Withdraw (${collateralSymbol})`}
-                            </FormTitle>
-                        </Grid>
+        return (
+            <React.Fragment>
+                <Grid container>
+                    <Grid item xs={6}>
+                        <Grid container spacing={3}>
+                            <Grid item md={12} sm={12} xs={12}>
+                                <FormTitle>{`Withdraw (${collateralSymbol})`}</FormTitle>
+                            </Grid>
 
-                        <Grid item md={10} sm={10} xs={10}>
-                            <TextField
-                                fullWidth
-                                type="number"
-                                size="small"
-                                variant="outlined"
-                                inputProps={{ min: "0", max: positionCollateral }}
-                                label={`Collateral (${collateralSymbol})`}
-                                error={withdrawAboveBalance}
-                                helperText={
-                                    withdrawAboveBalance && `Your locked ${collateralSymbol} is too low`
-                                }
-                                value={collateral}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    setCollateral(e.target.value)
-                                }
-                            />
-                        </Grid>
-
-                        <Grid item md={10} sm={10} xs={10}>
-                            <Box py={0}>
-                                <FormButton
+                            <Grid item md={10} sm={10} xs={10}>
+                                <TextField
                                     fullWidth
-                                    variant="contained"
-                                    onClick={withdrawCollateral}
-                                    disabled={
-                                        resultantCRBelowRequirement ||
-                                        withdrawAboveBalance ||
-                                        collateralToWithdraw <= 0
-                                    }
-                                    isSubmitting={isSubmitting}
-                                    submittingText={isResultantCRBelowGCR ? "Requesting withdrawal..." : "Withdrawing instantly..."}
-                                    text={`${isResultantCRBelowGCR
-                                        ? "Request Withdrawal of"
-                                        : "Instantly Withdraw"
-                                        } ${collateralToWithdraw} ${collateralSymbol}`}
+                                    type="number"
+                                    size="small"
+                                    variant="outlined"
+                                    inputProps={{ min: '0', max: positionCollateral }}
+                                    label={`Collateral (${collateralSymbol})`}
+                                    error={withdrawAboveBalance}
+                                    helperText={withdrawAboveBalance && `Your locked ${collateralSymbol} is too low`}
+                                    value={collateral}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCollateral(e.target.value)}
                                 />
-                            </Box>
-                        </Grid>
+                            </Grid>
 
-                        <Grid item md={10} sm={10} xs={10} style={{ paddingTop: "0" }}>
-                            <TransactionResultArea hash={hash} error={error} />
+                            <Grid item md={10} sm={10} xs={10}>
+                                <Box py={0}>
+                                    <FormButton
+                                        fullWidth
+                                        variant="contained"
+                                        onClick={withdrawCollateral}
+                                        disabled={resultantCRBelowRequirement || withdrawAboveBalance || collateralToWithdraw <= 0}
+                                        isSubmitting={isSubmitting}
+                                        submittingText={isResultantCRBelowGCR ? 'Requesting withdrawal...' : 'Withdrawing instantly...'}
+                                        text={`${
+                                            isResultantCRBelowGCR ? 'Request Withdrawal of' : 'Instantly Withdraw'
+                                        } ${collateralToWithdraw} ${collateralSymbol}`}
+                                    />
+                                </Box>
+                            </Grid>
+
+                            <Grid item md={10} sm={10} xs={10} style={{ paddingTop: '0' }}>
+                                <TransactionResultArea hash={hash} error={error} />
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
 
-                {/* Right panel */}
-                <Grid item xs={6}>
-                    <Box height="100%" flexDirection="column" display="flex" justifyContent="center">
-                        <Typography style={{ padding: "0 0 1em 0" }}>
-                            {`Resulting liquidation price: `}
-                            <Tooltip
-                                placement="right"
-                                title={
-                                    isLiquidationPriceDangerouslyFarBelowCurrentPrice &&
-                                    parseFloat(resultantLiquidationPrice) > 0 &&
-                                    `This is >${LIQUIDATION_PRICE_WARNING_THRESHOLD * 100
-                                    }% below the current price: ${prettyLatestPrice}`
-                                }>
-                                <span
-                                    style={{
-                                        color:
-                                            isLiquidationPriceDangerouslyFarBelowCurrentPrice &&
-                                                parseFloat(resultantLiquidationPrice) > 0
-                                                ? "red"
-                                                : "unset",
-                                    }}>
-                                    {resultantLiquidationPrice} ({priceIdentifierUtf8})
-                                </span>
-                            </Tooltip>
-                        </Typography>
+                    {/* Right panel */}
+                    <Grid item xs={6}>
+                        <Box height="100%" flexDirection="column" display="flex" justifyContent="center">
+                            <Typography style={{ padding: '0 0 1em 0' }}>
+                                {`Resulting liquidation price: `}
+                                <Tooltip
+                                    placement="right"
+                                    title={
+                                        isLiquidationPriceDangerouslyFarBelowCurrentPrice &&
+                                        parseFloat(resultantLiquidationPrice) > 0 &&
+                                        `This is >${LIQUIDATION_PRICE_WARNING_THRESHOLD * 100}% below the current price: ${prettyLatestPrice}`
+                                    }
+                                >
+                                    <span
+                                        style={{
+                                            color:
+                                                isLiquidationPriceDangerouslyFarBelowCurrentPrice && parseFloat(resultantLiquidationPrice) > 0
+                                                    ? 'red'
+                                                    : 'unset',
+                                        }}
+                                    >
+                                        {resultantLiquidationPrice} ({priceIdentifierUtf8})
+                                    </span>
+                                </Tooltip>
+                            </Typography>
 
-                        <Typography style={{ padding: "0 0 1em 0" }}>
-                            {`Resulting CR: `}
-                            <Tooltip
-                                placement="right"
-                                title={
-                                    resultantCRBelowRequirement &&
-                                    `This must be above the requirement: ${collateralRequirementFromWei}`
-                                }>
-                                <span
-                                    style={{
-                                        color: resultantCRBelowRequirement ? "red" : "unset",
-                                    }}>
-                                    {pricedResultantCR}
-                                </span>
-                            </Tooltip>
-                        </Typography>
-                        <Typography style={{ padding: "0 0 1em 0" }}>
-                            {`GCR: ${pricedGCR}`}
-                        </Typography>
-                    </Box>
+                            <Typography style={{ padding: '0 0 1em 0' }}>
+                                {`Resulting CR: `}
+                                <Tooltip
+                                    placement="right"
+                                    title={resultantCRBelowRequirement && `This must be above the requirement: ${collateralRequirementFromWei}`}
+                                >
+                                    <span
+                                        style={{
+                                            color: resultantCRBelowRequirement ? 'red' : 'unset',
+                                        }}
+                                    >
+                                        {pricedResultantCR}
+                                    </span>
+                                </Tooltip>
+                            </Typography>
+                            <Typography style={{ padding: '0 0 1em 0' }}>{`GCR: ${pricedGCR}`}</Typography>
+                        </Box>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </React.Fragment>)
+            </React.Fragment>
+        )
     }
 
-    return (
-        <Loader />
-    )
+    return <Loader />
 }

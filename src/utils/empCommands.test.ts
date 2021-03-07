@@ -3,7 +3,6 @@ import { BigNumber, ContractReceipt, ethers } from 'ethers'
 import { buildFakeEMP } from '../fakers'
 import { EMPData, EthereumAddress } from '../types'
 
-
 import { create, deposit, withdraw, redeem, requestWithdrawal } from './empCommands'
 import { getUMAInterfaces } from './umaInterfaces'
 import { deployEMP } from './deployEMP'
@@ -11,7 +10,7 @@ import { Ganache } from './ganache'
 import { toWeiSafe } from './conversions'
 import { getAllEMPData } from '../hooks'
 
-describe("empCommands", () => {
+describe('empCommands', () => {
     let empAddress: EthereumAddress
     let signer: ethers.Signer
     let network: ethers.providers.Network
@@ -42,19 +41,15 @@ describe("empCommands", () => {
 
         empAddress = expiringMultiPartyAddress
         const allInterfaces = getUMAInterfaces()
-        empInstance = new ethers.Contract(
-            expiringMultiPartyAddress,
-            allInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface,
-            signer,
-        )
+        empInstance = new ethers.Contract(expiringMultiPartyAddress, allInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface, signer)
         empData = await getAllEMPData(empInstance)
         collateralInstance = new ethers.Contract(empData.collateralCurrency, allInterfaces.get('ERC20'), signer)
         syntheticInstance = new ethers.Contract(empData.tokenCurrency, allInterfaces.get('ERC20'), signer)
         collateralDecimals = await getTokenDecimals(collateralInstance)
         tokenDecimals = await getTokenDecimals(syntheticInstance)
 
-        console.log("collateralDecimals", collateralDecimals)
-        console.log("tokenDecimals", tokenDecimals)
+        console.log('collateralDecimals', collateralDecimals)
+        console.log('tokenDecimals', tokenDecimals)
 
         const maxAllowanceReceiptForCollateral = await setMaxAllowance(collateralInstance, empAddress)
         if (!maxAllowanceReceiptForCollateral) {
@@ -65,7 +60,6 @@ describe("empCommands", () => {
         if (!maxAllowanceReceiptForToken) {
             throw new Error("Couldn't set max allowance for token")
         }
-
     })
 
     afterAll(async () => {
@@ -83,46 +77,59 @@ describe("empCommands", () => {
     }
 
     test('create', async () => {
-        const numberOfCollateral = 1000;
-        const numberOfTokens = 100;
+        const numberOfCollateral = 1000
+        const numberOfTokens = 100
 
-        const result = await create(empInstance, toWeiSafe(numberOfCollateral.toString(), collateralDecimals), toWeiSafe(numberOfTokens.toString(), tokenDecimals))
+        const result = await create(
+            empInstance,
+            toWeiSafe(numberOfCollateral.toString(), collateralDecimals),
+            toWeiSafe(numberOfTokens.toString(), tokenDecimals),
+        )
 
         expect(result).toBeDefined()
     })
 
     test('deposit', async () => {
-        const numberOfCollateral = 1000;
-        const numberOfTokens = 100;
+        const numberOfCollateral = 1000
+        const numberOfTokens = 100
 
-        const newCollateralToDeposit = 100;
+        const newCollateralToDeposit = 100
         const depositResult = await deposit(empInstance, toWeiSafe(newCollateralToDeposit.toString(), collateralDecimals))
         expect(depositResult).toBeDefined()
     })
 
     test.skip('withdraw', async () => {
-        const numberOfCollateral = 1000;
-        const numberOfTokens = 100;
+        const numberOfCollateral = 1000
+        const numberOfTokens = 100
 
-        const result = await create(empInstance, toWeiSafe(numberOfCollateral.toString(), collateralDecimals), toWeiSafe(numberOfTokens.toString(), tokenDecimals))
+        const result = await create(
+            empInstance,
+            toWeiSafe(numberOfCollateral.toString(), collateralDecimals),
+            toWeiSafe(numberOfTokens.toString(), tokenDecimals),
+        )
 
         expect(result).toBeDefined()
         const position = await empInstance.positions(userAddress)
-        console.log("Position", position)
-        const collateralToWithdraw = 100;
+        console.log('Position', position)
+        const collateralToWithdraw = 100
         const withdrawResult = await requestWithdrawal(empInstance, toWeiSafe(collateralToWithdraw.toString(), collateralDecimals))
         expect(withdrawResult).toBeDefined()
     })
 
-    test.skip('redeem', async () => { // issue with pending withdrawal
-        const numberOfCollateral = 1000;
-        const numberOfTokens = 100;
+    test.skip('redeem', async () => {
+        // issue with pending withdrawal
+        const numberOfCollateral = 1000
+        const numberOfTokens = 100
 
-        const result = await create(empInstance, toWeiSafe(numberOfCollateral.toString(), collateralDecimals), toWeiSafe(numberOfTokens.toString(), tokenDecimals))
+        const result = await create(
+            empInstance,
+            toWeiSafe(numberOfCollateral.toString(), collateralDecimals),
+            toWeiSafe(numberOfTokens.toString(), tokenDecimals),
+        )
 
         expect(result).toBeDefined()
 
-        const tokensToRedeem = 100;
+        const tokensToRedeem = 100
         const redeemResult = await redeem(empInstance, toWeiSafe(tokensToRedeem.toString(), tokenDecimals))
         expect(redeemResult).toBeDefined()
     })

@@ -10,19 +10,11 @@ export const getDai = async (wallet: Wallet) => {
     const daiContract = new ethers.Contract(erc20.dai.address, erc20.abi, wallet)
 
     console.log('DAI ADDRESS', erc20.dai.address)
-    const uniswapFactoryContract = new ethers.Contract(
-        uniswap.factory.address,
-        uniswap.factory.abi as ContractInterface,
-        wallet,
-    )
+    const uniswapFactoryContract = new ethers.Contract(uniswap.factory.address, uniswap.factory.abi as ContractInterface, wallet)
 
     const daiExchangeAddress = await uniswapFactoryContract.getExchange(erc20.dai.address, { gasLimit: 4000000 })
 
-    const daiExchangeContract = new ethers.Contract(
-        daiExchangeAddress,
-        uniswap.exchange.abi as ContractInterface,
-        wallet,
-    )
+    const daiExchangeContract = new ethers.Contract(daiExchangeAddress, uniswap.exchange.abi as ContractInterface, wallet)
 
     // do the actual swapping of 10 ETH to DAI
     const swapTx = await daiExchangeContract.ethToTokenSwapInput(

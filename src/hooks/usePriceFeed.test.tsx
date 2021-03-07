@@ -5,7 +5,6 @@ import { YIELD_DOLLAR_UMA } from '../constants'
 import { usePriceFeed } from './usePriceFeed'
 
 describe('usePriceFeed tests', () => {
-
     const render = () => {
         const result = renderHook(() => usePriceFeed(YIELD_DOLLAR_UMA))
         return result

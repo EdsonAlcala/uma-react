@@ -18,7 +18,7 @@ const App: React.FC = () => {
     const [empAddress, setEMPAddress] = useLocalStorage('empAddress', undefined)
     const { instance: empInstance } = useEMPAt(empAddress)
 
-    console.log("EMP Address", empAddress)
+    console.log('EMP Address', empAddress)
 
     // internal
     const [openModal, setOpenModal] = useState(false)
@@ -47,10 +47,10 @@ const App: React.FC = () => {
             }
 
             deployLocalEMP()
-                .then(() => console.log("Local EMP deployed successfully"))
-                .catch((error) => console.log("Error deploying local EMP", error))
+                .then(() => console.log('Local EMP deployed successfully'))
+                .catch((error) => console.log('Error deploying local EMP', error))
         } else {
-            console.log("Doing nothing, using cached version")
+            console.log('Doing nothing, using cached version')
             setPositionHasBeenCreated(true)
         }
     }, [provider, empAddress])
@@ -68,37 +68,37 @@ const App: React.FC = () => {
                     await receipt.wait()
 
                     const tokenInstance = new ethers.Contract(empData.tokenCurrency, allInterfaces.get('ERC20'), signer)
-                    console.log("Approve correctly")
+                    console.log('Approve correctly')
 
                     // create position
-                    const collateralDecimals = await collateralInstance.decimals();
+                    const collateralDecimals = await collateralInstance.decimals()
                     const tokenDecimals = await tokenInstance.decimals()
 
-                    const collateralWei = toWeiSafe("7", collateralDecimals); // collateral = input by user
-                    const tokensWei = toWeiSafe("100", tokenDecimals); // tokens = input by user
+                    const collateralWei = toWeiSafe('7', collateralDecimals) // collateral = input by user
+                    const tokensWei = toWeiSafe('100', tokenDecimals) // tokens = input by user
 
-                    const tx = await empInstance.create([collateralWei], [tokensWei]);
-                    await tx.wait();
+                    const tx = await empInstance.create([collateralWei], [tokensWei])
+                    await tx.wait()
                     setPositionHasBeenCreated(true)
                 } catch (error) {
-                    console.error(error);
+                    console.error(error)
                 }
             }
             setupGCR()
-                .then(() => console.log("Created initial position and setup GCR"))
-                .catch((error) => console.log("Error creating initial position", error))
+                .then(() => console.log('Created initial position and setup GCR'))
+                .catch((error) => console.log('Error creating initial position', error))
         } else {
-            console.log("Doing nothing, using cached version")
+            console.log('Doing nothing, using cached version')
         }
     }, [empInstance, empAddress, shouldCreatePosition])
 
     if (!empInstance || !positionHasBeenCreated) {
-        return (<Loader />)
+        return <Loader />
     }
 
     const cleanLocalCache = () => {
-        setEMPAddress("")
-        alert("Cleaned")
+        setEMPAddress('')
+        alert('Cleaned')
     }
 
     return (
@@ -118,7 +118,12 @@ const App: React.FC = () => {
                     <hr />
 
                     <h3>Modal Position Manager</h3>
-                    <button style={{ background: "#ff4a4a", color: "white", padding: "1em 3em", border: "none", borderRadius: "4px" }} onClick={handleManageClick}>Open</button>
+                    <button
+                        style={{ background: '#ff4a4a', color: 'white', padding: '1em 3em', border: 'none', borderRadius: '4px' }}
+                        onClick={handleManageClick}
+                    >
+                        Open
+                    </button>
                     <ModalPositionManager open={openModal} handleClose={handleClose} />
                 </EMPProvider>
             </UMARegistryProvider>
@@ -126,19 +131,18 @@ const App: React.FC = () => {
     )
 }
 
-
 const AppWrapped: React.FC = () => {
     const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider | undefined>(undefined)
 
     useEffect(() => {
-        const URL = "http://localhost:8549";
-        const newProvider = new ethers.providers.JsonRpcProvider(URL);
-        setProvider(newProvider);
-        console.log("Provider set");
-    }, []);
+        const URL = 'http://localhost:8549'
+        const newProvider = new ethers.providers.JsonRpcProvider(URL)
+        setProvider(newProvider)
+        console.log('Provider set')
+    }, [])
 
     if (!provider) {
-        return (<Loader />)
+        return <Loader />
     }
 
     return (
@@ -148,7 +152,4 @@ const AppWrapped: React.FC = () => {
     )
 }
 
-ReactDom.render(
-    <AppWrapped />,
-    document.getElementById('root'),
-)
+ReactDom.render(<AppWrapped />, document.getElementById('root'))

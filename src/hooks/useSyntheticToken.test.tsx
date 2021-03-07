@@ -41,11 +41,7 @@ describe('useSyntheticToken tests', () => {
 
         empAddress = expiringMultiPartyAddress
         const allInterfaces = getUMAInterfaces()
-        empInstance = new ethers.Contract(
-            expiringMultiPartyAddress,
-            allInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface,
-            signer,
-        )
+        empInstance = new ethers.Contract(expiringMultiPartyAddress, allInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface, signer)
         empData = (await getAllEMPData(empInstance)) as EMPData
     })
 

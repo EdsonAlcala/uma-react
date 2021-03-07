@@ -1,40 +1,33 @@
-import { Box, makeStyles, Tab, Tabs, withStyles } from '@material-ui/core';
-import React from 'react';
+import { Box, makeStyles, Tab, Tabs, withStyles } from '@material-ui/core'
+import React from 'react'
 
-import { EthereumAddress } from '../../types';
-import { useStyles } from '../common';
-import { Deposit, Mint, Redeem, Withdraw } from './views';
+import { EthereumAddress } from '../../types'
+import { useStyles } from '../common'
+import { Deposit, Mint, Redeem, Withdraw } from './views'
 
 export interface MainProps {
     empAddress: EthereumAddress
 }
 
 export const PositionManager: React.FC<MainProps> = () => {
-    const [tab, setTab] = React.useState(0);
+    const [tab, setTab] = React.useState(0)
 
-    const handleTabChange = (event: any, newValue: number) => { // TODO Improve any
-        setTab(newValue);
-    };
+    const handleTabChange = (event: any, newValue: number) => {
+        // TODO Improve any
+        setTab(newValue)
+    }
 
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
         <React.Fragment>
-            <Tabs
-                orientation="vertical"
-                value={tab}
-                onChange={handleTabChange}
-                className={classes.tabs}
-                aria-label="Vertical tabs example">
+            <Tabs orientation="vertical" value={tab} onChange={handleTabChange} className={classes.tabs} aria-label="Vertical tabs example">
                 <StyledTab label="Mint" {...a11yProps(0)} />
                 <StyledTab label="Deposit" {...a11yProps(1)} />
                 <StyledTab label="Withdraw" {...a11yProps(2)} />
                 <StyledTab label="Redeem" {...a11yProps(3)} />
             </Tabs>
-            <Box width="100%"
-                justifyContent="center"
-                alignItems="center"
-                display="flex">
+            <Box width="100%" justifyContent="center" alignItems="center" display="flex">
                 <TabPanel value={tab} index={0}>
                     <Mint />
                 </TabPanel>
@@ -49,36 +42,37 @@ export const PositionManager: React.FC<MainProps> = () => {
                 </TabPanel>
             </Box>
         </React.Fragment>
-    );
+    )
 }
 
 const StyledTab = withStyles((theme) => ({
     root: {
-        textTransform: "none",
-        color: "#e13938",
+        textTransform: 'none',
+        color: '#e13938',
         fontWeight: theme.typography.fontWeightRegular,
         fontSize: theme.typography.pxToRem(15),
-        "&:focus": {
+        '&:focus': {
             opacity: 1,
-            fontWeight: "500",
+            fontWeight: '500',
         },
-        "&.Mui-selected": {
-            fontWeight: "500",
-            fontSize: "1em"
-        }
+        '&.Mui-selected': {
+            fontWeight: '500',
+            fontSize: '1em',
+        },
     },
-}))((props: any) => <Tab disableRipple {...props} />);
+}))((props: any) => <Tab disableRipple {...props} />)
 
 const a11yProps = (index: any) => {
     return {
         id: `vertical-tab-${index}`,
-        "aria-controls": `vertical-tabpanel-${index}`,
-    };
+        'aria-controls': `vertical-tabpanel-${index}`,
+    }
 }
 
-const TabPanel = (props: any) => { // TODO improve typing
+const TabPanel = (props: any) => {
+    // TODO improve typing
 
-    const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props
 
     return (
         <Box
@@ -92,5 +86,5 @@ const TabPanel = (props: any) => { // TODO improve typing
         >
             {value === index && <Box margin="2em 1em 1em 2em">{children}</Box>}
         </Box>
-    );
+    )
 }

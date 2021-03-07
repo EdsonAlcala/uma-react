@@ -10,12 +10,12 @@ export const SUPPORTED_NETWORK_IDS: number[] = [1, 42]
 
 export const MAINNET_PRICE_IDENTIFIER = 'UMAUSD'
 
-export const UMA = "UMA"
+export const UMA = 'UMA'
 
-export const YIELD_DOLLAR_UMA = "YD-UMA-JUN21"
+export const YIELD_DOLLAR_UMA = 'YD-UMA-JUN21'
 
-export const INFINITY = "Infinity"
+export const INFINITY = 'Infinity'
 
-export const YES = "Yes"
+export const YES = 'Yes'
 
 export const LIQUIDATION_PRICE_WARNING_THRESHOLD = 0.1

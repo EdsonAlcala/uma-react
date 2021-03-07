@@ -21,13 +21,7 @@ export const useGeneralInfo = (): GeneralInfo | undefined => {
 
     useEffect(() => {
         if (empState) {
-            const {
-                expirationTimestamp,
-                priceIdentifier,
-                collateralRequirement,
-                minSponsorTokens,
-                isExpired,
-            } = empState
+            const { expirationTimestamp, priceIdentifier, collateralRequirement, minSponsorTokens, isExpired } = empState
 
             if (expirationTimestamp && priceIdentifier && collateralRequirement && minSponsorTokens) {
                 const expiryDate = new Date(expirationTimestamp.toNumber() * 1000).toLocaleString('en-GB', {

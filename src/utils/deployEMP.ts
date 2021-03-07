@@ -10,26 +10,10 @@ interface EMPDeployResult {
     expiringMultiPartyAddress: EthereumAddress
 }
 
-export const deployEMP = async (
-    values: EMPParameters,
-    network: ethers.providers.Network,
-    signer: ethers.Signer,
-): Promise<EMPDeployResult> => {
-    const {
-        expirationTimestamp,
-        collateralAddress,
-        priceFeedIdentifier,
-        syntheticName,
-        syntheticSymbol,
-        collateralRequirement,
-    } = values
+export const deployEMP = async (values: EMPParameters, network: ethers.providers.Network, signer: ethers.Signer): Promise<EMPDeployResult> => {
+    const { expirationTimestamp, collateralAddress, priceFeedIdentifier, syntheticName, syntheticSymbol, collateralRequirement } = values
 
-    const {
-        disputeBondPercentage,
-        sponsorDisputeRewardPercentage,
-        disputerDisputeRewardPercentage,
-        financialProductLibraryAddress,
-    } = values
+    const { disputeBondPercentage, sponsorDisputeRewardPercentage, disputerDisputeRewardPercentage, financialProductLibraryAddress } = values
 
     const params = {
         expirationTimestamp: BigNumber.from(expirationTimestamp),
@@ -74,11 +58,7 @@ export const deployEMP = async (
 
     console.log('expiringMultipartyCreatorAddress', expiringMultipartyCreatorAddress)
 
-    const expiringMultipartyCreator = new ethers.Contract(
-        expiringMultipartyCreatorAddress,
-        expiringMultipartyCreatorInterface,
-        signer,
-    )
+    const expiringMultipartyCreator = new ethers.Contract(expiringMultipartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
 
     const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params)
     console.log('expiringMultiPartyAddress', expiringMultiPartyAddress)

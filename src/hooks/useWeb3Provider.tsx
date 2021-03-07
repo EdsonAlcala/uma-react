@@ -28,10 +28,7 @@ interface ReactWeb3ProviderProps {
     injectedProvider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider
 }
 
-export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProps>> = ({
-    children,
-    injectedProvider,
-}) => {
+export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProps>> = ({ children, injectedProvider }) => {
     const [provider, setWeb3Provider] = useState<Web3Provider | undefined | ethers.providers.JsonRpcProvider>(undefined)
     const [signer, setSigner] = useState<Signer | undefined>(undefined)
     const [block$, setBlock$] = useState<Observable<Block> | undefined>(undefined)
@@ -94,9 +91,7 @@ export const useWeb3Provider = (): IWeb3Provider => {
     const context = useContext(Web3Context)
 
     if (context === null) {
-        throw new Error(
-            'useWeb3Provider() can only be used inside of <ReactWeb3Provider />, please declare it at a higher level',
-        )
+        throw new Error('useWeb3Provider() can only be used inside of <ReactWeb3Provider />, please declare it at a higher level')
     }
     return context
 }

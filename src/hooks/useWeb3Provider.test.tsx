@@ -26,9 +26,7 @@ describe('useWeb3Provider tests', () => {
     })
 
     const render = () => {
-        const wrapper = ({ children }: any) => (
-            <ReactWeb3Provider injectedProvider={injectedProvider}>{children}</ReactWeb3Provider>
-        )
+        const wrapper = ({ children }: any) => <ReactWeb3Provider injectedProvider={injectedProvider}>{children}</ReactWeb3Provider>
         const result = renderHook(() => useWeb3Provider(), { wrapper })
         return result
     }

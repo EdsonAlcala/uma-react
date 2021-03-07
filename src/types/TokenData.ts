@@ -11,5 +11,3 @@ export interface TokenData {
     totalSupply: BigNumber
     instance: ethers.Contract
 }
-
-

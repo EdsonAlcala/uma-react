@@ -1,23 +1,21 @@
-import { Box, Button, Grid, InputAdornment, TextField, Tooltip, Typography } from '@material-ui/core';
-import { ethers } from 'ethers';
-import React, { useState } from 'react';
-import { YES } from '../../../constants';
+import { Box, Button, Grid, InputAdornment, TextField, Tooltip, Typography } from '@material-ui/core'
+import { ethers } from 'ethers'
+import React, { useState } from 'react'
+import { YES } from '../../../constants'
 
-import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../../../hooks';
-import { fromWei, toWeiSafe } from '../../../utils';
-import { FormButton, FormTitle, Loader, MaxLink, TransactionResultArea } from '../../common';
+import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../../../hooks'
+import { fromWei, toWeiSafe } from '../../../utils'
+import { FormButton, FormTitle, Loader, MaxLink, TransactionResultArea } from '../../common'
 
-export interface RedeemProps {
-
-}
+export interface RedeemProps {}
 
 export const Redeem: React.FC<RedeemProps> = () => {
     // internal state
-    const [collateral, setCollateral] = useState<string>("0");
-    const [tokens, setTokens] = useState<string>("0");
-    const [hash, setHash] = useState<string | undefined>(undefined);
-    const [success, setSuccess] = useState<boolean | undefined>(undefined);
-    const [error, setError] = useState<Error | undefined>(undefined);
+    const [collateral, setCollateral] = useState<string>('0')
+    const [tokens, setTokens] = useState<string>('0')
+    const [hash, setHash] = useState<string | undefined>(undefined)
+    const [success, setSuccess] = useState<boolean | undefined>(undefined)
+    const [error, setError] = useState<Error | undefined>(undefined)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     // read data
@@ -31,11 +29,23 @@ export const Redeem: React.FC<RedeemProps> = () => {
         const { syntheticTokens: positionTokens, collateral: positionCollateral, pendingWithdraw } = positionState
         const positionTokensAsNumber = Number(positionTokens)
         const positionCollateralAsNumber = Number(positionCollateral)
-        const hasPendingWithdraw = pendingWithdraw === YES;
+        const hasPendingWithdraw = pendingWithdraw === YES
 
         // tokens
-        const { decimals: tokenDecimals, symbol: tokenSymbol, balance: tokenBalance, balanceBN: tokenBalanceBN, allowance: tokenAllowance } = syntheticState
-        const { decimals: collateralDecimals, symbol: collateralSymbol, balance: collateralBalance, allowance: collateralAllowance, instance: collateralInstance } = collateralState
+        const {
+            decimals: tokenDecimals,
+            symbol: tokenSymbol,
+            balance: tokenBalance,
+            balanceBN: tokenBalanceBN,
+            allowance: tokenAllowance,
+        } = syntheticState
+        const {
+            decimals: collateralDecimals,
+            symbol: collateralSymbol,
+            balance: collateralBalance,
+            allowance: collateralAllowance,
+            instance: collateralInstance,
+        } = collateralState
 
         const collateralBalanceAsNumber = Number(collateralBalance)
         const collateralAllowanceAsNumber = Number(collateralAllowance)
@@ -43,87 +53,81 @@ export const Redeem: React.FC<RedeemProps> = () => {
         const tokenBalanceAsNumber = Number(tokenBalance)
         const tokenAllowanceAsNumber = Number(tokenAllowance)
 
-        // expiring multi party 
+        // expiring multi party
         const { minSponsorTokens, collateralRequirement, priceIdentifier } = empState
         const minSponsorTokensFromWei = parseFloat(
-            fromWei(minSponsorTokens, collateralDecimals) // TODO: This should be using the decimals of the token...
-        );
-        const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier);
+            fromWei(minSponsorTokens, collateralDecimals), // TODO: This should be using the decimals of the token...
+        )
+        const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier)
 
         // input data
-        const tokensToRedeem = (Number(tokens) || 0) > positionTokensAsNumber ? positionTokensAsNumber : Number(tokens) || 0;
+        const tokensToRedeem = (Number(tokens) || 0) > positionTokensAsNumber ? positionTokensAsNumber : Number(tokens) || 0
 
         // computed
-        const maxPartialRedeem = positionCollateralAsNumber > minSponsorTokensFromWei
-            ? positionCollateralAsNumber - minSponsorTokensFromWei
-            : 0;
+        const maxPartialRedeem = positionCollateralAsNumber > minSponsorTokensFromWei ? positionCollateralAsNumber - minSponsorTokensFromWei : 0
 
         // Note: If not redeeming full position, then cannot bring position below the minimum sponsor token threshold.
         // Amount of collateral received is proportional to percentage of outstanding tokens in position retired.
-        const proportionTokensRedeemed =
-            positionTokensAsNumber > 0 ? tokensToRedeem / positionTokensAsNumber : 0;
+        const proportionTokensRedeemed = positionTokensAsNumber > 0 ? tokensToRedeem / positionTokensAsNumber : 0
         const proportionCollateralReceived =
-            proportionTokensRedeemed <= 1
-                ? proportionTokensRedeemed * positionCollateralAsNumber
-                : positionCollateralAsNumber;
+            proportionTokensRedeemed <= 1 ? proportionTokensRedeemed * positionCollateralAsNumber : positionCollateralAsNumber
 
         // computed synthetic
-        const resultantTokens = positionTokensAsNumber >= tokensToRedeem ? positionTokensAsNumber - tokensToRedeem : 0;
+        const resultantTokens = positionTokensAsNumber >= tokensToRedeem ? positionTokensAsNumber - tokensToRedeem : 0
 
         // computed collateral
-        const resultantCollateral = positionCollateralAsNumber - proportionCollateralReceived;
+        const resultantCollateral = positionCollateralAsNumber - proportionCollateralReceived
 
         // Error conditions for calling redeem: (Some of these might be redundant)
-        const balanceBelowTokensToRedeem = tokenBalanceAsNumber < tokensToRedeem;
-        const invalidRedeemAmount =
-            tokensToRedeem < positionTokensAsNumber && tokensToRedeem > maxPartialRedeem;
-        const needAllowance = tokenAllowance !== "Infinity" && tokenAllowanceAsNumber < tokensToRedeem;
+        const balanceBelowTokensToRedeem = tokenBalanceAsNumber < tokensToRedeem
+        const invalidRedeemAmount = tokensToRedeem < positionTokensAsNumber && tokensToRedeem > maxPartialRedeem
+        const needAllowance = tokenAllowance !== 'Infinity' && tokenAllowanceAsNumber < tokensToRedeem
 
         // internal functions
         const redeemTokens = async () => {
             setIsSubmitting(true)
             if (tokensToRedeem > 0) {
-                setHash(null);
-                setSuccess(null);
-                setError(null);
+                setHash(null)
+                setSuccess(null)
+                setError(null)
                 try {
-                    const tokensToRedeemWei = toWeiSafe(tokens, tokenDecimals); // Note: the synthetic token uses the decimals of the collateral
-                    const tx = await empInstance.redeem([tokensToRedeemWei]);
-                    setHash(tx.hash as string);
-                    await tx.wait();
-                    setSuccess(true);
+                    const tokensToRedeemWei = toWeiSafe(tokens, tokenDecimals) // Note: the synthetic token uses the decimals of the collateral
+                    const tx = await empInstance.redeem([tokensToRedeemWei])
+                    setHash(tx.hash as string)
+                    await tx.wait()
+                    setSuccess(true)
                 } catch (error) {
-                    console.error(error);
-                    setError(error);
+                    console.error(error)
+                    setError(error)
                 }
             } else {
-                setError(new Error("Token amounts must be positive"));
+                setError(new Error('Token amounts must be positive'))
             }
             setIsSubmitting(false)
-        };
+        }
 
         const setTokensToRedeemToMax = () => {
             // `tokenBalance` and `positionTokens` might be incorrectly rounded,
             // so we compare their raw BN's instead.
             if (tokenBalanceBN.gte(toWeiSafe(positionTokens, tokenDecimals))) {
-                setTokens(positionTokens);
+                setTokens(positionTokens)
             } else {
-                setTokens(tokenBalance.toString());
+                setTokens(tokenBalance.toString())
             }
-        };
+        }
 
         const setMaxAllowance = async () => {
             setIsSubmitting(true)
-            setHash(undefined);
-            setError(undefined);
+            setHash(undefined)
+            setError(undefined)
             try {
                 const receipt = await collateralInstance.approve(empInstance.address, ethers.constants.MaxUint256)
-                setHash(receipt.hash as string);
+                setHash(receipt.hash as string)
                 await receipt.wait()
-                console.log("Set max allowance successfully")
+                console.log('Set max allowance successfully')
             } catch (error) {
-                console.error(error);
-                setError(error);
+                console.error(error)
+                setError(error)
             }
             setIsSubmitting(false)
         }
@@ -136,20 +140,17 @@ export const Redeem: React.FC<RedeemProps> = () => {
                         <i>You need to borrow tokens before redeeming.</i>
                     </Typography>
                 </Box>
-            );
+            )
         }
 
         if (hasPendingWithdraw) {
             return (
                 <Box textAlign="center">
                     <Typography>
-                        <i>
-                            You need to cancel or execute your pending withdrawal request
-                            before depositing additional collateral.
-                        </i>
+                        <i>You need to cancel or execute your pending withdrawal request before depositing additional collateral.</i>
                     </Typography>
                 </Box>
-            );
+            )
         }
 
         return (
@@ -158,9 +159,7 @@ export const Redeem: React.FC<RedeemProps> = () => {
                     <Grid item xs={6}>
                         <Grid container spacing={3}>
                             <Grid item md={12} sm={12} xs={12}>
-                                <FormTitle>
-                                    {`Redeem (${tokenSymbol})`}
-                                </FormTitle>
+                                <FormTitle>{`Redeem (${tokenSymbol})`}</FormTitle>
                                 {/* TODO: Think what to do with this text */}
                                 {/* <Box pt={2} pb={4}>
                                     <Typography>
@@ -185,16 +184,14 @@ export const Redeem: React.FC<RedeemProps> = () => {
                                     type="number"
                                     size="small"
                                     label={`Redeem (${tokenSymbol})`}
-                                    inputProps={{ min: "0", max: tokenBalance }}
+                                    inputProps={{ min: '0', max: tokenBalance }}
                                     error={balanceBelowTokensToRedeem || invalidRedeemAmount}
                                     helperText={
                                         invalidRedeemAmount &&
                                         `If you are not redeeming all tokens outstanding, then you must keep more than ${minSponsorTokensFromWei} ${tokenSymbol} in your position`
                                     }
                                     value={tokens}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        setTokens(e.target.value)
-                                    }
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTokens(e.target.value)}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -215,26 +212,24 @@ export const Redeem: React.FC<RedeemProps> = () => {
                                             onClick={setMaxAllowance}
                                             isSubmitting={isSubmitting}
                                             submittingText="Approving..."
-                                            text="Max Approve">
+                                            text="Max Approve"
+                                        >
                                             Max Approve
                                         </FormButton>
                                     )}
                                     {!needAllowance && (
                                         <FormButton
-                                            disabled={
-                                                balanceBelowTokensToRedeem ||
-                                                invalidRedeemAmount ||
-                                                tokensToRedeem <= 0
-                                            }
+                                            disabled={balanceBelowTokensToRedeem || invalidRedeemAmount || tokensToRedeem <= 0}
                                             onClick={redeemTokens}
                                             isSubmitting={isSubmitting}
                                             submittingText="Redeeming tokens..."
-                                            text={`Redeem ${tokensToRedeem} ${tokenSymbol}`} />
+                                            text={`Redeem ${tokensToRedeem} ${tokenSymbol}`}
+                                        />
                                     )}
                                 </Box>
                             </Grid>
 
-                            <Grid item md={10} sm={10} xs={10} style={{ paddingTop: "0" }}>
+                            <Grid item md={10} sm={10} xs={10} style={{ paddingTop: '0' }}>
                                 <TransactionResultArea hash={hash} error={error} />
                             </Grid>
                         </Grid>
@@ -242,23 +237,23 @@ export const Redeem: React.FC<RedeemProps> = () => {
 
                     <Grid item xs={6}>
                         <Box height="100%" flexDirection="column" display="flex" justifyContent="center">
-                            <Typography style={{ padding: "0 0 1em 0" }}>{`${collateralSymbol} you will receive: ${proportionCollateralReceived}`}</Typography>
-                            <Typography style={{ padding: "0 0 1em 0" }}>
-                                <Tooltip
-                                    placement="right"
-                                    title={
-                                        invalidRedeemAmount &&
-                                        `This must remain above ${minSponsorTokensFromWei}`
-                                    }>
+                            <Typography
+                                style={{ padding: '0 0 1em 0' }}
+                            >{`${collateralSymbol} you will receive: ${proportionCollateralReceived}`}</Typography>
+                            <Typography style={{ padding: '0 0 1em 0' }}>
+                                <Tooltip placement="right" title={invalidRedeemAmount && `This must remain above ${minSponsorTokensFromWei}`}>
                                     <span
                                         style={{
-                                            color: invalidRedeemAmount ? "red" : "unset",
-                                        }}>
+                                            color: invalidRedeemAmount ? 'red' : 'unset',
+                                        }}
+                                    >
                                         {`Remaining ${tokenSymbol} in your position after redemption: ${resultantTokens}`}
                                     </span>
                                 </Tooltip>
                             </Typography>
-                            <Typography style={{ padding: "0 0 1em 0" }}>{`Remaining ${collateralSymbol} in your position after redemption: ${resultantCollateral}`}</Typography>
+                            <Typography
+                                style={{ padding: '0 0 1em 0' }}
+                            >{`Remaining ${collateralSymbol} in your position after redemption: ${resultantCollateral}`}</Typography>
                         </Box>
                     </Grid>
                 </Grid>
@@ -266,8 +261,5 @@ export const Redeem: React.FC<RedeemProps> = () => {
         )
     }
 
-
-    return (
-        <Loader />
-    );
+    return <Loader />
 }

@@ -139,9 +139,7 @@ export const useEMPProvider = (): IEMPProvider => {
     const context = useContext(EMPContext)
 
     if (context === null) {
-        throw new Error(
-            'useEMPProvider() can only be used inside of <EMPProvider />, please declare it at a higher level',
-        )
+        throw new Error('useEMPProvider() can only be used inside of <EMPProvider />, please declare it at a higher level')
     }
     return context
 }

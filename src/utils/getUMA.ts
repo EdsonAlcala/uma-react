@@ -8,7 +8,7 @@ import { toChecksumAddress } from 'web3-utils'
  * @param wallet ethers.Wallet object to mint DAI to.
  */
 export const getUMA = async (wallet: Wallet) => {
-    const UMA_ADDRESS = toChecksumAddress("0x04fa0d235c4abf4bcf4787af4cf447de572ef828")
+    const UMA_ADDRESS = toChecksumAddress('0x04fa0d235c4abf4bcf4787af4cf447de572ef828')
     const UMA_DECIMALS = 18
     // console.log('UMA ADDRESS', UMA_ADDRESS)
     const umaContract = new ethers.Contract(UMA_ADDRESS, erc20.abi, wallet)
@@ -34,8 +34,8 @@ export const getUMA = async (wallet: Wallet) => {
     const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
     const value = trade.inputAmount.raw // // needs to be converted to e.g. hex
 
-    const amountOutMinHex = ethers.BigNumber.from(amountOutMin.toString()).toHexString();
-    const valueHex = ethers.BigNumber.from(value.toString()).toHexString();
+    const amountOutMinHex = ethers.BigNumber.from(amountOutMin.toString()).toHexString()
+    const valueHex = ethers.BigNumber.from(value.toString()).toHexString()
 
     // function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
     // external
@@ -44,10 +44,10 @@ export const getUMA = async (wallet: Wallet) => {
     const uniswapContract = new ethers.Contract('0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', RouterArtifact.abi, wallet)
     const txReceipt = await uniswapContract.swapExactETHForTokens(amountOutMinHex, path, toChecksumAddress(to), deadline, {
         value: ethers.utils.parseEther('10'),
-        gasLimit: 4000000
+        gasLimit: 4000000,
     })
 
-    await txReceipt.wait();
+    await txReceipt.wait()
 
     // balances after
     const ethAfter = await wallet.getBalance()

@@ -12,11 +12,7 @@ export const usePosition = (address: EthereumAddress): PositionData | undefined 
     const { collateralState, syntheticState, instance } = useEMPProvider()
     const [positionData, setPositionData] = useState<PositionData | undefined>(undefined)
 
-    const getPositionInfo = async (
-        contractInstance: ethers.Contract,
-        collateralDecimals: number,
-        syntheticDecimals: number,
-    ) => {
+    const getPositionInfo = async (contractInstance: ethers.Contract, collateralDecimals: number, syntheticDecimals: number) => {
         const [collRawFixedPoint, position] = await Promise.all([
             contractInstance.getCollateral(address),
             contractInstance.positions(address),
@@ -55,9 +51,7 @@ export const usePosition = (address: EthereumAddress): PositionData | undefined 
             const { decimals: collateralDecimals } = collateralState
             const { decimals: syntheticDecimals } = syntheticState
 
-            getPositionInfo(instance, collateralDecimals, syntheticDecimals).catch((err) =>
-                console.log('There was an error on getPositionInfo'),
-            )
+            getPositionInfo(instance, collateralDecimals, syntheticDecimals).catch((err) => console.log('There was an error on getPositionInfo'))
         }
     }, [instance, collateralState, syntheticState, address]) // eslint-disable-line
 

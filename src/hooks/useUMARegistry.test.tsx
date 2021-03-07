@@ -46,8 +46,6 @@ describe('useUMARegistry tests', () => {
         await waitForNextUpdate()
 
         expect(result.current.getContractAddress('ExpiringMultiPartyCreator')).toBeDefined()
-        expect(result.current.getContractAddress('ExpiringMultiPartyCreator')).toEqual(
-            '0xddfC7E3B4531158acf4C7a5d2c3cB0eE81d018A5',
-        )
+        expect(result.current.getContractAddress('ExpiringMultiPartyCreator')).toEqual('0xddfC7E3B4531158acf4C7a5d2c3cB0eE81d018A5')
     })
 })

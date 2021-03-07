@@ -16,11 +16,7 @@ export const useERC20At = (tokenAddress: EthereumAddress | undefined) => {
             if (!getContractInterface('ERC20')) {
                 throw new Error('UMARegistryProvider is not defined')
             }
-            const newInstance = new ethers.Contract(
-                tokenAddress,
-                getContractInterface('ERC20') as ethers.utils.Interface,
-                signer,
-            )
+            const newInstance = new ethers.Contract(tokenAddress, getContractInterface('ERC20') as ethers.utils.Interface, signer)
             setInstance(newInstance)
         }
     }, [signer, tokenAddress])

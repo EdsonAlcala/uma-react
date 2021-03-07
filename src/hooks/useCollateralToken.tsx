@@ -8,11 +8,7 @@ import { INFINITY } from '../constants'
 import { useWeb3Provider } from './useWeb3Provider'
 import { useERC20At } from './useERC20At'
 
-export const useCollateralToken = (
-    empAddress: EthereumAddress,
-    address: EthereumAddress,
-    empState?: EMPData,
-): TokenData | undefined => {
+export const useCollateralToken = (empAddress: EthereumAddress, address: EthereumAddress, empState?: EMPData): TokenData | undefined => {
     // external
     const { block$ } = useWeb3Provider()
     const tokenAddress = empState ? empState.collateralCurrency : undefined
@@ -21,23 +17,14 @@ export const useCollateralToken = (
     // state
     const [collateralState, setCollateralState] = useState<TokenData | undefined>(undefined)
 
-    const getBalance = async (
-        contractInstance: ethers.Contract,
-        addressParam: EthereumAddress
-    ) => {
+    const getBalance = async (contractInstance: ethers.Contract, addressParam: EthereumAddress) => {
         const balanceRaw: BigNumber = await contractInstance.balanceOf(addressParam)
         return balanceRaw
     }
 
-    const getAllowance = async (
-        contractInstance: ethers.Contract,
-        addressParam: EthereumAddress,
-        newDecimals: number,
-    ) => {
+    const getAllowance = async (contractInstance: ethers.Contract, addressParam: EthereumAddress, newDecimals: number) => {
         const allowanceRaw: BigNumber = await contractInstance.allowance(addressParam, empAddress)
-        const newAllowance = allowanceRaw.eq(ethers.constants.MaxUint256)
-            ? INFINITY
-            : fromWei(allowanceRaw, newDecimals)
+        const newAllowance = allowanceRaw.eq(ethers.constants.MaxUint256) ? INFINITY : fromWei(allowanceRaw, newDecimals)
 
         return newAllowance
     }
@@ -78,9 +65,7 @@ export const useCollateralToken = (
     // get collateral info on each new block
     useEffect(() => {
         if (block$ && instance) {
-            const sub = block$.subscribe(() =>
-                getCollateralInfo(instance).catch((error) => console.log('Error getCollateralInfo', error)),
-            )
+            const sub = block$.subscribe(() => getCollateralInfo(instance).catch((error) => console.log('Error getCollateralInfo', error)))
             return () => sub.unsubscribe()
         }
     }, [block$, instance]) // eslint-disable-line
