@@ -10,7 +10,7 @@ import { Ganache } from './ganache'
 import { toWeiSafe } from './conversions'
 import { getAllEMPData } from '../hooks'
 
-describe('empCommands', () => {
+describe.skip('empCommands', () => {
     let empAddress: EthereumAddress
     let signer: ethers.Signer
     let network: ethers.providers.Network

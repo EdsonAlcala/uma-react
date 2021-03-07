@@ -67,9 +67,9 @@ describe('useSyntheticToken tests', () => {
         await waitForNextUpdate()
 
         expect(result.current).toBeDefined()
-        expect(result.current!.name).toEqual('yUSD')
+        expect(result.current!.name).toEqual('YD-UMA-JUN21')
         expect(result.current!.decimals).toEqual(18)
-        expect(result.current!.symbol).toEqual('yUSD')
+        expect(result.current!.symbol).toEqual('YD-UMA-JUN21')
     })
 
     afterAll(async () => {
