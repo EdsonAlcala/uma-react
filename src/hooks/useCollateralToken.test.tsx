@@ -69,7 +69,7 @@ describe('useCollateralToken tests', () => {
         expect(result.current).toBeDefined()
         expect(result.current!.name).toEqual('UMA Voting Token v1')
         expect(result.current!.decimals).toEqual(18)
-        expect(result.current!.symbol).toEqual('DAI')
+        expect(result.current!.symbol).toEqual('UMA')
     })
 
     afterAll(async () => {

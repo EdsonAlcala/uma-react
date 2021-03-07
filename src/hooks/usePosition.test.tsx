@@ -13,7 +13,7 @@ import { EMPProvider } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
 import { buildFakeEMP } from '../fakers'
 
-describe('usePosition tests', () => {
+describe.skip('usePosition tests', () => {
     let ganacheInstance: Ganache
     let injectedProvider: ethers.providers.Web3Provider
     let instance: ethers.Contract
