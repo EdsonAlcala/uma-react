@@ -7,14 +7,16 @@ import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, YES } from '../../../con
 import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
 import { Box, Button, Grid, LinearProgress, TextField, Tooltip, Typography } from '@material-ui/core'
 
-export interface WithdrawProps {}
+export interface WithdrawProps { }
 
 export const Withdraw: React.FC<WithdrawProps> = () => {
     // internal state
     const [collateral, setCollateral] = useState<string>('0')
     const [hash, setHash] = useState<string | undefined>(undefined)
     const [error, setError] = useState<Error | undefined>(undefined)
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isCancelling, setIsCancelling] = useState(false)
+    const [isWithdrawing, setIsWithdrawing] = useState(false)
+    const [isExecutingWithdraw, setIsExecutingWithdraw] = useState(false)
 
     // read data
     const { address: userAddress } = useWeb3Provider()
@@ -100,10 +102,10 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
         const pendingWithdrawTimeString =
             pendingWithdrawTimeRemaining > 0
                 ? Math.max(0, Math.floor(pendingWithdrawTimeRemaining / 3600)) +
-                  ':' +
-                  ('00' + Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))).slice(-2) +
-                  ':' +
-                  ('00' + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)).slice(-2)
+                ':' +
+                ('00' + Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))).slice(-2) +
+                ':' +
+                ('00' + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)).slice(-2)
                 : 'None'
 
         // Error conditions for calling withdraw:
@@ -112,7 +114,7 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
 
         // internal functions
         const cancelWithdraw = async () => {
-            setIsSubmitting(true)
+            setIsCancelling(true)
             if (hasPendingWithdraw) {
                 setHash(null)
                 setError(null)
@@ -127,11 +129,11 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
             } else {
                 setError(new Error('No pending withdraw to cancel.'))
             }
-            setIsSubmitting(false)
+            setIsCancelling(false)
         }
 
         const withdrawCollateral = async () => {
-            setIsSubmitting(true)
+            setIsWithdrawing(true)
             if (collateralToWithdraw > 0) {
                 setHash(null)
                 setError(null)
@@ -153,11 +155,11 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
             } else {
                 setError(new Error('Collateral amount must be positive.'))
             }
-            setIsSubmitting(false)
+            setIsWithdrawing(false)
         }
 
         const executeWithdraw = async () => {
-            setIsSubmitting(true)
+            setIsExecutingWithdraw(true)
             if (canExecutePendingWithdraw) {
                 setHash(null)
                 setError(null)
@@ -172,7 +174,7 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
             } else {
                 setError(new Error('Cannot execute pending withdraw until liveness period has passed.'))
             }
-            setIsSubmitting(false)
+            setIsExecutingWithdraw(false)
         }
 
         if (hasPendingWithdraw) {
@@ -182,32 +184,30 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
                     <Grid container>
                         <Grid item xs={8}>
                             <Grid container spacing={3}>
-                                <Grid item xs={8}>
-                                    <Typography>
-                                        <i>You have a pending withdraw on your position</i>
-                                    </Typography>
+                                <Grid item md={12} sm={12} xs={12}>
+                                    <FormTitle>You have a pending withdraw on your position</FormTitle>
                                 </Grid>
 
-                                <Grid item xs={8}>
-                                    <Typography>
-                                        <strong>Requested withdrawal amount: </strong> {`${withdrawAmountAsNumber} ${collateralSymbol}`}
-                                    </Typography>
-                                </Grid>
-
-                                <Grid item xs={8}>
+                                <Grid item md={10} sm={10} xs={10}>
                                     <Typography>You may cancel any pending withdrawal requests that you made prior to the EMP expiration.</Typography>
                                 </Grid>
 
-                                <Grid item xs={8}>
+                                <Grid item md={10} sm={10} xs={10}>
                                     <Typography>
                                         Post expiry, the only way to remove collateral from this contract is to Settle or Redeem synthetic tokens.
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={8}>
+                                <Grid item md={10} sm={10} xs={10}>
+                                    <Typography>
+                                        <strong>Requested withdrawal amount: </strong> {`${withdrawAmountAsNumber} ${collateralSymbol}`}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item md={10} sm={10} xs={10}>
                                     <FormButton
                                         onClick={cancelWithdraw}
-                                        isSubmitting={isSubmitting}
+                                        isSubmitting={isCancelling}
                                         submittingText="Cancelling withdraw request..."
                                         text={`Cancel withdraw request`}
                                     />
@@ -221,20 +221,18 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
                     <Grid container>
                         <Grid item xs={8}>
                             <Grid container spacing={3}>
-                                <Grid item xs={8}>
-                                    <Typography>
-                                        <i>You have a pending withdraw on your position!</i>
-                                    </Typography>
+                                <Grid item md={12} sm={12} xs={12}>
+                                    <FormTitle>You have a pending withdraw on your position</FormTitle>
                                 </Grid>
 
-                                <Grid item xs={8}>
+                                <Grid item md={10} sm={10} xs={10}>
                                     <Typography>
                                         Once the liveness period has passed you can execute your withdrawal request. You can cancel the withdraw
                                         request at any time before you execute it.
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={8}>
+                                <Grid item md={10} sm={10} xs={10}>
                                     <Typography>
                                         <Box display="flex" alignItems="center">
                                             <Box width="100%">
@@ -253,28 +251,35 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={8}>
-                                    <Tooltip
-                                        placement="bottom"
-                                        title={
-                                            !canExecutePendingWithdraw &&
-                                            'Once the withdrawal liveness period passes you will be able to click this button'
-                                        }
-                                    >
-                                        <span>
-                                            <Button
-                                                variant="contained"
-                                                onClick={executeWithdraw}
-                                                disabled={!canExecutePendingWithdraw}
-                                                style={{ marginRight: `12px` }}
-                                            >
-                                                {`Withdraw ${withdrawalAmount} ${collateralSymbol} from your position`}
-                                            </Button>
-                                        </span>
-                                    </Tooltip>
-                                    <Button variant="contained" onClick={cancelWithdraw}>
-                                        {`Cancel withdraw request`}
-                                    </Button>
+                                <Grid item md={10} sm={10} xs={10}>
+                                    <Box display="flex" flexDirection="horizontal" justifyContent="space-between">
+                                        <Box width="45%">
+                                            <Tooltip
+                                                placement="bottom"
+                                                title={
+                                                    !canExecutePendingWithdraw &&
+                                                    'Once the withdrawal liveness period passes you will be able to click this button'
+                                                }>
+                                                <span>
+                                                    <FormButton
+                                                        onClick={executeWithdraw}
+                                                        disabled={!canExecutePendingWithdraw}
+                                                        text={`Withdraw ${withdrawalAmount} ${collateralSymbol}`}
+                                                        isSubmitting={isExecutingWithdraw}
+                                                        submittingText={`Withdrawing ${withdrawalAmount} ${collateralSymbol}...`}
+                                                    />
+                                                </span>
+                                            </Tooltip>
+                                        </Box>
+                                        <Box width="45%">
+                                            <FormButton
+                                                onClick={cancelWithdraw}
+                                                text={`Cancel withdraw request`}
+                                                isSubmitting={isCancelling}
+                                                submittingText="Cancelling withdraw request..."
+                                            />
+                                        </Box>
+                                    </Box>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -324,11 +329,10 @@ export const Withdraw: React.FC<WithdrawProps> = () => {
                                         variant="contained"
                                         onClick={withdrawCollateral}
                                         disabled={resultantCRBelowRequirement || withdrawAboveBalance || collateralToWithdraw <= 0}
-                                        isSubmitting={isSubmitting}
+                                        isSubmitting={isWithdrawing}
                                         submittingText={isResultantCRBelowGCR ? 'Requesting withdrawal...' : 'Withdrawing instantly...'}
-                                        text={`${
-                                            isResultantCRBelowGCR ? 'Request Withdrawal of' : 'Instantly Withdraw'
-                                        } ${collateralToWithdraw} ${collateralSymbol}`}
+                                        text={`${isResultantCRBelowGCR ? 'Request Withdrawal of' : 'Instantly Withdraw'
+                                            } ${collateralToWithdraw} ${collateralSymbol}`}
                                     />
                                 </Box>
                             </Grid>
