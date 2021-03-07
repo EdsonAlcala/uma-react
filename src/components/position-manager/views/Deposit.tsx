@@ -169,9 +169,7 @@ export const Deposit: React.FC<DepositProps> = () => {
                                             isSubmitting={isSubmitting}
                                             submittingText="Depositing collateral..."
                                             text={`Deposit ${collateralToDeposit} ${collateralSymbol} into your position`}
-                                        >
-
-                                        </FormButton>
+                                        />
                                     )}
                                 </Box>
                             </Grid>

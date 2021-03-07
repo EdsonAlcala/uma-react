@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 
 import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed } from '../../../hooks';
 import { fromWei, toWeiSafe, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, } from '../../../utils';
-import { INFINITY } from '../../../constants';
+import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD } from '../../../constants';
 
 import { FormButton, FormTitle, Loader, MinLink, TransactionResultArea } from '../../common'
 
@@ -95,8 +95,7 @@ export const Mint: React.FC<MintProps> = () => {
             isPricefeedInvertedFromTokenSymbol(tokenSymbol)
         ).toFixed(4);
 
-        const liquidationPriceWarningThreshold = 0.1;
-        const liquidationPriceDangerouslyFarBelowCurrentPrice = parseFloat(resultantLiquidationPrice) < (1 - liquidationPriceWarningThreshold) * latestPrice;
+        const liquidationPriceDangerouslyFarBelowCurrentPrice = parseFloat(resultantLiquidationPrice) < (1 - LIQUIDATION_PRICE_WARNING_THRESHOLD) * latestPrice;
 
         // internal functions
         const setTokensToMax = (_gcr: number, _transactionCollateral: number, _resultantPositionCollateral: number, _positionTokens: number, _positionCollateral: number) => {
@@ -354,7 +353,7 @@ export const Mint: React.FC<MintProps> = () => {
                                     title={
                                         liquidationPriceDangerouslyFarBelowCurrentPrice &&
                                         parseFloat(resultantLiquidationPrice) > 0 &&
-                                        `This is >${liquidationPriceWarningThreshold * 100
+                                        `This is >${LIQUIDATION_PRICE_WARNING_THRESHOLD * 100
                                         }% below the current price: ${prettyLatestPrice}`
                                     }>
                                     <span

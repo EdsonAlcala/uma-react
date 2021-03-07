@@ -17,3 +17,5 @@ export const YIELD_DOLLAR_UMA = "YD-UMA-JUN21"
 export const INFINITY = "Infinity"
 
 export const YES = "Yes"
+
+export const LIQUIDATION_PRICE_WARNING_THRESHOLD = 0.1
