@@ -9,7 +9,7 @@ export interface ModalPositionManagerProps {
 }
 
 const StyledDialogContent = styled(DialogContent)({
-    backgroundColor: 'white', // TODO 
+    backgroundColor: 'white', // TODO
     display: 'flex',
     height: 320,
     padding: 0,

@@ -6,7 +6,7 @@ import { Deposit, Mint, Redeem, Withdraw } from './views'
 const StyledTabs = styled(Tabs)({
     textAlign: 'center',
     borderRight: '0.1px solid white',
-    display: 'table'
+    display: 'table',
 })
 
 export const PositionManager: React.FC = () => {
