@@ -52,7 +52,7 @@ export const getUMA = async (wallet: Wallet) => {
     // balances after
     const ethAfter = await wallet.getBalance()
     const umaAfter = await umaContract.balanceOf(wallet.address)
-    console.log("Ethereum Address", wallet.address)
+    console.log('Ethereum Address', wallet.address)
     console.log('ETH balance', ethers.utils.formatEther(ethAfter), 'ETH')
     console.log('UMA balance', ethers.utils.formatUnits(umaAfter), 'UMA')
 }
