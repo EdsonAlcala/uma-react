@@ -112,7 +112,7 @@ const App: React.FC = () => {
                     </Box>
                     <h3>Position Manager</h3>
                     <Box className={classes.root} border="1px solid black">
-                        <PositionManager empAddress="" />
+                        <PositionManager />
                     </Box>
 
                     <hr />

@@ -15,7 +15,7 @@ export const ModalPositionManager: React.FC<ModalPositionManagerProps> = ({ open
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
             <DialogContent className={classes.root} style={{ paddingTop: '0' }}>
-                <PositionManager empAddress="TODO" />
+                <PositionManager />
             </DialogContent>
         </Dialog>
     )

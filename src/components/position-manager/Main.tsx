@@ -1,15 +1,10 @@
-import { Box, makeStyles, Tab, Tabs, withStyles } from '@material-ui/core'
 import React from 'react'
+import { Box, Tab, Tabs, withStyles } from '@material-ui/core'
 
-import { EthereumAddress } from '../../types'
 import { useStyles } from '../common'
 import { Deposit, Mint, Redeem, Withdraw } from './views'
 
-export interface MainProps {
-    empAddress: EthereumAddress
-}
-
-export const PositionManager: React.FC<MainProps> = () => {
+export const PositionManager: React.FC = () => {
     const [tab, setTab] = React.useState(0)
 
     const handleTabChange = (event: any, newValue: number) => {
