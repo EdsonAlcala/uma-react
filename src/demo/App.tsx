@@ -1,9 +1,9 @@
-import { Box } from '@material-ui/core'
+import { Box, styled } from '@material-ui/core'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 
-import { deployEMP, getUMAInterfaces, Loader, ModalPositionManager, PositionManager, toWeiSafe, useStyles } from '..'
+import { deployEMP, getUMAInterfaces, Loader, ModalPositionManager, PositionManager, toWeiSafe } from '..'
 import { ReactWeb3Provider } from '..'
 import { buildFakeEMP } from '../fakers'
 import { EMPProvider, useEMPAt, useWeb3Provider } from '..'
@@ -31,8 +31,6 @@ const App: React.FC = () => {
     const handleClose = () => {
         setOpenModal(false)
     }
-
-    const classes = useStyles()
 
     useEffect(() => {
         if (provider && !empAddress) {
@@ -111,9 +109,9 @@ const App: React.FC = () => {
                         {/* <button onClick={createPositionAndSetupGCR}>Create initial position / Setup GCR</button> */}
                     </Box>
                     <h3>Position Manager</h3>
-                    <Box className={classes.root} border="1px solid black">
+                    <StyledBoxContent border="1px solid black">
                         <PositionManager />
-                    </Box>
+                    </StyledBoxContent>
 
                     <hr />
 
@@ -151,5 +149,14 @@ const AppWrapped: React.FC = () => {
         </ReactWeb3Provider>
     )
 }
+
+const StyledBoxContent = styled(Box)({
+    backgroundColor: 'white', // TODO 
+    display: 'flex',
+    height: 320,
+    padding: 0,
+    paddingTop: 0,
+    alignItems: 'center',
+})
 
 ReactDom.render(<AppWrapped />, document.getElementById('root'))

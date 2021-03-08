@@ -1,8 +1,13 @@
 import React from 'react'
-import { Box, Tab, Tabs, withStyles } from '@material-ui/core'
+import { Box, Tab, Tabs, withStyles, styled } from '@material-ui/core'
 
-import { useStyles } from '../common'
 import { Deposit, Mint, Redeem, Withdraw } from './views'
+
+const StyledTabs = styled(Tabs)({
+    textAlign: 'center',
+    borderRight: '0.1px solid white',
+    display: 'table'
+})
 
 export const PositionManager: React.FC = () => {
     const [tab, setTab] = React.useState(0)
@@ -12,16 +17,14 @@ export const PositionManager: React.FC = () => {
         setTab(newValue)
     }
 
-    const classes = useStyles()
-
     return (
         <React.Fragment>
-            <Tabs orientation="vertical" value={tab} onChange={handleTabChange} className={classes.tabs} aria-label="Vertical tabs example">
+            <StyledTabs orientation="vertical" value={tab} onChange={handleTabChange} aria-label="Vertical tabs example">
                 <StyledTab label="Mint" {...a11yProps(0)} />
                 <StyledTab label="Deposit" {...a11yProps(1)} />
                 <StyledTab label="Withdraw" {...a11yProps(2)} />
                 <StyledTab label="Redeem" {...a11yProps(3)} />
-            </Tabs>
+            </StyledTabs>
             <Box width="100%" justifyContent="center" alignItems="center" display="flex">
                 <TabPanel value={tab} index={0}>
                     <Mint />
