@@ -92,7 +92,10 @@
   },
   "dependencies": {
     "@uma/core": "^2.0.1",
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "bnc-notify": "^1.5.1",
+    "bnc-onboard": "^1.22.0",
+    "unstated-next": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^16.13.1",
