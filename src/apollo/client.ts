@@ -1,17 +1,18 @@
 import {
-  ApolloClient,
-  InMemoryCache,
-  // ApolloLink,
-  HttpLink,
-} from "@apollo/client";
-import fetch from 'cross-fetch';
+    ApolloClient,
+    InMemoryCache,
+    // ApolloLink,
+    HttpLink,
+} from '@apollo/client'
+import fetch from 'cross-fetch'
 
 // const umaLinkKovan = new HttpLink({
 //   uri: "https://api.thegraph.com/subgraphs/name/umaprotocol/uma-kovan",
 // });
 const umaLinkMainnet = new HttpLink({
-  uri: "https://api.thegraph.com/subgraphs/name/protofire/uma", fetch
-});
+    uri: 'https://api.thegraph.com/subgraphs/name/protofire/uma',
+    fetch,
+})
 // const balancerLink = new HttpLink({
 //   uri: "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
 // });
@@ -29,7 +30,7 @@ const umaLinkMainnet = new HttpLink({
 // });
 
 export const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  // We handle more than 2 links by composing directional composition, idea from: https://www.loudnoises.us/next-js-two-apollo-clients-two-graphql-data-sources-the-easy-way/
-  link: umaLinkMainnet //"https://api.thegraph.com/subgraphs/name/protofire/uma"
-});
+    cache: new InMemoryCache(),
+    // We handle more than 2 links by composing directional composition, idea from: https://www.loudnoises.us/next-js-two-apollo-clients-two-graphql-data-sources-the-easy-way/
+    link: umaLinkMainnet, //"https://api.thegraph.com/subgraphs/name/protofire/uma"
+})
