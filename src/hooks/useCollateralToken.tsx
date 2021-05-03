@@ -8,7 +8,7 @@ import { INFINITY } from '../constants'
 import { useWeb3Provider } from './useWeb3Provider'
 import { useERC20At } from './useERC20At'
 
-export const useCollateralToken = (empAddress: EthereumAddress, address: EthereumAddress, empState?: EMPData): TokenData | undefined => {
+export const useCollateralToken = (empAddress: EthereumAddress, address?: EthereumAddress, empState?: EMPData): TokenData | undefined => {
     // external
     const { block$ } = useWeb3Provider()
     const tokenAddress = empState ? empState.collateralCurrency : undefined
@@ -37,22 +37,34 @@ export const useCollateralToken = (empAddress: EthereumAddress, address: Ethereu
             contractInstance.totalSupply(),
         ])
 
-        const [balanceRaw, newAllowance] = await Promise.all([
-            getBalance(contractInstance, address),
-            getAllowance(contractInstance, address, newDecimals),
-        ])
-
-        setCollateralState({
-            symbol: newSymbol,
-            name: newName,
-            decimals: newDecimals,
-            totalSupply: newTotalSupply,
-            allowance: newAllowance,
-            balance: fromWei(balanceRaw, newDecimals),
-            balanceBN: balanceRaw,
-            // setMaxAllowance,
-            instance: contractInstance,
-        })
+        if (address) {
+            const [balanceRaw, newAllowance] = await Promise.all([
+                getBalance(contractInstance, address),
+                getAllowance(contractInstance, address, newDecimals),
+            ])
+            setCollateralState({
+                symbol: newSymbol,
+                name: newName,
+                decimals: newDecimals,
+                totalSupply: newTotalSupply,
+                allowance: newAllowance,
+                balance: fromWei(balanceRaw, newDecimals),
+                balanceBN: balanceRaw,
+                // setMaxAllowance,
+                instance: contractInstance,
+            })
+        } else {
+            setCollateralState({
+                symbol: newSymbol,
+                name: newName,
+                decimals: newDecimals,
+                totalSupply: newTotalSupply,
+                allowance: undefined,
+                balance: undefined,
+                balanceBN: undefined,
+                instance: contractInstance,
+            })
+        }
     }
 
     useEffect(() => {

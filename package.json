@@ -40,9 +40,11 @@
     "test:disputeParams": "jest useDisputeParams.test.tsx --verbose --silent=false --runInBand",
     "chain": "FORK_MODE=Mainnet ts-node -O '{\"module\":\"commonjs\"}' chain-runner.ts",
     "test:empCommands": "jest empCommands.test.ts --verbose --silent=false --runInBand",
-    "test:priceFeed": "jest usePriceFeed.test.tsx --verbose --silent=false --runInBand"
+    "test:priceFeed": "jest usePriceFeed.test.tsx --verbose --silent=false --runInBand",
+    "test:useEmps": "jest useEMPs.test.tsx --verbose --silent=false --runInBand"
   },
   "devDependencies": {
+    "@apollo/client": "^3.3.15",
     "@babel/core": "^7.11.6",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
@@ -59,6 +61,7 @@
     "@typescript-eslint/parser": "^4.1.1",
     "@uniswap/sdk": "^3.0.3",
     "clean-webpack-plugin": "^3.0.0",
+    "cross-fetch": "^3.1.4",
     "css-loader": "^4.3.0",
     "declaration-bundler-webpack-plugin": "^1.0.3",
     "dotenv": "^8.2.0",
@@ -71,6 +74,7 @@
     "ethers": "^5.0.31",
     "file-loader": "^6.1.0",
     "ganache-core": "2.12.1",
+    "graphql": "^15.5.0",
     "html-webpack-plugin": "^4.4.1",
     "husky": "^4.3.0",
     "jest": "^26.4.2",
@@ -91,7 +95,7 @@
     "webpack-merge": "^5.1.4"
   },
   "dependencies": {
-    "@uma/core": "^2.0.1",
+    "@uma/core": "^2.1.0",
     "axios": "^0.21.1",
     "bnc-notify": "^1.5.1",
     "bnc-onboard": "^1.22.0",

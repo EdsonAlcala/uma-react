@@ -6,7 +6,7 @@ import { EthereumAddress } from '../types'
 import { useWeb3Provider } from './useWeb3Provider'
 import { useEffect, useState } from 'react'
 
-export const useEMPAt = (empAddress?: EthereumAddress) => {
+export const useEMPAt = (empAddress?: EthereumAddress, provider?: ethers.providers.Web3Provider) => {
     const { signer } = useWeb3Provider()
     const [instance, setInstance] = useState<ethers.Contract | undefined>(undefined)
 
@@ -15,7 +15,7 @@ export const useEMPAt = (empAddress?: EthereumAddress) => {
             if (!empAddress) {
                 setInstance(undefined)
             } else {
-                const newInstance = new ethers.Contract(empAddress, ExpiringMultiPartyArtifact.abi, signer)
+                const newInstance = new ethers.Contract(empAddress, ExpiringMultiPartyArtifact.abi, provider ? provider : signer)
                 setInstance(newInstance)
             }
         }

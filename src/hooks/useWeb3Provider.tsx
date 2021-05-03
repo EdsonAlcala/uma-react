@@ -26,9 +26,10 @@ const Web3Context = React.createContext<IWeb3Provider>({
 
 interface ReactWeb3ProviderProps {
     injectedProvider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider
+    readOnly?: boolean
 }
 
-export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProps>> = ({ children, injectedProvider }) => {
+export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProps>> = ({ children, injectedProvider, readOnly = false }) => {
     const [provider, setWeb3Provider] = useState<Web3Provider | undefined | ethers.providers.JsonRpcProvider>(undefined)
     const [signer, setSigner] = useState<Signer | undefined>(undefined)
     const [block$, setBlock$] = useState<Observable<Block> | undefined>(undefined)
@@ -41,10 +42,6 @@ export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProp
             const ethersJSProvider = injectedProvider
             setWeb3Provider(ethersJSProvider)
 
-            // signer
-            const newSigner = ethersJSProvider.getSigner()
-            setSigner(newSigner)
-
             // block
             const observable = new Observable<Block>((subscriber) => {
                 ethersJSProvider.on('block', (blockNumber: number) => {
@@ -55,11 +52,6 @@ export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProp
             const newBlock$ = observable.pipe(debounceTime(1000))
             setBlock$(newBlock$)
 
-            const getSelectedAddress = async () => {
-                const result = await newSigner.getAddress()
-                setAddress(result)
-            }
-
             const getNetwork = async () => {
                 const result = await ethersJSProvider.getNetwork()
                 setNetwork(result)
@@ -67,7 +59,17 @@ export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProp
 
             getNetwork().catch((error) => console.log('getNetwork failed'))
 
-            getSelectedAddress().catch((error) => console.log('getSelectedAddress failed'))
+            // signer
+            if (!readOnly) {
+                const newSigner = ethersJSProvider.getSigner()
+                setSigner(newSigner)
+
+                const getSelectedAddress = async () => {
+                    const result = await newSigner.getAddress()
+                    setAddress(result)
+                }
+                getSelectedAddress().catch((error) => console.log('getSelectedAddress failed'))
+            }
         }
     }, [injectedProvider])
 

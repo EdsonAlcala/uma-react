@@ -5,7 +5,7 @@ import { fromWei } from '../utils'
 import { useERC20At } from './useERC20At'
 import { useWeb3Provider } from './useWeb3Provider'
 
-export const useSyntheticToken = (empAddress: EthereumAddress, address: EthereumAddress, empState?: EMPData): TokenData | undefined => {
+export const useSyntheticToken = (empAddress: EthereumAddress, address?: EthereumAddress, empState?: EMPData): TokenData | undefined => {
     // external
     const { block$ } = useWeb3Provider()
     const tokenAddress = empState ? empState.tokenCurrency : undefined
@@ -33,22 +33,34 @@ export const useSyntheticToken = (empAddress: EthereumAddress, address: Ethereum
             contractInstance.totalSupply(),
         ])
 
-        const [balanceRaw, newAllowance] = await Promise.all([
-            getBalance(contractInstance, address, newDecimals),
-            getAllowance(contractInstance, address, newDecimals),
-        ])
+        if (address) {
+            const [balanceRaw, newAllowance] = await Promise.all([
+                getBalance(contractInstance, address, newDecimals),
+                getAllowance(contractInstance, address, newDecimals),
+            ])
 
-        setSyntheticState({
-            symbol: newSymbol,
-            name: newName,
-            decimals: newDecimals,
-            totalSupply: newTotalSupply,
-            allowance: newAllowance,
-            balance: fromWei(balanceRaw, newDecimals),
-            balanceBN: balanceRaw,
-            // setMaxAllowance,
-            instance: contractInstance,
-        })
+            setSyntheticState({
+                symbol: newSymbol,
+                name: newName,
+                decimals: newDecimals,
+                totalSupply: newTotalSupply,
+                allowance: newAllowance,
+                balance: fromWei(balanceRaw, newDecimals),
+                balanceBN: balanceRaw,
+                instance: contractInstance,
+            })
+        } else {
+            setSyntheticState({
+                symbol: newSymbol,
+                name: newName,
+                decimals: newDecimals,
+                totalSupply: newTotalSupply,
+                allowance: undefined,
+                balance: undefined,
+                balanceBN: undefined,
+                instance: contractInstance,
+            })
+        }
     }
 
     useEffect(() => {
