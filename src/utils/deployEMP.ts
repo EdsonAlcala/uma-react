@@ -1,9 +1,12 @@
-import { BigNumber, ethers, utils, ContractReceipt } from 'ethers'
+import { ethers, utils, ContractReceipt } from 'ethers'
 import { toWei } from 'web3-utils'
+import ExpiringMultiPartyCreatorArtifact from '@uma/core/build/contracts/ExpiringMultiPartyCreator.json'
+import Web3 from 'web3'
 
 import { EMPParameters, EthereumAddress } from '../types'
 import { getUMAAbis } from './umaAbis'
 import { getUMAAddresses } from './umaAddresses'
+
 
 interface EMPDeployResult {
     receipt: ContractReceipt
@@ -16,7 +19,7 @@ export const deployEMP = async (values: EMPParameters, network: ethers.providers
     const { disputeBondPercentage, sponsorDisputeRewardPercentage, disputerDisputeRewardPercentage, financialProductLibraryAddress } = values
 
     const params = {
-        expirationTimestamp: BigNumber.from(expirationTimestamp),
+        expirationTimestamp: expirationTimestamp.toString(),
         collateralAddress,
         priceFeedIdentifier: utils.formatBytes32String(priceFeedIdentifier),
         syntheticName,
@@ -36,8 +39,8 @@ export const deployEMP = async (values: EMPParameters, network: ethers.providers
         minSponsorTokens: {
             rawValue: toWei(`${values.minSponsorTokens}`),
         },
-        liquidationLiveness: BigNumber.from(values.liquidationLiveness),
-        withdrawalLiveness: BigNumber.from(values.withdrawalLiveness),
+        liquidationLiveness: 7200,
+        withdrawalLiveness: 7200,
         financialProductLibraryAddress: financialProductLibraryAddress
             ? financialProductLibraryAddress
             : '0x0000000000000000000000000000000000000000',
@@ -60,14 +63,21 @@ export const deployEMP = async (values: EMPParameters, network: ethers.providers
 
     const expiringMultipartyCreator = new ethers.Contract(expiringMultipartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
 
-    const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params)
+    const web3 = new Web3("http://localhost:8549")
+    const web3Contract = new web3.eth.Contract(ExpiringMultiPartyCreatorArtifact.abi as any, expiringMultipartyCreatorAddress)
+
+    const expiringMultiPartyAddress = await web3Contract.methods.createExpiringMultiParty(params).call({
+        gas: 12000000, // 12MM is very high. Set this lower if you only have < 2 ETH or so in your wallet.
+        gasPrice: 200 * 1000000000, // gasprice arg * 1 GWEI
+        from: "0x9A8f92a830A5cB89a3816e3D267CB7791c16b04D"
+    })
     console.log('expiringMultiPartyAddress', expiringMultiPartyAddress)
 
     const txn = await expiringMultipartyCreator.createExpiringMultiParty(params)
 
     const receipt: ContractReceipt = await txn.wait()
 
-    // console.log("Receipt", receipt);
-
     return { receipt, expiringMultiPartyAddress }
+
+
 }

@@ -14,5 +14,8 @@ export interface IGanacheOptions {
     ]
     _chainId: number
     _chainIdRpc: number
+    fork_block_number: number | string
     unlocked_accounts: string[]
+    vmErrorsOnRPCResponse: boolean
+    gasPrice: string
 }

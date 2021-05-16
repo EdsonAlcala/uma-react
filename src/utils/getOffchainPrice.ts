@@ -65,16 +65,10 @@ export const PRICEFEED_PARAMS: PricefeedParamsMap = {
     },
     umausd: {
         invertedPrice: true,
-        source: [
-            'https://api.binance.com/api/v3/avgPrice?symbol=UMAUSDT',
-            'https://api.pro.coinbase.com/products/UMA-USD/trades?limit=1',
-            // "https://api.cryptowat.ch/markets/binance/umausdt/price",
-            // "https://api.cryptowat.ch/markets/coinbase-pro/umausd/price",
-            // "https://api.cryptowat.ch/markets/okex/umausdt/price",
-        ],
+        source: ['https://api.binance.com/api/v3/avgPrice?symbol=UMAUSDT', 'https://api.pro.coinbase.com/products/UMA-USD/trades?limit=1'],
     },
 }
-// UMAUSD / USDUMA
+
 export function getPricefeedParamsFromTokenSymbol(symbol: string | null) {
     // This returns whichever "case" expression matches the conditional in `switch`.
     // In this case, whichever "case" expression evaluates to "true".
@@ -96,7 +90,7 @@ export function getPricefeedParamsFromTokenSymbol(symbol: string | null) {
             return PRICEFEED_PARAMS.usdbtc
         case symbol?.includes('YD-ETH'):
             return PRICEFEED_PARAMS.usdeth
-        case symbol?.includes('YD-UMA-JUN21'):
+        case symbol?.includes('yUMA21'):
             return PRICEFEED_PARAMS.umausd
         default:
             return null
