@@ -23,3 +23,20 @@ Start Demo app
 
 - yarn start:dev
 
+
+# Configuration
+
+The SDK uses Onboard.js, which requires the following environment variables:
+
+- NEXT_PUBLIC_ONBOARD_API_KEY
+- NEXT_PUBLIC_INFURA_ID
+- NEXT_PUBLIC_PORTIS_API_KEY
+
+Other environment variables
+
+For testing:
+
+- FORK_URL=<Alchemy_Url>
+- NETWORK_ID=1 | 42
+- PRIV_KEY=<Your_Test_Private_Key>
+- FORK_MODE=Mainnet | Kovan
