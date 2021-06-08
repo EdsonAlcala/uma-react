@@ -8,11 +8,7 @@ import { debounceTime } from 'rxjs/operators'
 
 import { config } from './Config'
 import { SUPPORTED_NETWORK_IDS } from '../constants'
-
-type Provider = ethers.providers.Web3Provider
-type Block = ethers.providers.Block
-type Network = ethers.providers.Network
-type Signer = ethers.Signer
+import { Block, Network, Provider, Signer } from '../types'
 
 function useConnection() {
     const [provider, setProvider] = useState<Provider | null>(null)

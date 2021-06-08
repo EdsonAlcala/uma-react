@@ -57,7 +57,6 @@ export const usePosition = (address: EthereumAddress): PositionData | undefined 
 
     // get position info on each new block
     useEffect(() => {
-        console.log('Calling block update on usePosition')
         if (block$ && instance && collateralState && syntheticState) {
             const { decimals: collateralDecimals } = collateralState
             const { decimals: syntheticDecimals } = syntheticState

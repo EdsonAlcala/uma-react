@@ -19,3 +19,5 @@ export type DateAsString = string
 export type NumberAsString = string
 
 export type Percentage = number
+
+export type Provider = ethers.providers.Web3Provider

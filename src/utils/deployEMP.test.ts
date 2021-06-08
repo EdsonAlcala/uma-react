@@ -12,7 +12,7 @@ describe('Deploy EMP Tests', () => {
     let network: ethers.providers.Network
 
     beforeAll(async () => {
-        const provider: ethers.providers.Web3Provider = (global as any).ethersProvider;
+        const provider: ethers.providers.Web3Provider = (global as any).ethersProvider
         network = await provider.getNetwork()
         signer = provider.getSigner()
         console.log('Network', network)

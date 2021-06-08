@@ -19,9 +19,7 @@ export const useTotals = (): TotalsData | undefined => {
                 const newTotalCollateral = weiToNum(cumulativeFeeMultiplier) * weiToNum(rawTotalPositionCollateral, collateralDecimals)
                 const newTotalTokens = weiToNum(totalTokensOutstanding, syntheticDecimals)
                 const newGcr = newTotalTokens > 0 ? newTotalCollateral / newTotalTokens : 0
-                console.log('newTotalCollateral', newTotalCollateral)
-                console.log('newTotalTokens', newTotalTokens)
-                console.log('newGcr', newGcr)
+
                 setTotalState({
                     gcr: `${newGcr}`,
                     totalCollateral: `${newTotalCollateral}`,

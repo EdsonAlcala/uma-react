@@ -26,10 +26,9 @@ const Web3Context = React.createContext<IWeb3Provider>({
 
 interface ReactWeb3ProviderProps {
     injectedProvider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider
-    readOnly?: boolean
 }
 
-export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProps>> = ({ children, injectedProvider, readOnly = false }) => {
+export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProps>> = ({ children, injectedProvider }) => {
     const [provider, setWeb3Provider] = useState<Web3Provider | undefined | ethers.providers.JsonRpcProvider>(undefined)
     const [signer, setSigner] = useState<Signer | undefined>(undefined)
     const [block$, setBlock$] = useState<Observable<Block> | undefined>(undefined)
@@ -60,16 +59,14 @@ export const ReactWeb3Provider: React.FC<PropsWithChildren<ReactWeb3ProviderProp
             getNetwork().catch((error) => console.log('getNetwork failed'))
 
             // signer
-            if (!readOnly) {
-                const newSigner = ethersJSProvider.getSigner()
-                setSigner(newSigner)
+            const newSigner = ethersJSProvider.getSigner()
+            setSigner(newSigner as any)
 
-                const getSelectedAddress = async () => {
-                    const result = await newSigner.getAddress()
-                    setAddress(result)
-                }
-                getSelectedAddress().catch((error) => console.log('getSelectedAddress failed'))
+            const getSelectedAddress = async () => {
+                const result = await newSigner.getAddress()
+                setAddress(result)
             }
+            getSelectedAddress().catch((error) => console.log('getSelectedAddress failed'))
         }
     }, [injectedProvider])
 

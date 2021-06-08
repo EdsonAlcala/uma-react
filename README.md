@@ -34,9 +34,12 @@ The SDK uses Onboard.js, which requires the following environment variables:
 
 Other environment variables
 
+- SUPPORTED_NETWORK_IDS=<Array_NETWORK_IDs> (default to [1,42])
+
 For testing:
 
 - FORK_URL=<Alchemy_Url>
 - NETWORK_ID=1 | 42
 - PRIV_KEY=<Your_Test_Private_Key>
 - FORK_MODE=Mainnet | Kovan
+

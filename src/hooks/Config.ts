@@ -2,8 +2,8 @@
 // Enable the dapp to work out of the box without any custom configs.
 // You can choose to specify these env variables if you wish to get analytics
 // over user interactions. Otherwise, defaults are used.
-import { ethers } from 'ethers'
-type Network = ethers.providers.Network
+import { Network } from '../types'
+
 export const config = (network: Network | null) => {
     const infuraId = process.env.NEXT_PUBLIC_INFURA_ID || 'd5e29c9b9a9d4116a7348113f57770a8'
     const infuraRpc = `https://${network ? network?.name : 'mainnet'}.infura.io/v3/${infuraId}`

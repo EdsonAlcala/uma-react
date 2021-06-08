@@ -5,7 +5,6 @@ import { EMPParameters, EthereumAddress } from '../types'
 import { getUMAAbis } from './umaAbis'
 import { getUMAAddresses } from './umaAddresses'
 
-
 interface EMPDeployResult {
     receipt: ContractReceipt
     expiringMultiPartyAddress: EthereumAddress
@@ -61,7 +60,7 @@ export const deployEMP = async (values: EMPParameters, network: ethers.providers
 
     const expiringMultipartyCreator = new ethers.Contract(expiringMultipartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
 
-    const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params);
+    const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params)
     // const expiringMultiPartyAddress = await web3Contract.methods.createExpiringMultiParty(params).call({
     //     gas: 12000000, // 12MM is very high. Set this lower if you only have < 2 ETH or so in your wallet.
     //     gasPrice: 200 * 1000000000, // gasprice arg * 1 GWEI
@@ -74,6 +73,4 @@ export const deployEMP = async (values: EMPParameters, network: ethers.providers
     const receipt: ContractReceipt = await txn.wait()
 
     return { receipt, expiringMultiPartyAddress }
-
-
 }
