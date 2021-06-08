@@ -4,7 +4,6 @@ import React from 'react'
 import { EthereumAddress } from '../types'
 
 import { deployEMP, getUMAInterfaces } from '../utils'
-import { Ganache } from '../utils/ganache'
 
 import { ReactWeb3Provider } from './useWeb3Provider'
 import { createPosition } from './utils'
@@ -14,20 +13,12 @@ import { UMARegistryProvider } from './useUMARegistry'
 import { buildFakeEMP } from '../fakers'
 
 describe.skip('usePosition tests', () => {
-    let ganacheInstance: Ganache
     let injectedProvider: ethers.providers.Web3Provider
     let instance: ethers.Contract
     let ownerAddress: EthereumAddress
 
     beforeAll(async () => {
-        ganacheInstance = new Ganache({
-            port: 8549,
-            gasLimit: 10000000,
-        })
-        await ganacheInstance.start()
-
-        const ganacheProvider = ganacheInstance.server.provider
-        injectedProvider = new ethers.providers.Web3Provider(ganacheProvider)
+        injectedProvider = (global as any).ethersProvider
 
         const network = await injectedProvider.getNetwork()
         const signer = injectedProvider.getSigner()
@@ -62,10 +53,6 @@ describe.skip('usePosition tests', () => {
 
         // create a sample position
         await createPosition(expiringMultiPartyAddress, collateralAmount, syntheticTokens, signer)
-    })
-
-    afterAll(async () => {
-        await ganacheInstance.stop()
     })
 
     const render = () => {

@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-
 import { ethers } from 'ethers'
 
 import { UMA } from '../constants'
@@ -10,29 +6,16 @@ import { EMPParameters } from '../types'
 import { getTestPriceIdentifier } from './getTestPriceIdentifier'
 import { getTestCollaterals } from './getTestCollateral'
 import { deployEMP } from './deployEMP'
-import { Ganache } from './ganache'
 
 describe('Deploy EMP Tests', () => {
     let signer: ethers.Signer
     let network: ethers.providers.Network
-    let ganacheInstance: Ganache
 
     beforeAll(async () => {
-        ganacheInstance = new Ganache({
-            port: 8549,
-            gasLimit: 10000000,
-        })
-        await ganacheInstance.start()
-
-        const ganacheProvider = ganacheInstance.server.provider
-        const provider = new ethers.providers.Web3Provider(ganacheProvider)
+        const provider: ethers.providers.Web3Provider = (global as any).ethersProvider;
         network = await provider.getNetwork()
         signer = provider.getSigner()
         console.log('Network', network)
-    })
-
-    afterAll(async () => {
-        await ganacheInstance.stop()
     })
 
     test('that deploy EMP correctly', async () => {

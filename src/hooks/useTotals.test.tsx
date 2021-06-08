@@ -3,7 +3,6 @@ import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
 import { deployEMP, getUMAInterfaces } from '../utils'
-import { Ganache } from '../utils/ganache'
 
 import { ReactWeb3Provider } from './useWeb3Provider'
 import { useTotals } from './useTotals'
@@ -12,20 +11,11 @@ import { UMARegistryProvider } from './useUMARegistry'
 import { buildFakeEMP } from '../fakers'
 
 describe('useTotals tests', () => {
-    let ganacheInstance: Ganache
     let injectedProvider: ethers.providers.Web3Provider
     let instance: ethers.Contract
 
     beforeAll(async () => {
-        ganacheInstance = new Ganache({
-            port: 8549,
-            gasLimit: 10000000,
-        })
-        await ganacheInstance.start()
-
-        const ganacheProvider = ganacheInstance.server.provider
-        injectedProvider = new ethers.providers.Web3Provider(ganacheProvider)
-
+        injectedProvider = (global as any).ethersProvider
         const network = await injectedProvider.getNetwork()
         const signer = injectedProvider.getSigner()
 
@@ -37,10 +27,6 @@ describe('useTotals tests', () => {
             throw new Error("Couldn't find the EMP interface")
         }
         instance = new ethers.Contract(expiringMultiPartyAddress, empInterface, signer)
-    })
-
-    afterAll(async () => {
-        await ganacheInstance.stop()
     })
 
     const render = () => {

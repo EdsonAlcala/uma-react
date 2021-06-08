@@ -92,6 +92,8 @@ export function getPricefeedParamsFromTokenSymbol(symbol: string | null) {
             return PRICEFEED_PARAMS.usdeth
         case symbol?.includes('yUMA21'):
             return PRICEFEED_PARAMS.umausd
+        case symbol?.includes('YD-UMA-JUN21'):
+            return PRICEFEED_PARAMS.umausd
         default:
             return null
     }

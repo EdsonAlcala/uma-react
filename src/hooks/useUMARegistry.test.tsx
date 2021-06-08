@@ -1,32 +1,15 @@
-/**
- * @jest-environment node
- */
-
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 
 import { useUMARegistry, UMARegistryProvider } from './useUMARegistry'
-import { Ganache } from '../utils/ganache'
 import { ethers } from 'ethers'
 import { ReactWeb3Provider } from './useWeb3Provider'
 
 describe('useUMARegistry tests', () => {
-    let ganacheInstance: Ganache
     let injectedProvider: ethers.providers.Web3Provider
 
     beforeAll(async () => {
-        ganacheInstance = new Ganache({
-            port: 8549,
-            gasLimit: 10000000,
-        })
-        await ganacheInstance.start()
-
-        const ganacheProvider = ganacheInstance.server.provider
-        injectedProvider = new ethers.providers.Web3Provider(ganacheProvider)
-    })
-
-    afterAll(async () => {
-        await ganacheInstance.stop()
+        injectedProvider = (global as any).ethersProvider
     })
 
     const render = () => {

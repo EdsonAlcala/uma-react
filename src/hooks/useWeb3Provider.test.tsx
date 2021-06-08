@@ -1,28 +1,15 @@
-/**
- * @jest-environment node
- */
-
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
-import { Ganache } from '../utils/ganache'
-
 import { useWeb3Provider, ReactWeb3Provider } from './useWeb3Provider'
 
 describe('useWeb3Provider tests', () => {
-    let ganacheInstance: Ganache
     let injectedProvider: ethers.providers.Web3Provider
-
+    let accounts: string[]
     beforeAll(async () => {
-        ganacheInstance = new Ganache({
-            port: 8549,
-            gasLimit: 10000000,
-        })
-        await ganacheInstance.start()
-
-        const ganacheProvider = ganacheInstance.server.provider
-        injectedProvider = new ethers.providers.Web3Provider(ganacheProvider)
+        injectedProvider = (global as any).ethersProvider
+        accounts = await injectedProvider.listAccounts()
     })
 
     const render = () => {
@@ -68,10 +55,6 @@ describe('useWeb3Provider tests', () => {
 
         await waitForNextUpdate()
 
-        expect(result.current.address).toEqual('0x34ACCc6603C99C9e8608E5ab1903c1F4196641ce')
-    })
-
-    afterAll(async () => {
-        await ganacheInstance.stop()
+        expect(result.current.address).toEqual(accounts[0])
     })
 })
