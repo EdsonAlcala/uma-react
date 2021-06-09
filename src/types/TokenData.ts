@@ -2,7 +2,7 @@ import { BigNumber, ethers } from 'ethers'
 import { NumberAsString } from './Common'
 
 export interface TokenData {
-    id: string;
+    id: string
     symbol: string
     name: string
     decimals: number

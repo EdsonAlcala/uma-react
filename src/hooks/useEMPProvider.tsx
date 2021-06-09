@@ -8,7 +8,6 @@ import { EMPData, EthereumAddress, TokenData } from '../types'
 import { useWeb3Provider } from './useWeb3Provider'
 import { useToken } from './useToken'
 
-
 interface IEMPProvider {
     empState: EMPData | undefined
     collateralState: TokenData | undefined
