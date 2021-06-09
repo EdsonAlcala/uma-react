@@ -4,14 +4,16 @@ import { BigNumber, Bytes, ethers } from 'ethers'
 import { EMPData, EthereumAddress, TokenData } from '../types'
 
 import { useWeb3Provider } from './useWeb3Provider'
-import { useCollateralToken } from './useCollateralToken'
-import { useSyntheticToken } from './useSyntheticToken'
+import { useToken } from './useToken'
+import { Observable } from 'rxjs'
+import { debounceTime } from 'rxjs/operators'
 
 interface IEMPProvider {
     empState: EMPData | undefined
     collateralState: TokenData | undefined
     syntheticState: TokenData | undefined
     instance: ethers.Contract
+    change$: Observable<any> | undefined
 }
 
 const EMPContext = React.createContext<IEMPProvider>({
@@ -19,6 +21,7 @@ const EMPContext = React.createContext<IEMPProvider>({
     collateralState: undefined,
     syntheticState: undefined,
     instance: {} as ethers.Contract,
+    change$: undefined,
 })
 
 interface EMPProviderProps {
@@ -79,31 +82,94 @@ export const EMPProvider: React.FC<PropsWithChildren<EMPProviderProps>> = ({ chi
     const [collateralState, setCollateralState] = useState<TokenData | undefined>(undefined)
     const [syntheticState, setSyntheticState] = useState<TokenData | undefined>(undefined)
     const [instance, setInstance] = useState(empInstance)
+    const [change$, setChange$] = useState<Observable<any> | undefined>(undefined)
 
-    const { block$, address } = useWeb3Provider()
+    const { address } = useWeb3Provider()
 
-    const collateralStateResult = useCollateralToken(empInstance.address, address, empState)
-    const syntheticStateResult = useSyntheticToken(empInstance.address, address, empState)
+    const collateralStateResult = useToken(empInstance.address, address, empState ? empState.collateralCurrency : undefined)
+    const syntheticStateResult = useToken(empInstance.address, address, empState ? empState.tokenCurrency : undefined)
 
     useEffect(() => {
-        getAllEMPData(empInstance)
-            .then((newState) => setEMPState(newState))
-            .catch((error) => {
-                console.log('Error on getAllEMPData', error)
-            })
-    }, [empInstance]) // eslint-disable-line
+        if (empInstance) {
+            getAllEMPData(empInstance)
+                .then((newState) => setEMPState(newState))
+                .catch((error) => {
+                    console.log('Error on getAllEMPData', error)
+                })
 
-    // get state on each block
-    useEffect(() => {
-        if (block$ && empInstance) {
-            const sub = block$.subscribe(() =>
+            const observableCallBack = (subscriber) => {
+                console.log('Called observable callback')
                 getAllEMPData(empInstance)
-                    .then((newState) => setEMPState(newState as any))
-                    .catch((error) => console.log('error getAllEMPData', error)),
-            )
-            return () => sub.unsubscribe()
+                    .then((newState) => {
+                        setEMPState(newState as any)
+                        subscriber.next()
+                    })
+                    .catch((error) => console.log('error getAllEMPData', error))
+            }
+
+            const observable = new Observable<any>((subscriber) => {
+                empInstance.on('LiquidationCreated', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('LiquidationDisputed', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('DisputeSettled', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('LiquidationWithdrawn', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('Deposit', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('Withdrawal', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('RequestWithdrawal', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('RequestWithdrawalExecuted', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('RequestWithdrawalCanceled', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('PositionCreated', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('NewSponsor', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('EndedSponsorPosition', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('Repay', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('Redeem', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('ContractExpired', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('SettleExpiredPosition', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('RequestTransferPosition', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('RequestTransferPositionExecuted', (...args) => {
+                    observableCallBack(subscriber)
+                })
+                empInstance.on('RequestTransferPositionCanceled', (...args) => {
+                    observableCallBack(subscriber)
+                })
+            })
+            // debounce to prevent subscribers making unnecessary calls
+            setChange$(observable.pipe(debounceTime(1000)))
         }
-    }, [block$, empInstance]) // eslint-disable-line
+    }, [empInstance]) // eslint-disable-line
 
     useEffect(() => {
         if (collateralStateResult) {
@@ -128,6 +194,7 @@ export const EMPProvider: React.FC<PropsWithChildren<EMPProviderProps>> = ({ chi
                 collateralState,
                 syntheticState,
                 instance,
+                change$,
             }}
         >
             {children}

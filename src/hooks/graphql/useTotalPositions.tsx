@@ -31,7 +31,7 @@ export const useTotalPositions = (): State & ApolloProps => {
 
     const { loading, error } = useQuery(ALL_POSITIONS, {
         onCompleted: (data) => {
-            console.log("Data", data)
+            console.log('Data', data)
             const allPositions = data.financialContracts.map((item) => {
                 return item.positions
             })
@@ -41,7 +41,7 @@ export const useTotalPositions = (): State & ApolloProps => {
             }, 0)
 
             setPositionsData({
-                total
+                total,
             })
         },
     })
@@ -49,6 +49,6 @@ export const useTotalPositions = (): State & ApolloProps => {
     return {
         positionsData,
         loading,
-        error
+        error,
     }
 }

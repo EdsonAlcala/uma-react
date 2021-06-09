@@ -18,16 +18,16 @@ const mocks = [
                     {
                         id: '0xb1a3e5a8d642534840bfc50c6417f9566e716cc7',
                         syntheticToken: {
-                            symbol: "yUNI 21"
-                        }
+                            symbol: 'yUNI 21',
+                        },
                     },
                     {
                         id: '0x7fbe19088b011a9de0e3a327d7c681028f065616',
                         syntheticToken: {
-                            symbol: "yUNI 21"
-                        }
-                    }
-                ]
+                            symbol: 'yUNI 21',
+                        },
+                    },
+                ],
             },
         },
     },
@@ -48,7 +48,6 @@ describe('useEMPs tests', () => {
         const { result, waitForNextUpdate } = render()
 
         await waitForNextUpdate()
-
 
         expect(result.current.total).toEqual(2)
         expect(result.current.items.length).toEqual(4)
