@@ -2,6 +2,8 @@ require('dotenv').config()
 
 const ethers = require('ethers')
 
+const NETWORK_ID = process.env.NETWORK_ID || "1"
+
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'ethers',
@@ -9,13 +11,13 @@ module.exports = {
     fork_block_number: 12057129,
     vmErrorsOnRPCResponse: true,
     port: 8549,
-    network_id: parseInt(process.env.NETWORK_ID),
-    networkId: parseInt(process.env.NETWORK_ID),
+    network_id: parseInt(),
+    networkId: parseInt(NETWORK_ID),
     fork: process.env.FORK_URL,
     gasLimit: 200000000000,
     allowUnlimitedContractSize: true,
-    _chainId: parseInt(process.env.NETWORK_ID),
-    _chainIdRpc: parseInt(process.env.NETWORK_ID),
+    _chainId: parseInt(NETWORK_ID),
+    _chainIdRpc: parseInt(NETWORK_ID),
     gasPrice: '0x2E90EDD000',
     accounts: [
       {
