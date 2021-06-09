@@ -6,7 +6,7 @@ export const DAI = 'DAI'
 
 export const KOVAN_PRICE_IDENTIFIER = '1INCHUSD'
 
-export const SUPPORTED_NETWORK_IDS: number[] = JSON.parse(process.env.SUPPORTED_NETWORK_IDS || "[1, 42]")
+export const SUPPORTED_NETWORK_IDS: number[] = JSON.parse(process.env.SUPPORTED_NETWORK_IDS || '[1, 42]')
 
 export const MAINNET_PRICE_IDENTIFIER = 'UMAUSD'
 
