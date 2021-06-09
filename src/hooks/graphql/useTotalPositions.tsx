@@ -31,7 +31,6 @@ export const useTotalPositions = (): State & ApolloProps => {
 
     const { loading, error } = useQuery(ALL_POSITIONS, {
         onCompleted: (data) => {
-            console.log('Data', data)
             const allPositions = data.financialContracts.map((item) => {
                 return item.positions
             })

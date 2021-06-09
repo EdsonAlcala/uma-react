@@ -15,7 +15,6 @@ describe('Deploy EMP Tests', () => {
         const provider: ethers.providers.Web3Provider = (global as any).ethersProvider
         network = await provider.getNetwork()
         signer = provider.getSigner()
-        console.log('Network', network)
     })
 
     test('that deploy EMP correctly', async () => {
