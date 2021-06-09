@@ -4,13 +4,14 @@ import { ethers } from 'ethers'
 
 import { deployEMP, getUMAInterfaces } from '../utils'
 import { EMPData, EthereumAddress } from '../types'
+
 import { ReactWeb3Provider } from './useWeb3Provider'
+import { useToken } from './useToken'
 import { getAllEMPData } from './useEMPProvider'
 import { UMARegistryProvider } from './useUMARegistry'
 import { buildFakeEMP } from '../fakers'
-import { useSyntheticToken } from './useSyntheticToken'
 
-describe('useSyntheticToken tests', () => {
+describe('useCollateralToken tests', () => {
     let empAddress: EthereumAddress
     let signer: ethers.Signer
     let network: ethers.providers.Network
@@ -34,20 +35,44 @@ describe('useSyntheticToken tests', () => {
         empData = (await getAllEMPData(empInstance)) as EMPData
     })
 
-    const render = () => {
+    const renderCollateral = () => {
         const wrapper = ({ children }: any) => (
             <UMARegistryProvider>
                 <ReactWeb3Provider injectedProvider={injectedProvider}>{children}</ReactWeb3Provider>
             </UMARegistryProvider>
         )
-        const result = renderHook(() => useSyntheticToken(empAddress, userAddress, empData), { wrapper })
+        const result = renderHook(() => useToken(empAddress, userAddress, empData.collateralCurrency), { wrapper })
         return result
     }
 
-    test('properties are defined', async () => {
-        const { result, waitForNextUpdate } = render()
+    const renderToken = () => {
+        const wrapper = ({ children }: any) => (
+            <UMARegistryProvider>
+                <ReactWeb3Provider injectedProvider={injectedProvider}>{children}</ReactWeb3Provider>
+            </UMARegistryProvider>
+        )
+        const result = renderHook(() => useToken(empAddress, userAddress, empData.tokenCurrency), { wrapper })
+        return result
+    }
+
+    test('properties are defined [collateral]', async () => {
+        const { result, waitForNextUpdate } = renderCollateral()
 
         await waitForNextUpdate()
+
+        await waitForNextUpdate()
+
+        await waitForNextUpdate()
+
+
+        expect(result.current).toBeDefined()
+        expect(result.current!.name).toEqual('UMA Voting Token v1')
+        expect(result.current!.decimals).toEqual(18)
+        expect(result.current!.symbol).toEqual('UMA')
+    })
+
+    test('properties are defined [synthetic token]', async () => {
+        const { result, waitForNextUpdate } = renderToken()
 
         await waitForNextUpdate()
 

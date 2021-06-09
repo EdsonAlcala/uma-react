@@ -1,12 +1,13 @@
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react'
 import { BigNumber, Bytes, ethers } from 'ethers'
+import { Observable } from 'rxjs'
+import { debounceTime } from 'rxjs/operators'
 
 import { EMPData, EthereumAddress, TokenData } from '../types'
 
 import { useWeb3Provider } from './useWeb3Provider'
 import { useToken } from './useToken'
-import { Observable } from 'rxjs'
-import { debounceTime } from 'rxjs/operators'
+
 
 interface IEMPProvider {
     empState: EMPData | undefined
