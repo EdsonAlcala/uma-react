@@ -1,6 +1,6 @@
 {
   "name": "uma-react",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "UMA React SDK to create Synthetic Apps",
   "main": "dist/uma-react.js",
   "types": "dist/index.d.ts",
@@ -81,7 +81,7 @@
     "graphql": "^15.5.0",
     "html-webpack-plugin": "^4.4.1",
     "husky": "^4.3.0",
-    "jest": "^26.4.2",
+    "jest": "26.6.0",
     "jest-environment-ethers": "^0.0.6",
     "prettier": "^2.1.2",
     "react": "16.13.1",
@@ -103,6 +103,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bnc-onboard": "^1.22.0",
+    "uma-react": "^0.4.1",
     "unstated-next": "^1.1.0"
   },
   "peerDependencies": {
