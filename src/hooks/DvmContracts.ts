@@ -29,7 +29,7 @@ function useContracts() {
             // Do not inject a provider into this contract so that we can make calls from the EMP's address.
             // We will only have read-only access to the Contract, but overriding the `from` address is neccessary for `getPrice` or `hasPrice`.
             // Moreover, we won't be submitting any txns to the DVM.
-            const voting = new ethers.Contract(votingAddress, VotingArtifact.abi, provider)
+            const voting = new ethers.Contract(votingAddress, (VotingArtifact as any).abi, provider)
             setVotingContract(voting)
 
             const store = new ethers.Contract(storeAddress, StoreArtifact.abi, provider)
@@ -48,6 +48,4 @@ function useContracts() {
     return { votingContract, storeContract }
 }
 
-const Contracts = createContainer(useContracts)
-
-export default Contracts
+export const DvmContracts = createContainer(useContracts)
