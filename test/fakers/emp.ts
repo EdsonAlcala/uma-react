@@ -1,7 +1,5 @@
-import { EMPParameters } from '../types'
-import { getTestCollaterals } from '../utils/getTestCollateral'
-import { getTestPriceIdentifier } from '../utils/getTestPriceIdentifier'
-import { UMA, YIELD_DOLLAR_UMA } from '../constants'
+import { EMPParameters, UMA, YIELD_DOLLAR_UMA } from '../../src'
+import { getTestCollaterals, getTestPriceIdentifier } from '../test-utilities'
 
 export const buildFakeEMP: () => EMPParameters = () => {
     const umaCollateralInfo = getTestCollaterals().find((s) => s.symbol === UMA)
