@@ -8,7 +8,8 @@ module.exports = merge(common, {
         'react-dom',
         'ethers',
         'web3-utils',
-        '@uma/core'
+        '@uma/core',
+        "bnc-onboard"
     ]
 });
 

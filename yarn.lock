@@ -5045,7 +5045,7 @@ bnc-notify@^1.5.1:
     regenerator-runtime "^0.13.3"
     uuid "^3.3.3"
 
-bnc-onboard@^1.22.0:
+bnc-onboard@^1.22.0, bnc-onboard@^1.27.0:
   version "1.27.0"
   resolved "https://registry.npmjs.org/bnc-onboard/-/bnc-onboard-1.27.0.tgz#ccaf00bbd00681331ea62197660f3d033dccd7d8"
   integrity sha512-Tr4zeJLIZ5KuyPaRxGJhznzZVOeQX/yU1ZfnpNw9YIjzsFjtn8ulgMNLFgCe2DW+PcmNV/UulSq/e9/zd7BQtw==
