@@ -7,7 +7,7 @@ import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../.
 import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
 import { INFINITY, YES } from '../../../constants'
 
-export interface DepositProps {}
+export interface DepositProps { }
 
 export const Deposit: React.FC<DepositProps> = () => {
     // internal state
@@ -21,7 +21,7 @@ export const Deposit: React.FC<DepositProps> = () => {
     const { address: userAddress } = useWeb3Provider()
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
-    const { latestPrice } = usePriceFeed(syntheticState ? syntheticState.symbol : undefined)
+    const { latestPrice } = usePriceFeed(syntheticState)
 
     if (collateralState && syntheticState && empState && positionState && empInstance && latestPrice) {
         // position

@@ -8,7 +8,7 @@ import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD } from '../../../constant
 
 import { FormButton, FormTitle, Loader, MinLink, TransactionResultArea } from '../../common'
 
-export interface MintProps {}
+export interface MintProps { }
 
 export const Mint: React.FC<MintProps> = () => {
     // internal state
@@ -23,7 +23,7 @@ export const Mint: React.FC<MintProps> = () => {
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
     const totalsState = useTotals()
-    const { latestPrice } = usePriceFeed(syntheticState ? syntheticState.symbol : undefined)
+    const { latestPrice } = usePriceFeed(syntheticState)
 
     if (collateralState && syntheticState && empState && positionState && totalsState && latestPrice) {
         // position

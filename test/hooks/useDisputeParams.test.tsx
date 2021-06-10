@@ -2,11 +2,9 @@ import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 import React from 'react'
 
-import { deployEMP, getUMAInterfaces } from '../utils'
-import { ReactWeb3Provider } from './useWeb3Provider'
-import { useDisputeParams } from './useDisputeParams'
-import { UMARegistryProvider } from './useUMARegistry'
-import { EMPProvider } from './useEMPProvider'
+import { ReactWeb3Provider, useDisputeParams, UMARegistryProvider, EMPProvider, getUMAInterfaces } from '../../src'
+
+import { deployEMP } from '../test-utilities'
 import { buildFakeEMP } from '../fakers'
 
 describe('useDisputeParams tests', () => {

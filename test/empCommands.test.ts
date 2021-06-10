@@ -1,13 +1,13 @@
 import { ContractReceipt, ethers } from 'ethers'
 
-import { buildFakeEMP } from '../fakers'
-import { EMPData, EthereumAddress } from '../types'
+import { buildFakeEMP } from './fakers'
+import { EMPData, EthereumAddress } from '../src/types'
 
-import { create, deposit, redeem, requestWithdrawal } from './empCommands'
-import { getUMAInterfaces } from './umaInterfaces'
-import { deployEMP } from './deployEMP'
-import { toWeiSafe } from './conversions'
-import { getAllEMPData } from '../hooks'
+import { create, deposit, redeem, requestWithdrawal } from '../src/utils/empCommands'
+import { getUMAInterfaces } from '../src/utils/umaInterfaces'
+import { deployEMP } from './test-utilities/deployEMP'
+import { toWeiSafe } from '../src/utils/conversions'
+import { getAllEMPData } from '../src/hooks'
 
 describe.skip('empCommands', () => {
     let empAddress: EthereumAddress

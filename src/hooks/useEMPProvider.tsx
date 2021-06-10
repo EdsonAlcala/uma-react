@@ -97,77 +97,77 @@ export const EMPProvider: React.FC<PropsWithChildren<EMPProviderProps>> = ({ chi
                     console.log('Error on getAllEMPData', error)
                 })
 
-            const observableCallBack = (subscriber) => {
-                console.log('Called observable callback')
-                getAllEMPData(empInstance)
-                    .then((newState) => {
-                        setEMPState(newState as any)
-                        subscriber.next()
-                    })
-                    .catch((error) => console.log('error getAllEMPData', error))
-            }
+            // const observableCallBack = (subscriber) => {
+            //     console.log('Called observable callback')
+            //     getAllEMPData(empInstance)
+            //         .then((newState) => {
+            //             setEMPState(newState as any)
+            //             subscriber.next()
+            //         })
+            //         .catch((error) => console.log('error getAllEMPData', error))
+            // }
 
-            const observable = new Observable<any>((subscriber) => {
-                empInstance.on('LiquidationCreated', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('LiquidationDisputed', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('DisputeSettled', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('LiquidationWithdrawn', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('Deposit', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('Withdrawal', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('RequestWithdrawal', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('RequestWithdrawalExecuted', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('RequestWithdrawalCanceled', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('PositionCreated', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('NewSponsor', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('EndedSponsorPosition', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('Repay', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('Redeem', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('ContractExpired', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('SettleExpiredPosition', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('RequestTransferPosition', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('RequestTransferPositionExecuted', (...args) => {
-                    observableCallBack(subscriber)
-                })
-                empInstance.on('RequestTransferPositionCanceled', (...args) => {
-                    observableCallBack(subscriber)
-                })
-            })
+            // const observable = new Observable<any>((subscriber) => {
+            //     empInstance.on('LiquidationCreated', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('LiquidationDisputed', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('DisputeSettled', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('LiquidationWithdrawn', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('Deposit', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('Withdrawal', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('RequestWithdrawal', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('RequestWithdrawalExecuted', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('RequestWithdrawalCanceled', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('PositionCreated', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('NewSponsor', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('EndedSponsorPosition', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('Repay', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('Redeem', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('ContractExpired', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('SettleExpiredPosition', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('RequestTransferPosition', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('RequestTransferPositionExecuted', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            //     empInstance.on('RequestTransferPositionCanceled', (...args) => {
+            //         observableCallBack(subscriber)
+            //     })
+            // })
             // debounce to prevent subscribers making unnecessary calls
-            setChange$(observable.pipe(debounceTime(1000)))
+            // setChange$(observable.pipe(debounceTime(1000)))
         }
     }, [empInstance]) // eslint-disable-line
 

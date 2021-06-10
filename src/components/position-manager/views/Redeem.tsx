@@ -7,7 +7,7 @@ import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../.
 import { fromWei, toWeiSafe } from '../../../utils'
 import { FormButton, FormTitle, Loader, MaxLink, TransactionResultArea } from '../../common'
 
-export interface RedeemProps {}
+export interface RedeemProps { }
 
 export const Redeem: React.FC<RedeemProps> = () => {
     // internal state
@@ -22,7 +22,7 @@ export const Redeem: React.FC<RedeemProps> = () => {
     const { address: userAddress } = useWeb3Provider()
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
-    const { latestPrice } = usePriceFeed(syntheticState ? syntheticState.symbol : undefined)
+    const { latestPrice } = usePriceFeed(syntheticState)
 
     if (collateralState && syntheticState && empState && positionState && latestPrice) {
         // position

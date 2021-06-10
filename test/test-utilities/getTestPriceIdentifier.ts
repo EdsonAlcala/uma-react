@@ -1,4 +1,4 @@
-import { KOVAN_NETWORK, KOVAN_PRICE_IDENTIFIER, MAINNET_NETWORK, MAINNET_PRICE_IDENTIFIER } from '../constants'
+import { KOVAN_NETWORK, KOVAN_PRICE_IDENTIFIER, MAINNET_NETWORK, MAINNET_PRICE_IDENTIFIER } from '../../src/constants'
 
 export const getTestPriceIdentifier = (): string => {
     if (process.env.FORK_MODE === KOVAN_NETWORK) {

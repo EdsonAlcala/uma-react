@@ -1,11 +1,9 @@
 import { ethers } from 'ethers'
 
-import { UMA } from '../constants'
-import { EMPParameters } from '../types'
+import { UMA } from '../src/constants'
+import { EMPParameters } from '../src/types'
 
-import { getTestPriceIdentifier } from './getTestPriceIdentifier'
-import { getTestCollaterals } from './getTestCollateral'
-import { deployEMP } from './deployEMP'
+import { getTestPriceIdentifier, getTestCollaterals, deployEMP } from './test-utilities'
 
 describe('Deploy EMP Tests', () => {
     let signer: ethers.Signer

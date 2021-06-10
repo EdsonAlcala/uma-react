@@ -1,9 +1,9 @@
 import { ethers, utils, ContractReceipt } from 'ethers'
 import { toWei } from 'web3-utils'
 
-import { EMPParameters, EthereumAddress } from '../types'
-import { getUMAAbis } from './umaAbis'
-import { getUMAAddresses } from './umaAddresses'
+import { EMPParameters, EthereumAddress } from '../../src/types'
+import { getUMAAbis } from '../../src/utils/umaAbis'
+import { getUMAAddresses } from '../../src/utils/umaAddresses'
 
 interface EMPDeployResult {
     receipt: ContractReceipt

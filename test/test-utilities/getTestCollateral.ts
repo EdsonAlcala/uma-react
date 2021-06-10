@@ -1,4 +1,4 @@
-import { KOVAN_NETWORK, MAINNET_NETWORK } from '../constants'
+import { KOVAN_NETWORK, MAINNET_NETWORK } from '../../src/constants'
 import { kovanCollaterals } from './kovanCollaterals'
 import { mainnetCollaterals } from './mainnetCollaterals'
 

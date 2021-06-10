@@ -21,7 +21,7 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: /node_modules/,
+                exclude: /node_modules/
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
@@ -41,7 +41,9 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            verbose: true
+        }),
         new Dotenv()
     ]
 };

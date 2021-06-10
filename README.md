@@ -2,8 +2,10 @@
 
 A set of hooks and utilities to create Synthetic web applications with UMA.
 
+
 ### Peer dependencies
 
+- @uma/core@2.1.0
 - ethers (5.0.31)
 - @material-ui/core (4.11.3)
 - @material-ui/icons (4.11.2)

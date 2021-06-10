@@ -3,13 +3,14 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 
-import { deployEMP, getUMAInterfaces, Loader, ModalPositionManager, PositionManager, toWeiSafe } from '..'
+import { getUMAInterfaces, toWeiSafe } from '..'
 import { ReactWeb3Provider } from '..'
-import { buildFakeEMP } from '../fakers'
+import { buildFakeEMP } from '../test/fakers'
+import { deployEMP } from '../test/test-utilities'
 import { EMPProvider, useEMPAt, useWeb3Provider } from '..'
 import { getAllEMPData, UMARegistryProvider } from '..'
 import { useLocalStorage } from './useLocalStorage'
-
+import { Loader, ModalPositionManager, PositionManager } from '../components'
 // call yarn start:dev
 const App: React.FC = () => {
     // external
