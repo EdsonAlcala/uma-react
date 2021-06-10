@@ -2643,11 +2643,6 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@openzeppelin/contracts@3.4.1-solc-0.7-2":
-  version "3.4.1-solc-0.7-2"
-  resolved "http://localhost:4873/@openzeppelin%2fcontracts/-/contracts-3.4.1-solc-0.7-2.tgz#371c67ebffe50f551c3146a9eec5fe6ffe862e92"
-  integrity sha512-tAG9LWg8+M2CMu7hIsqHPaTyG4uDzjr6mhvH96LvOpLZZj6tgzTluBt+LsCf1/QaYrlis6pITvpIaIhE+iZB+Q==
-
 "@pedrouid/environment@^1.0.1":
   version "1.0.1"
   resolved "http://localhost:4873/@pedrouid%2fenvironment/-/environment-1.0.1.tgz#858f0f8a057340e0b250398b75ead77d6f4342ec"
@@ -3158,7 +3153,7 @@
     crypto-js "^3.1.9-1"
     debug "^4.3.1"
 
-"@truffle/contract@^4.2.20", "@truffle/contract@^4.3.15":
+"@truffle/contract@^4.2.20":
   version "4.3.19"
   resolved "http://localhost:4873/@truffle%2fcontract/-/contract-4.3.19.tgz#cbd6b4f08b7d3bb5e7cdaba205f17c80cc3f7b60"
   integrity sha512-asBwoxUePLwNAuYfHO/SvyZyqFQ9QMeUieJ6PXD9DBrUdNpjgJvk+WHYnXH4bWHgHakbTpL1MEBa1qmcAL+LMw==
@@ -3881,7 +3876,7 @@
     truffle-deploy-registry "^0.5.1"
     web3 "1.2.11"
 
-"@uma/common@^2.0.0", "@uma/common@^2.0.1", "@uma/common@^2.1.0", "@uma/common@^2.2.0":
+"@uma/common@^2.0.0", "@uma/common@^2.0.1", "@uma/common@^2.1.0":
   version "2.2.0"
   resolved "http://localhost:4873/@uma%2fcommon/-/common-2.2.0.tgz#1118ba14149af3e8b9bd3b3fe94df478ee51d726"
   integrity sha512-Ojuj1SIq9dkN9DKDlOUUrSkevzqW77dm3zTVIy8T1DKwQRllwSPGSd//u3y04Ecz+hX1OSXwKqmQl1vEIx3gvw==
@@ -3993,26 +3988,6 @@
     "@uniswap/v2-core" "1.0.0"
     "@uniswap/v2-periphery" "1.1.0-beta.0"
 
-"@uma/core@^2.1.0":
-  version "2.3.0"
-  resolved "http://localhost:4873/@uma%2fcore/-/core-2.3.0.tgz#9e63f95c793994a637951b01547eed5f0ae0bc2d"
-  integrity sha512-TEXrbYa4qRAMbuZsHvoQH0bpTliGTyImUB/RyUUk5ehd1s+R+daGQY7b8uikp+08AEhxf79D0YCasz3KYR6r6A==
-  dependencies:
-    "@truffle/contract" "^4.3.15"
-    "@uma/common" "^2.2.0"
-    "@uma/core-1-1-0" "npm:@uma/core@1.1.0"
-    "@uma/core-1-2-0" "npm:@uma/core@1.2.0"
-    "@uma/core-1-2-1" "npm:@uma/core@1.2.1"
-    "@uma/core-1-2-2" "npm:@uma/core@1.2.2"
-    "@uma/core-2-0-0" "npm:@uma/core@2.0.0"
-    "@uma/core-2-0-1" "npm:@uma/core@2.0.1"
-    "@uniswap/lib" "4.0.1-alpha"
-    "@uniswap/v2-core" "1.0.0"
-    "@uniswap/v2-periphery" "1.1.0-beta.0"
-    "@uniswap/v3-core" "^1.0.0-rc.2"
-    "@uniswap/v3-periphery" "^1.0.0-beta.23"
-    decimal.js "^10.2.1"
-
 "@umaprotocol/truffle-ledger-provider@^1.0.3", "@umaprotocol/truffle-ledger-provider@^1.0.5":
   version "1.0.5"
   resolved "http://localhost:4873/@umaprotocol%2ftruffle-ledger-provider/-/truffle-ledger-provider-1.0.5.tgz#e30025c4ecc2f2540825c46788ef1291474080be"
@@ -4075,7 +4050,7 @@
   resolved "http://localhost:4873/@uniswap%2flib/-/lib-1.1.1.tgz#0afd29601846c16e5d082866cbb24a9e0758e6bc"
   integrity sha512-2yK7sLpKIT91TiS5sewHtOa7YuM8IuBXVl4GZv2jZFys4D2sY7K5vZh6MqD25TPA95Od+0YzCVq6cTF2IKrOmg==
 
-"@uniswap/lib@4.0.1-alpha", "@uniswap/lib@^4.0.1-alpha":
+"@uniswap/lib@4.0.1-alpha":
   version "4.0.1-alpha"
   resolved "http://localhost:4873/@uniswap%2flib/-/lib-4.0.1-alpha.tgz#2881008e55f075344675b3bca93f020b028fbd02"
   integrity sha512-f6UIliwBbRsgVLxIaBANF6w09tYqc6Y/qXdsrbEmXHyFA7ILiKrIwRFXe1yOg8M3cksgVsO9N7yuL2DdCGQKBA==
@@ -4085,11 +4060,6 @@
   resolved "http://localhost:4873/@uniswap%2fv2-core/-/v2-core-1.0.0.tgz#e0fab91a7d53e8cafb5326ae4ca18351116b0844"
   integrity sha512-BJiXrBGnN8mti7saW49MXwxDBRFiWemGetE58q8zgfnPPzQKq55ADltEILqOt6VFZ22kVeVKbF8gVd8aY3l7pA==
 
-"@uniswap/v2-core@1.0.1":
-  version "1.0.1"
-  resolved "http://localhost:4873/@uniswap%2fv2-core/-/v2-core-1.0.1.tgz#af8f508bf183204779938969e2e54043e147d425"
-  integrity sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q==
-
 "@uniswap/v2-periphery@1.1.0-beta.0":
   version "1.1.0-beta.0"
   resolved "http://localhost:4873/@uniswap%2fv2-periphery/-/v2-periphery-1.1.0-beta.0.tgz#20a4ccfca22f1a45402303aedb5717b6918ebe6d"
@@ -4097,23 +4067,6 @@
   dependencies:
     "@uniswap/lib" "1.1.1"
     "@uniswap/v2-core" "1.0.0"
-
-"@uniswap/v3-core@1.0.0", "@uniswap/v3-core@^1.0.0-rc.2":
-  version "1.0.0"
-  resolved "http://localhost:4873/@uniswap%2fv3-core/-/v3-core-1.0.0.tgz#6c24adacc4c25dceee0ba3ca142b35adbd7e359d"
-  integrity sha512-kSC4djMGKMHj7sLMYVnn61k9nu+lHjMIxgg9CDQT+s2QYLoA56GbSK9Oxr+qJXzzygbkrmuY6cwgP6cW2JXPFA==
-
-"@uniswap/v3-periphery@^1.0.0-beta.23":
-  version "1.1.0"
-  resolved "http://localhost:4873/@uniswap%2fv3-periphery/-/v3-periphery-1.1.0.tgz#0afdf4d0bed536d06988a9d29f466c05f9f3286b"
-  integrity sha512-fZU0Ohf4uIpHxMEKuTjdjIPM/fWPh35m5sRAKo93RqAlwPD8UmMhngXEwcC4Hj8fz3bimmoY++2DiniGUVzpdQ==
-  dependencies:
-    "@openzeppelin/contracts" "3.4.1-solc-0.7-2"
-    "@uniswap/lib" "^4.0.1-alpha"
-    "@uniswap/v2-core" "1.0.1"
-    "@uniswap/v3-core" "1.0.0"
-    base64-sol "1.0.1"
-    hardhat-watcher "^2.1.1"
 
 "@walletconnect/browser-utils@^1.4.1":
   version "1.4.1"
@@ -5720,11 +5673,6 @@ base64-js@^1.0.2, base64-js@^1.3.0, base64-js@^1.3.1:
   resolved "http://localhost:4873/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-base64-sol@1.0.1:
-  version "1.0.1"
-  resolved "http://localhost:4873/base64-sol/-/base64-sol-1.0.1.tgz#91317aa341f0bc763811783c5729f1c2574600f6"
-  integrity sha512-ld3cCNMeXt4uJXmLZBHFGMvVpK9KsLVEhPpFRXnvSVAqABKbuNZg/+dsq3NuM+wxFLb/UrVkz7m1ciWmkMfTbg==
-
 base@^0.11.1:
   version "0.11.2"
   resolved "http://localhost:4873/base/-/base-0.11.2.tgz#7bde5ced145b6d551a90db87f83c558b4eb48a8f"
@@ -5868,18 +5816,7 @@ bn.js@^5.0.0, bn.js@^5.1.1, bn.js@^5.1.2, bn.js@^5.1.3, bn.js@^5.2.0:
   resolved "http://localhost:4873/bn.js/-/bn.js-5.2.0.tgz#358860674396c6997771a9d051fcc1b57d4ae002"
   integrity sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==
 
-bnc-notify@^1.5.1:
-  version "1.6.2"
-  resolved "http://localhost:4873/bnc-notify/-/bnc-notify-1.6.2.tgz#f3b0b222668560fe83332871420dbbf04cac9839"
-  integrity sha512-W4EiukypimEBY9/jqlpZYduxniRh5T5yJxyZ6H8Vd0L01B3t4Kb6A6Mx8mKoU+MuucmfNhWaoAKm8EYWPNG9Uw==
-  dependencies:
-    bignumber.js "^9.0.0"
-    bnc-sdk "^3.3.4"
-    lodash.debounce "^4.0.8"
-    regenerator-runtime "^0.13.3"
-    uuid "^3.3.3"
-
-bnc-onboard@^1.22.0:
+bnc-onboard@^1.27.0:
   version "1.27.0"
   resolved "http://localhost:4873/bnc-onboard/-/bnc-onboard-1.27.0.tgz#ccaf00bbd00681331ea62197660f3d033dccd7d8"
   integrity sha512-Tr4zeJLIZ5KuyPaRxGJhznzZVOeQX/yU1ZfnpNw9YIjzsFjtn8ulgMNLFgCe2DW+PcmNV/UulSq/e9/zd7BQtw==
@@ -6556,7 +6493,7 @@ chokidar@^2.1.8:
   optionalDependencies:
     fsevents "^1.2.7"
 
-chokidar@^3.4.0, chokidar@^3.4.1, chokidar@^3.4.3:
+chokidar@^3.4.0, chokidar@^3.4.1:
   version "3.5.1"
   resolved "http://localhost:4873/chokidar/-/chokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"
   integrity sha512-9+s+Od+W0VJJzawDma/gvBNQqkTiqYTWLuZoyAsivsI4AaWTCzHG06/TMjsf1cYe9Cb97UCEhjz7HvnPk2p/tw==
@@ -10410,13 +10347,6 @@ hardhat-gas-reporter@^1.0.3:
     eth-gas-reporter "^0.2.20"
     sha1 "^1.1.1"
 
-hardhat-watcher@^2.1.1:
-  version "2.1.1"
-  resolved "http://localhost:4873/hardhat-watcher/-/hardhat-watcher-2.1.1.tgz#8b05fec429ed45da11808bbf6054a90f3e34c51a"
-  integrity sha512-zilmvxAYD34IofBrwOliQn4z92UiDmt2c949DW4Gokf0vS0qk4YTfVCi/LmUBICThGygNANE3WfnRTpjCJGtDA==
-  dependencies:
-    chokidar "^3.4.3"
-
 hardhat@^2.0.4:
   version "2.3.0"
   resolved "http://localhost:4873/hardhat/-/hardhat-2.3.0.tgz#5c29f8b4d08155c3dc8c908af9713fd5079522d5"
@@ -11545,14 +11475,6 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "http://localhost:4873/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
-
-isomorphic-fetch@^3.0.0:
-  version "3.0.0"
-  resolved "http://localhost:4873/isomorphic-fetch/-/isomorphic-fetch-3.0.0.tgz#0267b005049046d2421207215d45d6a262b8b8b4"
-  integrity sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==
-  dependencies:
-    node-fetch "^2.6.1"
-    whatwg-fetch "^3.4.1"
 
 isstream@~0.1.2:
   version "0.1.2"
@@ -15929,7 +15851,7 @@ regenerator-runtime@^0.11.0:
   resolved "http://localhost:4873/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
-regenerator-runtime@^0.13.3, regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.7:
+regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.7:
   version "0.13.7"
   resolved "http://localhost:4873/regenerator-runtime/-/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
   integrity sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==
@@ -18169,26 +18091,12 @@ ultron@~1.1.0:
   resolved "http://localhost:4873/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
   integrity sha512-UIEXBNeYmKptWH6z8ZnqTeS8fV74zG0/eRU9VGkpzz+LIJNs8W/zM/L+7ctCkRrgbNnnR0xxw4bKOr0cW0N0Og==
 
-uma-react@^0.4.1:
-  version "0.4.11"
-  resolved "http://localhost:4873/uma-react/-/uma-react-0.4.11.tgz#449944f8154daca111f0db2f007aa02d7aa5ce76"
-  integrity sha512-PSrxU22riM5DpauheKiAwDI4sI8O5XiUQ+6RXzKbNzFevpqx8gRvmLtonhScd9QzaKUv9QMeX03q9B24F6KSqw==
-  dependencies:
-    "@uma/core" "^2.1.0"
-    axios "^0.21.1"
-    bnc-notify "^1.5.1"
-    bnc-onboard "^1.22.0"
-    isomorphic-fetch "^3.0.0"
-    unstated-next "^1.1.0"
-
-uma-react@^0.5.11:
-  version "0.5.11"
-  resolved "http://localhost:4873/uma-react/-/uma-react-0.5.11.tgz#4c0a7635cf6524fd2dae9537b32adc28f899eaad"
-  integrity sha512-loQTxz3xqoGMMs1TGOj65jLOBiu536kMj5lXN8NBeSzUlLMcG9lHWV1V2PdBD1grm0MNPuyRMjauS78fhplSbQ==
+uma-react@^0.5.13:
+  version "0.5.13"
+  resolved "http://localhost:4873/uma-react/-/uma-react-0.5.13.tgz#63a46f6d02faea4280d8e0cc5ca49fc4475ec1a5"
+  integrity sha512-N2Sd2syYiVtwLW+dKRWGF4H0ak/s/lyLQRA+cZ0IFTTX6SD+1Q/zh1NvyvvVyxpJFWWj+IEkog3FELK/q0Tzxw==
   dependencies:
     axios "^0.21.1"
-    bnc-onboard "^1.22.0"
-    uma-react "^0.4.1"
     unstated-next "^1.1.0"
 
 unbox-primitive@^1.0.1:
@@ -18495,7 +18403,7 @@ uuid@8.3.2, uuid@^8.3.0:
   resolved "http://localhost:4873/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-uuid@^3.3.2, uuid@^3.3.3, uuid@^3.4.0:
+uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "http://localhost:4873/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
