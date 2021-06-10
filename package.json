@@ -1,6 +1,6 @@
 {
   "name": "uma-react",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "UMA React SDK to create Synthetic Apps",
   "main": "dist/uma-react.js",
   "types": "dist/index.d.ts",
@@ -42,7 +42,7 @@
     "test:priceFeed": "jest usePriceFeed.test.tsx --verbose --silent=false",
     "test:useEmps": "jest useEMPs.test.tsx --verbose --silent=false",
     "test:useTotalPositions": "jest useTotalPositions.test.tsx --verbose --silent=false",
-    "publish:local": "npm publish --registry http://localhost:4873/"
+    "publish:local": "yarn build && npm publish --registry http://localhost:4873/"
   },
   "devDependencies": {
     "@apollo/client": "^3.3.15",
