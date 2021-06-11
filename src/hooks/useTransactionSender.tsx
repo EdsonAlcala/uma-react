@@ -2,8 +2,6 @@ import { ContractReceipt, ethers } from 'ethers'
 import { useState } from 'react'
 import { EthereumAddress } from '../types'
 
-interface ITransactionSender {}
-
 // WIP
 // abstract setMaxAllowance, emp methods in a hook and include`error`, `loading` and `success` and `hash`
 

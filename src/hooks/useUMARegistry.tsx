@@ -19,7 +19,7 @@ const UMAContext = React.createContext<IUMAProvider>({
     },
 })
 
-export const UMARegistryProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+export const UMARegistryProvider: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
     const [contracts, setContracts] = useState(new Map<UMAContractName, EthereumAddress>())
     const [interfaces, setInterfaces] = useState(new Map<UMAContractName, ethers.utils.Interface>())
     const { network } = useWeb3Provider()

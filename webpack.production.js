@@ -5,7 +5,11 @@ module.exports = merge(common, {
     mode: 'production',
     externals: [
         'react',
-        'react-dom'
+        'react-dom',
+        'ethers',
+        'web3-utils',
+        '@uma/core',
+        "bnc-onboard"
     ]
 });
 

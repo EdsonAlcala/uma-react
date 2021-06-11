@@ -14,6 +14,4 @@ function useEmpAddress() {
     }
 }
 
-const EmpAddress = createContainer(useEmpAddress)
-
-export default EmpAddress
+export const EmpAddress = createContainer(useEmpAddress)

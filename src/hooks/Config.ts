@@ -20,12 +20,12 @@ export const config = (network: Network | null) => {
                         preferred: true,
                     },
                     { walletName: 'coinbase', preferred: true },
-                    {
-                        walletName: 'portis',
-                        apiKey: process.env.NEXT_PUBLIC_PORTIS_API_KEY,
-                    },
-                    { walletName: 'trust', rpcUrl: infuraRpc },
-                    { walletName: 'dapper' },
+                    // {
+                    //     walletName: 'portis',
+                    //     apiKey: process.env.NEXT_PUBLIC_PORTIS_API_KEY,
+                    // },
+                    // { walletName: 'trust', rpcUrl: infuraRpc },
+                    // { walletName: 'dapper' },
                     {
                         walletName: 'walletConnect',
                         rpc: { [network?.chainId || 1]: infuraRpc },

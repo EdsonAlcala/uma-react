@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react'
 import { utils } from 'ethers'
 
 import { Connection } from './Connection'
-import DvmContracts from './DvmContracts'
-import EmpAddress from './EmpAddress'
+import { DvmContracts } from './DvmContracts'
+import { EmpAddress } from './EmpAddress'
 import { useEMPProvider } from './useEMPProvider'
 
 const { formatUnits: fromWei } = utils
@@ -85,6 +85,4 @@ const useContractState = () => {
     return { dvmState: state }
 }
 
-const DvmState = createContainer(useContractState)
-
-export default DvmState
+export const DvmState = createContainer(useContractState)

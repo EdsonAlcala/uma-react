@@ -1,28 +1,36 @@
 import { useState, useEffect } from 'react'
+import { getOffchainPriceFromTokenSymbol } from '../utils/getOffchainPrice'
+import { getSimplePriceByContract } from '../utils/getCoinGeckoTokenPrice'
 
-import { getOffchainPriceFromTokenSymbol, getPricefeedParamsFromTokenSymbol } from '../utils'
+import { Token, TokenData } from '../types'
 
-export const usePriceFeed = (tokenSymbol?: string) => {
+export const usePriceFeed = (token?: Token | TokenData) => {
     const [latestPrice, setLatestPrice] = useState<number | null>(null)
-    const [source, setSource] = useState<string[] | undefined>(undefined)
 
     const queryPrice = async () => {
-        setLatestPrice(null)
-
-        if (tokenSymbol) {
-            const query = await getOffchainPriceFromTokenSymbol(tokenSymbol)
-            setLatestPrice(query)
-            setSource(getPricefeedParamsFromTokenSymbol(tokenSymbol)?.source)
+        if (token) {
+            try {
+                const address = token.id
+                const query = await getSimplePriceByContract(address)
+                setLatestPrice(query)
+            } catch (error) {
+                try {
+                    const symbol = token.symbol
+                    const query = await getOffchainPriceFromTokenSymbol(symbol)
+                    setLatestPrice(query)
+                } catch (error) {
+                    console.log('Error getting price for', token.symbol, token.id)
+                    setLatestPrice(null)
+                }
+            }
         }
     }
 
-    // update price on setting of contract
     useEffect(() => {
         queryPrice()
-    }, [tokenSymbol])
+    }, [token])
 
     return {
         latestPrice,
-        sourceUrls: source,
     }
 }
