@@ -2,12 +2,10 @@ import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
-import { getUMAInterfaces, deployEMP } from '../utils'
+import { ReactWeb3Provider, getUMAInterfaces, EMPProvider, useEMPProvider, UMARegistryProvider } from '../../src'
 
+import { deployEMP, } from '../test-utilities'
 import { buildFakeEMP } from '../fakers'
-import { EMPProvider, useEMPProvider } from './useEMPProvider'
-import { UMARegistryProvider } from './useUMARegistry'
-import { ReactWeb3Provider } from './useWeb3Provider'
 
 describe('useEMPProvider tests', () => {
     let injectedProvider: ethers.providers.Web3Provider

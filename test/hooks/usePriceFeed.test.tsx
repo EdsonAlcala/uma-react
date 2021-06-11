@@ -1,8 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 
-import { YIELD_DOLLAR_UMA } from '../constants'
-
-import { usePriceFeed } from './usePriceFeed'
+import { usePriceFeed, YIELD_DOLLAR_UMA } from '../../src'
 
 describe('usePriceFeed tests', () => {
     const render = () => {

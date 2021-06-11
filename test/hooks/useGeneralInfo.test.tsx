@@ -2,11 +2,8 @@ import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 import React from 'react'
 
-import { ReactWeb3Provider } from './useWeb3Provider'
-import { useGeneralInfo } from './useGeneralInfo'
-import { EMPProvider } from './useEMPProvider'
-import { UMARegistryProvider } from './useUMARegistry'
-import { deployEMP, getUMAInterfaces } from '../utils'
+import { UMARegistryProvider, ReactWeb3Provider, useGeneralInfo, EMPProvider, getUMAInterfaces } from '../../src'
+import { deployEMP, } from '../test-utilities'
 import { buildFakeEMP } from '../fakers'
 
 describe('useGeneralInfo tests', () => {

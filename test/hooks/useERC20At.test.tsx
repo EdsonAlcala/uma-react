@@ -2,12 +2,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 import React from 'react'
 
-import { EthereumAddress } from '../types'
-
-import { ReactWeb3Provider } from './useWeb3Provider'
-import { useERC20At } from './useERC20At'
-import { deployERC20 } from './utils'
-import { UMARegistryProvider } from './useUMARegistry'
+import { EthereumAddress, ReactWeb3Provider, useERC20At, UMARegistryProvider, deployERC20 } from '../../src'
 
 describe('useERC20At tests', () => {
     let tokenAddress: EthereumAddress

@@ -2,13 +2,9 @@ import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
-import { deployEMP, getUMAInterfaces } from '../utils'
-import { EMPData, EthereumAddress } from '../types'
+import { UMARegistryProvider, useToken, getAllEMPData, EMPData, EthereumAddress, getUMAInterfaces, EMPProvider, ReactWeb3Provider } from '../../src'
 
-import { ReactWeb3Provider } from './useWeb3Provider'
-import { useToken } from './useToken'
-import { getAllEMPData } from './useEMPProvider'
-import { UMARegistryProvider } from './useUMARegistry'
+import { deployEMP, } from '../test-utilities'
 import { buildFakeEMP } from '../fakers'
 
 describe('useCollateralToken tests', () => {

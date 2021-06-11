@@ -1,15 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 import React from 'react'
-import { EthereumAddress } from '../types'
 
-import { deployEMP, getUMAInterfaces } from '../utils'
-
-import { ReactWeb3Provider } from './useWeb3Provider'
-import { createPosition } from './utils'
-import { usePosition } from './usePosition'
-import { EMPProvider } from './useEMPProvider'
-import { UMARegistryProvider } from './useUMARegistry'
+import { UMARegistryProvider, getUMAInterfaces, EMPProvider, ReactWeb3Provider, EthereumAddress, createPosition, usePosition } from '../../src'
+import { deployEMP, } from '../test-utilities'
 import { buildFakeEMP } from '../fakers'
 
 describe.skip('usePosition tests', () => {

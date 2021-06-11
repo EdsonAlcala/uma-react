@@ -2,7 +2,7 @@ import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 
-import { useWeb3Provider, ReactWeb3Provider } from './useWeb3Provider'
+import { useWeb3Provider, ReactWeb3Provider } from '../../src'
 
 describe('useWeb3Provider tests', () => {
     let injectedProvider: ethers.providers.Web3Provider

@@ -1,9 +1,8 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-
-import { useUMARegistry, UMARegistryProvider } from './useUMARegistry'
 import { ethers } from 'ethers'
-import { ReactWeb3Provider } from './useWeb3Provider'
+
+import { ReactWeb3Provider, useUMARegistry, UMARegistryProvider } from '../../src'
 
 describe('useUMARegistry tests', () => {
     let injectedProvider: ethers.providers.Web3Provider
