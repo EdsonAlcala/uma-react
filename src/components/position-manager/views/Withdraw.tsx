@@ -7,9 +7,7 @@ import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, YES } from '../../../con
 import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
 import { Box, Button, Grid, LinearProgress, TextField, Tooltip, Typography } from '@material-ui/core'
 
-export interface WithdrawProps {}
-
-export const Withdraw: React.FC<WithdrawProps> = () => {
+export const Withdraw: React.FC = () => {
     // internal state
     const [collateral, setCollateral] = useState<string>('0')
     const [hash, setHash] = useState<string | undefined>(undefined)

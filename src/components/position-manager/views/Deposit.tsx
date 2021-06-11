@@ -7,9 +7,7 @@ import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../.
 import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
 import { INFINITY, YES } from '../../../constants'
 
-export interface DepositProps {}
-
-export const Deposit: React.FC<DepositProps> = () => {
+export const Deposit: React.FC = () => {
     // internal state
     const [collateral, setCollateral] = useState<string>('0')
     const [hash, setHash] = useState<string | undefined>(undefined)

@@ -1,8 +1,8 @@
+// eslint-disable-next-line
 const ganache = require('ganache-core')
 
 import { ethers } from 'ethers'
-import { KOVAN_NETWORK, MAINNET_NETWORK } from '../constants'
-import { IGanacheOptions } from '../types'
+import { KOVAN_NETWORK, MAINNET_NETWORK, IGanacheOptions } from '../src'
 
 export enum Status {
     Running = 'Running',
