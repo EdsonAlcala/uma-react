@@ -49,7 +49,8 @@ export const UMARegistryProvider: React.FC<PropsWithChildren<{}>> = ({ children 
             value={{
                 getContractAddress,
                 getContractInterface,
-            }}>
+            }}
+        >
             {children}
         </UMAContext.Provider>
     )

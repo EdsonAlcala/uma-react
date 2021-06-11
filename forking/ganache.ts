@@ -43,7 +43,11 @@ export class Ganache {
                 balance: ethers.utils.hexlify(ethers.utils.parseEther('1000')),
             },
         ],
-        unlocked_accounts: ['0x9A8f92a830A5cB89a3816e3D267CB7791c16b04D', '0x02c8ef8bf76c4bff3b961ff3c3db665a00fc02b4', '0xddfC7E3B4531158acf4C7a5d2c3cB0eE81d018A5'],
+        unlocked_accounts: [
+            '0x9A8f92a830A5cB89a3816e3D267CB7791c16b04D',
+            '0x02c8ef8bf76c4bff3b961ff3c3db665a00fc02b4',
+            '0xddfC7E3B4531158acf4C7a5d2c3cB0eE81d018A5',
+        ],
     }
 
     constructor(options?: Partial<IGanacheOptions>) {

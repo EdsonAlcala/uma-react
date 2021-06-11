@@ -7,10 +7,10 @@ import { usePriceFeed } from './usePriceFeed'
 describe('usePriceFeed tests', () => {
     const render = () => {
         const newToken = {
-            id: "0x000",
+            id: '0x000',
             name: YIELD_DOLLAR_UMA,
             decimals: 18,
-            symbol: YIELD_DOLLAR_UMA
+            symbol: YIELD_DOLLAR_UMA,
         }
         const result = renderHook(() => usePriceFeed(newToken))
         return result

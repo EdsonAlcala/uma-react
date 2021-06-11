@@ -8,7 +8,7 @@ import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD } from '../../../constant
 
 import { FormButton, FormTitle, Loader, MinLink, TransactionResultArea } from '../../common'
 
-export interface MintProps { }
+export interface MintProps {}
 
 export const Mint: React.FC<MintProps> = () => {
     // internal state

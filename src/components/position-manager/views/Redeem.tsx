@@ -7,7 +7,7 @@ import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../.
 import { fromWei, toWeiSafe } from '../../../utils'
 import { FormButton, FormTitle, Loader, MaxLink, TransactionResultArea } from '../../common'
 
-export interface RedeemProps { }
+export interface RedeemProps {}
 
 export const Redeem: React.FC<RedeemProps> = () => {
     // internal state
