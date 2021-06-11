@@ -7,3 +7,6 @@ jest.setup.ts
 getDai.ts
 getUMA.ts
 getOffchainPrice.ts
+demo
+dev
+docs-website
