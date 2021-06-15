@@ -19,7 +19,7 @@ export const PositionManager: React.FC = () => {
 
     return (
         <React.Fragment>
-            <StyledTabs orientation="vertical" value={tab} onChange={handleTabChange} aria-label="Vertical tabs example">
+            <StyledTabs orientation="vertical" value={tab} onChange={handleTabChange}>
                 <StyledTab label="Mint" {...a11yProps(0)} />
                 <StyledTab label="Deposit" {...a11yProps(1)} />
                 <StyledTab label="Withdraw" {...a11yProps(2)} />
@@ -63,7 +63,7 @@ const StyledTab = withStyles((theme) => ({
 const a11yProps = (index: any) => {
     return {
         id: `vertical-tab-${index}`,
-        'aria-controls': `vertical-tabpanel-${index}`,
+        'aria-controls': `vertical-tabpanel-2-${index}`,
     }
 }
 

@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-import { Ganache } from './src/utils/ganache'
+import { Ganache } from './ganache'
 
 const start = async () => {
     const instance = new Ganache({

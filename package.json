@@ -39,7 +39,7 @@
     "test:generalInfo": "jest useGeneralInfo.test.tsx --verbose --silent=false",
     "test:erc20": "jest useERC20At.test.tsx --verbose --silent=false",
     "test:disputeParams": "jest useDisputeParams.test.tsx --verbose --silent=false",
-    "chain": "FORK_MODE=Mainnet ts-node -O '{\"module\":\"commonjs\"}' chain-runner.ts",
+    "chain": "FORK_MODE=Mainnet ts-node -O '{\"module\":\"commonjs\"}' ./forking/chain-runner.ts",
     "test:empCommands": "jest empCommands.test.ts --verbose --silent=false",
     "test:priceFeed": "jest usePriceFeed.test.tsx --verbose --silent=false",
     "test:useEmps": "jest useEMPs.test.tsx --verbose --silent=false",
