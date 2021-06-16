@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 
-import { Loader, ModalPositionManager, PositionManager } from '../src'
+import { Connection, Loader, ModalPositionManager, PositionManager } from '../src'
 import { EMPProvider, getAllEMPData, ReactWeb3Provider, UMARegistryProvider, useEMPAt, useWeb3Provider } from '../src'
 import { getUMAInterfaces, toWeiSafe } from '../src'
 import { useLocalStorage } from './useLocalStorage'
@@ -13,6 +13,7 @@ import { deployEMP } from '../test/test-utilities'
 
 const App: React.FC = () => {
     // external
+    const { connect } = Connection.useContainer()
     const { provider } = useWeb3Provider()
 
     const [empAddress, setEMPAddress] = useLocalStorage('empAddress', undefined)
@@ -122,6 +123,9 @@ const App: React.FC = () => {
                     >
                         Open
                     </button>
+                    <button onClick={connect}>
+                        Connect
+                    </button>
                     <ModalPositionManager open={openModal} handleClose={handleClose} />
                 </EMPProvider>
             </UMARegistryProvider>
@@ -144,9 +148,11 @@ const AppWrapped: React.FC = () => {
     }
 
     return (
-        <ReactWeb3Provider injectedProvider={provider}>
-            <App />
-        </ReactWeb3Provider>
+        <Connection.Provider>
+            <ReactWeb3Provider injectedProvider={provider}>
+                <App />
+            </ReactWeb3Provider>
+        </Connection.Provider>
     )
 }
 
