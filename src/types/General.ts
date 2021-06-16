@@ -17,11 +17,12 @@ export interface FinancialContract {
     expirationTimestamp: NumberAsString
     liquidationLiveness: NumberAsString
     withdrawLiveness: NumberAsString
-    minimumSponsorTokens: NumberAsString
+    minSponsorTokens: NumberAsString
     totalTokensOutstanding: NumberAsString
     totalPositionCollateral: NumberAsString
     disputeBondPercentage: NumberAsString
     disputerDisputeRewardPercentage: NumberAsString
     sponsorDisputeRewardPercentage: NumberAsString
     positions: any[]
+    cumulativeFeeMultiplier: NumberAsString
 }
