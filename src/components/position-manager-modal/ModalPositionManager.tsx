@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dialog, DialogContent, styled } from '@material-ui/core'
+import { Dialog, DialogContent } from '@material-ui/core'
 
 import { PositionManager } from '../position-manager/Main'
 
@@ -8,21 +8,12 @@ export interface ModalPositionManagerProps {
     handleClose: () => void
 }
 
-const StyledDialogContent = styled(DialogContent)({
-    backgroundColor: 'white', // TODO
-    display: 'flex',
-    height: 320,
-    padding: 0,
-    paddingTop: 0,
-    alignItems: 'center',
-})
-
 export const ModalPositionManager: React.FC<ModalPositionManagerProps> = ({ open, handleClose }) => {
     return (
-        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
-            <StyledDialogContent style={{ paddingTop: '0' }}>
+        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
+            <DialogContent style={{ backgroundColor: 'white', display: 'flex', height: 320, padding: 0, paddingTop: '0', alignItems: 'center' }}>
                 <PositionManager />
-            </StyledDialogContent>
+            </DialogContent>
         </Dialog>
     )
 }
