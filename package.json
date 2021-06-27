@@ -1,6 +1,6 @@
 {
   "name": "uma-react",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "UMA React SDK to create Synthetic Apps",
   "main": "dist/uma-react.js",
   "types": "dist/index.d.ts",

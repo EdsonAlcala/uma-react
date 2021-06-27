@@ -3,7 +3,10 @@ import { Box, Tab, Tabs, withStyles } from '@material-ui/core'
 
 import { Deposit, Mint, Redeem, Withdraw } from './views'
 
-export const PositionManager: React.FC = () => {
+interface Props {
+    onlyCreate?: boolean
+}
+export const PositionManager: React.FC<Props> = ({ onlyCreate = false }) => {
     const [tab, setTab] = React.useState(0)
 
     const handleTabChange = (event: any, newValue: number) => {
@@ -14,9 +17,9 @@ export const PositionManager: React.FC = () => {
         <React.Fragment>
             <Tabs style={{ textAlign: "center", borderRight: "0.1px solid white", display: "table" }} orientation="vertical" value={tab} onChange={handleTabChange}>
                 <StyledTab label="Mint" {...a11yProps(0)} />
-                <StyledTab label="Deposit" {...a11yProps(1)} />
-                <StyledTab label="Withdraw" {...a11yProps(2)} />
-                <StyledTab label="Redeem" {...a11yProps(3)} />
+                <StyledTab disabled={onlyCreate} label="Deposit" {...a11yProps(1)} />
+                <StyledTab disabled={onlyCreate} label="Withdraw" {...a11yProps(2)} />
+                <StyledTab disabled={onlyCreate} label="Redeem" {...a11yProps(3)} />
             </Tabs>
             <Box width="100%" justifyContent="center" alignItems="center" display="flex">
                 <TabPanel value={tab} index={0}>
@@ -55,7 +58,7 @@ const StyledTab = withStyles((theme) => ({
 
 const a11yProps = (index: any) => {
     return {
-        id: `vertical-tab-${index}`,
+        id: `vertical-something-tab-${index}`,
         'aria-controls': `vertical-tabpanel-2-${index}`,
     }
 }
