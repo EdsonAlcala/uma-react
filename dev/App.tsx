@@ -23,14 +23,24 @@ const App: React.FC = () => {
 
     // internal
     const [openModal, setOpenModal] = useState(false)
+    const [openCreator, setOpenCreator] = useState(false)
     const [shouldCreatePosition, setShouldCreatePosition] = useState(false)
     const [positionHasBeenCreated, setPositionHasBeenCreated] = useState(false)
+
     const handleManageClick = () => {
         setOpenModal(true)
     }
 
     const handleClose = () => {
         setOpenModal(false)
+    }
+
+    const handleCreateClick = () => {
+        setOpenCreator(true)
+    }
+
+    const handleCloseCreator = () => {
+        setOpenCreator(false)
     }
 
     useEffect(() => {
@@ -127,6 +137,14 @@ const App: React.FC = () => {
                         Connect
                     </button>
                     <ModalPositionManager open={openModal} handleClose={handleClose} />
+
+                    <h3>Position Creator</h3>
+                    <button
+                        style={{ background: '#ff4a4a', color: 'white', padding: '1em 3em', border: 'none', borderRadius: '4px' }}
+                        onClick={handleCreateClick}>
+                        Open
+                    </button>
+                    <ModalPositionManager onlyCreate={true} open={openCreator} handleClose={handleCloseCreator} />
                 </EMPProvider>
             </UMARegistryProvider>
         </React.Fragment>
