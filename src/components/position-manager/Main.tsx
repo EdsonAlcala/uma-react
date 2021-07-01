@@ -15,7 +15,12 @@ export const PositionManager: React.FC<Props> = ({ onlyCreate = false }) => {
 
     return (
         <React.Fragment>
-            <Tabs style={{ textAlign: "center", borderRight: "0.1px solid white", display: "table" }} orientation="vertical" value={tab} onChange={handleTabChange}>
+            <Tabs
+                style={{ textAlign: 'center', borderRight: '0.1px solid white', display: 'table' }}
+                orientation="vertical"
+                value={tab}
+                onChange={handleTabChange}
+            >
                 <StyledTab label="Mint" {...a11yProps(0)} />
                 <StyledTab disabled={onlyCreate} label="Deposit" {...a11yProps(1)} />
                 <StyledTab disabled={onlyCreate} label="Withdraw" {...a11yProps(2)} />

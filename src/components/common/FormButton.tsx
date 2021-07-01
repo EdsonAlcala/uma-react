@@ -29,4 +29,4 @@ const ColorButton = styled(Button)`
     &.MuiButtonBase-root:disabled {
         color: 'rgba(0, 0, 0, 0.26)';
     }
-`;
+`
