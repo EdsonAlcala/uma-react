@@ -9,7 +9,9 @@ module.exports = merge(common, {
         'ethers',
         'web3-utils',
         '@uma/core',
-        "bnc-onboard"
+        "bnc-onboard",
+        "@material-ui/core",
+        "@material-ui/icons"
     ]
 });
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import Button, { ButtonProps } from '@material-ui/core/Button'
-import { CircularProgress } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import styled from 'styled-components'
 
 export interface FormButtonProps extends ButtonProps {

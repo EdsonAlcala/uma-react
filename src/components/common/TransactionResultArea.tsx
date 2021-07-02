@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Typography } from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 import CallMadeIcon from '@material-ui/icons/CallMade'
 
 import { useEtherscan } from '../../hooks'

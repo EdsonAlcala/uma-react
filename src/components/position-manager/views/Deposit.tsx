@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
-import { Box, Button, Grid, TextField, Typography } from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+
 import { ethers } from 'ethers'
 
 import { fromWei, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, toWeiSafe } from '../../../utils'

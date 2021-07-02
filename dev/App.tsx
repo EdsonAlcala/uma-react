@@ -1,7 +1,9 @@
-import { Box, styled } from '@material-ui/core'
-import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
+
+import Box from '@material-ui/core/Box'
+import { styled } from '@material-ui/core/styles'
+import { ethers } from 'ethers'
 
 import { Connection, Loader, ModalPositionManager, PositionManager } from '../src'
 import { EMPProvider, getAllEMPData, ReactWeb3Provider, UMARegistryProvider, useEMPAt, useWeb3Provider } from '../src'

@@ -1,11 +1,19 @@
 import { ethers } from 'ethers'
 import React, { useState } from 'react'
+import Button from '@material-ui/core/Button'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import Tooltip from '@material-ui/core/Tooltip'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import LinearProgress from '@material-ui/core/LinearProgress'
+
 import { useEMPProvider, usePosition, usePriceFeed, useTotals, useWeb3Provider } from '../../../hooks'
 import { fromWei, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, toWeiSafe } from '../../../utils'
 import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, YES } from '../../../constants'
 
 import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
-import { Box, Button, Grid, LinearProgress, TextField, Tooltip, Typography } from '@material-ui/core'
 
 export const Withdraw: React.FC = () => {
     // internal state
@@ -100,10 +108,10 @@ export const Withdraw: React.FC = () => {
         const pendingWithdrawTimeString =
             pendingWithdrawTimeRemaining > 0
                 ? Math.max(0, Math.floor(pendingWithdrawTimeRemaining / 3600)) +
-                  ':' +
-                  ('00' + Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))).slice(-2) +
-                  ':' +
-                  ('00' + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)).slice(-2)
+                ':' +
+                ('00' + Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))).slice(-2) +
+                ':' +
+                ('00' + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)).slice(-2)
                 : 'None'
 
         // Error conditions for calling withdraw:
@@ -330,9 +338,8 @@ export const Withdraw: React.FC = () => {
                                         disabled={resultantCRBelowRequirement || withdrawAboveBalance || collateralToWithdraw <= 0}
                                         isSubmitting={isWithdrawing}
                                         submittingText={isResultantCRBelowGCR ? 'Requesting withdrawal...' : 'Withdrawing instantly...'}
-                                        text={`${
-                                            isResultantCRBelowGCR ? 'Request Withdrawal of' : 'Instantly Withdraw'
-                                        } ${collateralToWithdraw} ${collateralSymbol}`}
+                                        text={`${isResultantCRBelowGCR ? 'Request Withdrawal of' : 'Instantly Withdraw'
+                                            } ${collateralToWithdraw} ${collateralSymbol}`}
                                     />
                                 </Box>
                             </Grid>

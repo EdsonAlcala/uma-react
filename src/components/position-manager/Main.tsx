@@ -1,5 +1,8 @@
 import React from 'react'
-import { Box, Tab, Tabs, withStyles } from '@material-ui/core'
+import { withStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
 
 import { Deposit, Mint, Redeem, Withdraw } from './views'
 
