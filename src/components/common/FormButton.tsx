@@ -20,13 +20,13 @@ export const FormButton: React.FC<FormButtonProps> = ({ isSubmitting, onClick, d
 
 const ColorButton = styled(Button)({
     textTransform: 'capitalize',
-    color: "#fff",
-    backgroundColor: "#ff4a4a",
+    color: '#fff',
+    backgroundColor: '#ff4a4a',
     '&:hover': {
         opacity: 0.9,
-        backgroundColor: "#ff4a4a"
+        backgroundColor: '#ff4a4a',
     },
     '&.MuiButtonBase-root:disabled': {
-        color: 'rgba(0, 0, 0, 0.26)'
-    }
+        color: 'rgba(0, 0, 0, 0.26)',
+    },
 })
