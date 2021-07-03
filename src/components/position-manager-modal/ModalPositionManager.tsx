@@ -13,8 +13,7 @@ export interface ModalPositionManagerProps {
 
 const generateClassName = createGenerateClassName({
     productionPrefix: 'cx',
-});
-
+})
 
 export const ModalPositionManager: React.FC<ModalPositionManagerProps> = ({ open, handleClose, onlyCreate }) => {
     return (
