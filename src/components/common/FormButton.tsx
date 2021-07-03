@@ -1,7 +1,7 @@
 import React from 'react'
 import Button, { ButtonProps } from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import styled from 'styled-components'
+import { styled } from '@material-ui/core/styles'
 
 export interface FormButtonProps extends ButtonProps {
     isSubmitting: boolean
@@ -18,15 +18,15 @@ export const FormButton: React.FC<FormButtonProps> = ({ isSubmitting, onClick, d
     )
 }
 
-const ColorButton = styled(Button)`
-    text-transform: 'capitalize';
-    color: '#fff';
-    background-color: '#ff4a4a';
-    &:hover {
-        opacity: 0.9;
-        background-color: '#ff4a4a';
+const ColorButton = styled(Button)({
+    textTransform: 'capitalize',
+    color: "#fff",
+    backgroundColor: "#ff4a4a",
+    '&:hover': {
+        opacity: 0.9,
+        backgroundColor: "#ff4a4a"
+    },
+    '&.MuiButtonBase-root:disabled': {
+        color: 'rgba(0, 0, 0, 0.26)'
     }
-    &.MuiButtonBase-root:disabled {
-        color: 'rgba(0, 0, 0, 0.26)';
-    }
-`
+})

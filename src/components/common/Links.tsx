@@ -1,9 +1,18 @@
-import styled from 'styled-components'
+import React from 'react'
+import { PropsWithChildren } from 'react'
 
-export const MaxLink = styled.div`
-    text-decoration-line: underline;
-`
+export const MaxLink: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+    return (
+        <div style={{ textDecoration: "underline" }}>
+            {children}
+        </div>
+    )
+}
 
-export const MinLink = styled.div`
-    text-decoration-line: underline;
-`
+export const MinLink: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+    return (
+        <div style={{ textDecoration: "underline" }}>
+            {children}
+        </div>
+    )
+}

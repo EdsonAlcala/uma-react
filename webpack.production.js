@@ -11,8 +11,7 @@ module.exports = merge(common, {
         '@uma/core',
         "bnc-onboard",
         "@material-ui/core",
-        "@material-ui/icons"
-    ]
+        "@material-ui/icons"]
 });
 
 
