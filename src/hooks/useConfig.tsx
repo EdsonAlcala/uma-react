@@ -14,7 +14,7 @@ const ConfigContext = React.createContext<IConfigProvider>({
     umaAPIBaseUrl: '',
 })
 
-interface Props extends IConfigProvider {}
+interface Props extends IConfigProvider { }
 
 export const ConfigProvider: React.FC<PropsWithChildren<Props>> = ({ children, ...props }) => {
     const [onboardAPIKey, setOnboardAPIKey] = useState('')
