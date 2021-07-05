@@ -43,6 +43,7 @@ export const Redeem: React.FC = () => {
             balance: tokenBalance,
             balanceBN: tokenBalanceBN,
             allowance: tokenAllowance,
+            instance: syntheticInstance
         } = syntheticState
         const {
             decimals: collateralDecimals,
@@ -126,10 +127,9 @@ export const Redeem: React.FC = () => {
             setHash(undefined)
             setError(undefined)
             try {
-                const receipt = await collateralInstance.approve(empInstance.address, ethers.constants.MaxUint256)
+                const receipt = await syntheticInstance.approve(empInstance.address, ethers.constants.MaxUint256)
                 setHash(receipt.hash as string)
                 await receipt.wait()
-                console.log('Set max allowance successfully')
             } catch (error) {
                 console.error(error)
                 setError(error)
