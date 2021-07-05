@@ -49,8 +49,7 @@ export const Redeem: React.FC = () => {
             decimals: collateralDecimals,
             symbol: collateralSymbol,
             balance: collateralBalance,
-            allowance: collateralAllowance,
-            instance: collateralInstance,
+            allowance: collateralAllowance
         } = collateralState
 
         const collateralBalanceAsNumber = Number(collateralBalance)
