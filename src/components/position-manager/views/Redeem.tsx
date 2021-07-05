@@ -43,14 +43,9 @@ export const Redeem: React.FC = () => {
             balance: tokenBalance,
             balanceBN: tokenBalanceBN,
             allowance: tokenAllowance,
-            instance: syntheticInstance
+            instance: syntheticInstance,
         } = syntheticState
-        const {
-            decimals: collateralDecimals,
-            symbol: collateralSymbol,
-            balance: collateralBalance,
-            allowance: collateralAllowance
-        } = collateralState
+        const { decimals: collateralDecimals, symbol: collateralSymbol, balance: collateralBalance, allowance: collateralAllowance } = collateralState
 
         const collateralBalanceAsNumber = Number(collateralBalance)
         const collateralAllowanceAsNumber = Number(collateralAllowance)
