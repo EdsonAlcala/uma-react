@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useState, useEffect } from "react"
+import React, { PropsWithChildren, useContext, useState, useEffect } from 'react'
 
 interface IConfigProvider {
     onboardAPIKey: string
@@ -8,20 +8,19 @@ interface IConfigProvider {
 }
 
 const ConfigContext = React.createContext<IConfigProvider>({
-    onboardAPIKey: "",
-    infuraId: "",
+    onboardAPIKey: '',
+    infuraId: '',
     supportedNetworkIds: [1, 42],
-    umaAPIBaseUrl: ""
+    umaAPIBaseUrl: '',
 })
 
-interface Props extends IConfigProvider {
-}
+interface Props extends IConfigProvider {}
 
 export const ConfigProvider: React.FC<PropsWithChildren<Props>> = ({ children, ...props }) => {
-    const [onboardAPIKey, setOnboardAPIKey] = useState("");
-    const [infuraId, setInfuraId] = useState("");
-    const [supportedNetworkIds, setSupportedNetworkIds] = useState([]);
-    const [umaAPIBaseUrl, setUmaAPIBaseUrl] = useState("");
+    const [onboardAPIKey, setOnboardAPIKey] = useState('')
+    const [infuraId, setInfuraId] = useState('')
+    const [supportedNetworkIds, setSupportedNetworkIds] = useState([])
+    const [umaAPIBaseUrl, setUmaAPIBaseUrl] = useState('')
 
     useEffect(() => {
         setOnboardAPIKey(props.onboardAPIKey)
@@ -30,15 +29,18 @@ export const ConfigProvider: React.FC<PropsWithChildren<Props>> = ({ children, .
         setUmaAPIBaseUrl(props.umaAPIBaseUrl)
     }, [])
 
-    return (<ConfigContext.Provider
-        value={{
-            onboardAPIKey,
-            infuraId,
-            supportedNetworkIds,
-            umaAPIBaseUrl
-        }}>
-        {children}
-    </ConfigContext.Provider >)
+    return (
+        <ConfigContext.Provider
+            value={{
+                onboardAPIKey,
+                infuraId,
+                supportedNetworkIds,
+                umaAPIBaseUrl,
+            }}
+        >
+            {children}
+        </ConfigContext.Provider>
+    )
 }
 
 export const useConfigProvider = (): IConfigProvider => {
