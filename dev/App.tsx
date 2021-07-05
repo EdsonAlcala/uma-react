@@ -12,6 +12,7 @@ import { useLocalStorage } from './useLocalStorage'
 
 import { buildFakeEMP } from '../test/fakers'
 import { deployEMP } from '../test/test-utilities'
+import { ConfigProvider } from '../src/hooks/useConfig'
 
 const App: React.FC = () => {
     // external
@@ -185,4 +186,11 @@ const StyledBoxContent = styled(Box)({
     alignItems: 'center',
 })
 
-ReactDom.render(<AppWrapped />, document.getElementById('root'))
+console.log("process.env.UMA_API_BASE_URL as string", process.env.UMA_API_BASE_URL as string)
+ReactDom.render(<ConfigProvider
+    onboardAPIKey={process.env.NEXT_PUBLIC_ONBOARD_API_KEY as string}
+    infuraId={process.env.NEXT_PUBLIC_INFURA_ID as string}
+    umaAPIBaseUrl={process.env.UMA_API_BASE_URL as string}
+    supportedNetworkIds={JSON.parse(process.env.SUPPORTED_NETWORK_IDS)}>
+    <AppWrapped />
+</ConfigProvider>, document.getElementById('root'))

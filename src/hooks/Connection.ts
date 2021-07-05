@@ -6,9 +6,10 @@ import Onboard from 'bnc-onboard'
 import { Observable } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
-import { config } from './Config'
 import { SUPPORTED_NETWORK_IDS } from '../constants'
 import { Block, Network, Provider, Signer } from '../types'
+import { config } from './Config'
+import { useConfigProvider } from './useConfig'
 
 function useConnection() {
     const [provider, setProvider] = useState<Provider | null>(null)
@@ -18,10 +19,11 @@ function useConnection() {
     const [address, setAddress] = useState<string | null>(null)
     const [error, setError] = useState<Error | null>(null)
     const [block$, setBlock$] = useState<Observable<Block> | null>(null)
+    const { infuraId, onboardAPIKey } = useConfigProvider()
 
     const attemptConnection = async () => {
         const onboardInstance = Onboard({
-            dappId: config(network).onboardConfig.apiKey,
+            dappId: config(network, infuraId, onboardAPIKey).onboardConfig.apiKey,
             hideBranding: true,
             networkId: 1, // Default to main net. If on a different network will change with the subscription.
             subscriptions: {
@@ -45,8 +47,8 @@ function useConnection() {
                     }
                 },
             },
-            walletSelect: config(network).onboardConfig.onboardWalletSelect,
-            walletCheck: config(network).onboardConfig.walletCheck,
+            walletSelect: config(network, infuraId, onboardAPIKey).onboardConfig.onboardWalletSelect,
+            walletCheck: config(network, infuraId, onboardAPIKey).onboardConfig.walletCheck,
         })
 
         await onboardInstance.walletSelect()

@@ -4,13 +4,12 @@
 // over user interactions. Otherwise, defaults are used.
 import { Network } from '../types'
 
-export const config = (network: Network | null) => {
-    const infuraId = process.env.NEXT_PUBLIC_INFURA_ID || 'd5e29c9b9a9d4116a7348113f57770a8'
+export const config = (network: Network | null, infuraId: string, onboardApiKey: string) => {
     const infuraRpc = `https://${network ? network?.name : 'mainnet'}.infura.io/v3/${infuraId}`
 
     return {
         onboardConfig: {
-            apiKey: process.env.NEXT_PUBLIC_ONBOARD_API_KEY || '12153f55-f29e-4f11-aa07-90f10da5d778',
+            apiKey: onboardApiKey,
             onboardWalletSelect: {
                 wallets: [
                     { walletName: 'metamask', preferred: true },
@@ -20,12 +19,6 @@ export const config = (network: Network | null) => {
                         preferred: true,
                     },
                     { walletName: 'coinbase', preferred: true },
-                    // {
-                    //     walletName: 'portis',
-                    //     apiKey: process.env.NEXT_PUBLIC_PORTIS_API_KEY,
-                    // },
-                    // { walletName: 'trust', rpcUrl: infuraRpc },
-                    // { walletName: 'dapper' },
                     {
                         walletName: 'walletConnect',
                         rpc: { [network?.chainId || 1]: infuraRpc },
