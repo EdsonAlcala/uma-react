@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import React from 'react'
 
 import { UMARegistryProvider, getUMAInterfaces, EMPProvider, ReactWeb3Provider, EthereumAddress, createPosition, usePosition } from '../../src'
-import { deployEMP, } from '../test-utilities'
+import { deployEMP } from '../test-utilities'
 import { buildFakeEMP } from '../fakers'
 
 describe.skip('usePosition tests', () => {

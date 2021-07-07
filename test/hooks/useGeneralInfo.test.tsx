@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import React from 'react'
 
 import { UMARegistryProvider, ReactWeb3Provider, useGeneralInfo, EMPProvider, getUMAInterfaces } from '../../src'
-import { deployEMP, } from '../test-utilities'
+import { deployEMP } from '../test-utilities'
 import { buildFakeEMP } from '../fakers'
 
 describe('useGeneralInfo tests', () => {

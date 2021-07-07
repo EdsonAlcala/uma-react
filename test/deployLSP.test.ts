@@ -14,7 +14,7 @@ describe.skip('Deploy LSP Tests', () => {
         const provider: ethers.providers.Web3Provider = (global as any).ethersProvider
         network = await provider.getNetwork()
         signer = provider.getSigner()
-        console.log("Network", network)
+        console.log('Network', network)
     })
 
     test('that deploy LSP correctly', async () => {
@@ -29,7 +29,7 @@ describe.skip('Deploy LSP Tests', () => {
             syntheticName: 'yUMA-JUN2021',
             syntheticSymbol: 'Yield UMA June',
             collateralPerPair: 1,
-            financialProductLibraryAddress: '' // TODO set covered call
+            financialProductLibraryAddress: '', // TODO set covered call
         }
 
         const receipt = await deployLSP(values, network, signer)
