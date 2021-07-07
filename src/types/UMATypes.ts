@@ -19,6 +19,8 @@ export type UMAContractName =
     | 'PerpetualLib'
     | 'PerpetualCreator'
     | 'ERC20'
+    | 'LongShortPair'
+    | 'LongShortPairCreator'
 
 export enum InterfaceName {
     FinancialContractsAdmin = 'FinancialContractsAdmin',
