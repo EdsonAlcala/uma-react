@@ -3,6 +3,8 @@ import { ethers } from 'ethers'
 import ExpiringMultiPartyCreatorArtifact from '@uma/core/build/contracts/ExpiringMultiPartyCreator.json'
 import ERC20Artifact from '@uma/core/build/contracts/ERC20.json'
 import ExpiringMultiPartyArtifact from '@uma/core/build/contracts/ExpiringMultiParty.json'
+import LongShortPairCreatorArtifact from 'umacore4/build/contracts/LongShortPairCreator.json'
+import LongShortPairArtifact from 'umacore4/build/contracts/LongShortPair.json'
 
 import { UMAContractName } from '../types'
 
@@ -14,6 +16,8 @@ export const getUMAInterfaces = (): Map<UMAContractName, ethers.utils.Interface>
         'ExpiringMultiPartyCreator',
         new ethers.utils.Interface(ExpiringMultiPartyCreatorArtifact.abi as any), // eslint-disable-line
     )
+    interfaces.set('LongShortPair', LongShortPairArtifact.abi as any) // eslint-disable-line
+    interfaces.set('LongShortPairCreator', LongShortPairCreatorArtifact.abi as any) // eslint-disable-line
 
     return interfaces
 }
