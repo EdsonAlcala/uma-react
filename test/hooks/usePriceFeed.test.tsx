@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks'
 
 import { usePriceFeed, YIELD_DOLLAR_UMA } from '../../src'
 
-describe('usePriceFeed tests', () => {
+describe.skip('usePriceFeed tests', () => {
     const render = () => {
         const newToken = {
             id: '0x000',

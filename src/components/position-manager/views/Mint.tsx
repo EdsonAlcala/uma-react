@@ -28,7 +28,7 @@ export const Mint: React.FC = () => {
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
     const totalsState = useTotals()
-    const { latestPrice } = usePriceFeed(syntheticState)
+    const { latestPrice } = usePriceFeed(syntheticState, empInstance.address)
     if (collateralState && syntheticState && empState && positionState && totalsState && latestPrice) {
         // position
         const { syntheticTokens: positionTokens, collateral: positionCollateral } = positionState
@@ -93,11 +93,11 @@ export const Mint: React.FC = () => {
             latestPrice === NON_PRICE
                 ? NA
                 : getLiquidationPrice(
-                      resultantCollateral,
-                      resultantTokens,
-                      collateralRequirementFromWei,
-                      isPricefeedInvertedFromTokenSymbol(tokenSymbol),
-                  ).toFixed(4)
+                    resultantCollateral,
+                    resultantTokens,
+                    collateralRequirementFromWei,
+                    isPricefeedInvertedFromTokenSymbol(tokenSymbol),
+                ).toFixed(4)
 
         const liquidationPriceDangerouslyFarBelowCurrentPrice =
             parseFloat(resultantLiquidationPrice) < (1 - LIQUIDATION_PRICE_WARNING_THRESHOLD) * latestPrice

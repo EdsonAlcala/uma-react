@@ -23,7 +23,7 @@ export const Deposit: React.FC = () => {
     const { address: userAddress } = useWeb3Provider()
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
-    const { latestPrice } = usePriceFeed(syntheticState)
+    const { latestPrice } = usePriceFeed(syntheticState, empInstance.address)
 
     if (collateralState && syntheticState && empState && positionState && empInstance && latestPrice) {
         // position
@@ -62,11 +62,11 @@ export const Deposit: React.FC = () => {
             latestPrice === NON_PRICE
                 ? NA
                 : getLiquidationPrice(
-                      resultantCollateral,
-                      positionTokensAsNumber,
-                      collateralRequirementFromWei,
-                      isPricefeedInvertedFromTokenSymbol(tokenSymbol),
-                  ).toFixed(4)
+                    resultantCollateral,
+                    positionTokensAsNumber,
+                    collateralRequirementFromWei,
+                    isPricefeedInvertedFromTokenSymbol(tokenSymbol),
+                ).toFixed(4)
 
         // Error conditions for calling deposit:
         const balanceBelowCollateralToDeposit = collateralBalanceAsNumber < collateralToDeposit

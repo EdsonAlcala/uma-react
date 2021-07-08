@@ -10,7 +10,7 @@ import { ConfigProvider } from '../src/hooks/useConfig'
 
 const App: React.FC = () => {
     // external
-    const { instance: empInstance } = useEMPAt("0x1768ad4bb70183f4e36296d27793eab6b709f9f6")
+    const { instance: empInstance } = useEMPAt("0xf57fa3ddb811e8f9ba2dd5295dc12c6db53447a0")
 
     // internal
     const [openModal, setOpenModal] = useState(false)

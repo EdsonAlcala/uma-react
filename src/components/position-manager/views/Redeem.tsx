@@ -27,7 +27,7 @@ export const Redeem: React.FC = () => {
     const { address: userAddress } = useWeb3Provider()
     const { collateralState, syntheticState, empState, instance: empInstance } = useEMPProvider()
     const positionState = usePosition(userAddress)
-    const { latestPrice } = usePriceFeed(syntheticState)
+    const { latestPrice } = usePriceFeed(syntheticState, empInstance.address)
 
     if (collateralState && syntheticState && empState && positionState && latestPrice) {
         // position
