@@ -6,6 +6,7 @@ import { getSimplePriceByContract } from '../utils/getCoinGeckoTokenPrice'
 import { Token, TokenData } from '../types'
 import { useConfigProvider } from './useConfig'
 import { fromWei, toChecksumAddress } from 'web3-utils'
+import { NON_PRICE } from '../constants'
 
 export const usePriceFeed = (token?: Token | TokenData) => {
     const [latestPrice, setLatestPrice] = useState<number | null>(null)
@@ -27,7 +28,11 @@ export const usePriceFeed = (token?: Token | TokenData) => {
                     try {
                         const symbol = token.symbol
                         const query = await getOffchainPriceFromTokenSymbol(symbol)
-                        setLatestPrice(query)
+                        if (query === null) {
+                            setLatestPrice(NON_PRICE)
+                        } else {
+                            setLatestPrice(query)
+                        }
                     } catch (error) {
                         console.log('Error getting price for', token.symbol, token.id)
                         setLatestPrice(null)

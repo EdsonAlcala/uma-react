@@ -11,7 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 
 import { useEMPProvider, usePosition, usePriceFeed, useTotals, useWeb3Provider } from '../../../hooks'
 import { fromWei, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, toWeiSafe } from '../../../utils'
-import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, YES } from '../../../constants'
+import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, NA, NON_PRICE, YES } from '../../../constants'
 
 import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
 
@@ -46,23 +46,15 @@ export const Withdraw: React.FC = () => {
         const withdrawalPassTimeAsNumber = Number(withdrawalPassTime)
 
         // tokens
-        const { decimals: tokenDecimals, symbol: tokenSymbol } = syntheticState
+        const { symbol: tokenSymbol } = syntheticState
         const {
-            instance: collateralInstance,
             decimals: collateralDecimals,
-            symbol: collateralSymbol,
-            balance: collateralBalance,
-            allowance: collateralAllowance,
+            symbol: collateralSymbol
         } = collateralState
 
-        const collateralBalanceAsNumber = Number(collateralBalance)
-        const collateralAllowanceAsNumber = Number(collateralAllowance)
-
         // expiring multi party
-        const { minSponsorTokens, collateralRequirement, priceIdentifier, isExpired, currentTime, withdrawalLiveness } = empState
-        const minSponsorTokensFromWei = parseFloat(
-            fromWei(minSponsorTokens, collateralDecimals), // TODO: This should be using the decimals of the token...
-        )
+        const { collateralRequirement, priceIdentifier, isExpired, currentTime, withdrawalLiveness } = empState
+
         const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier)
 
         // totals
@@ -81,9 +73,9 @@ export const Withdraw: React.FC = () => {
         const resultantCollateral = positionCollateralAsNumber - collateralToWithdraw
         const resultantCR = positionTokensAsNumber > 0 ? resultantCollateral / positionTokensAsNumber : 0
         const isResultantCRBelowGCR = resultantCR < gcrAsNumber
-        const pricedResultantCR = latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
-        const pricedGCR = latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : null
-        const resultantLiquidationPrice = getLiquidationPrice(
+        const pricedResultantCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
+        const pricedGCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : null
+        const resultantLiquidationPrice = latestPrice === NON_PRICE ? NA : getLiquidationPrice(
             resultantCollateral,
             positionTokensAsNumber,
             collateralRequirementFromWei,
@@ -92,14 +84,6 @@ export const Withdraw: React.FC = () => {
         const isLiquidationPriceDangerouslyFarBelowCurrentPrice =
             parseFloat(resultantLiquidationPrice) < (1 - LIQUIDATION_PRICE_WARNING_THRESHOLD) * latestPrice
 
-        // Fast withdrawal amount: can withdraw instantly as long as CR > GCR
-        const fastWithdrawableCollateral =
-            positionCollateralAsNumber > gcrAsNumber * positionTokensAsNumber
-                ? (positionCollateralAsNumber - gcrAsNumber * positionTokensAsNumber).toFixed(4)
-                : '0'
-
-        // Pending withdrawal request information:
-        const withdrawLivenessString = Math.floor(Number(withdrawalLiveness) / (60 * 60))
         const hasPendingWithdraw = pendingWithdraw === YES
         const pendingWithdrawTimeRemaining = withdrawalPassTimeAsNumber - Number(currentTime)
         const progressBarPercent =
@@ -108,10 +92,10 @@ export const Withdraw: React.FC = () => {
         const pendingWithdrawTimeString =
             pendingWithdrawTimeRemaining > 0
                 ? Math.max(0, Math.floor(pendingWithdrawTimeRemaining / 3600)) +
-                  ':' +
-                  ('00' + Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))).slice(-2) +
-                  ':' +
-                  ('00' + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)).slice(-2)
+                ':' +
+                ('00' + Math.max(0, Math.floor((pendingWithdrawTimeRemaining % 3600) / 60))).slice(-2) +
+                ':' +
+                ('00' + Math.max(0, (pendingWithdrawTimeRemaining % 3600) % 60)).slice(-2)
                 : 'None'
 
         // Error conditions for calling withdraw:
@@ -338,9 +322,8 @@ export const Withdraw: React.FC = () => {
                                         disabled={resultantCRBelowRequirement || withdrawAboveBalance || collateralToWithdraw <= 0}
                                         isSubmitting={isWithdrawing}
                                         submittingText={isResultantCRBelowGCR ? 'Requesting withdrawal...' : 'Withdrawing instantly...'}
-                                        text={`${
-                                            isResultantCRBelowGCR ? 'Request Withdrawal of' : 'Instantly Withdraw'
-                                        } ${collateralToWithdraw} ${collateralSymbol}`}
+                                        text={`${isResultantCRBelowGCR ? 'Request Withdrawal of' : 'Instantly Withdraw'
+                                            } ${collateralToWithdraw} ${collateralSymbol}`}
                                     />
                                 </Box>
                             </Grid>

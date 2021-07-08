@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react'
 
 import { EthereumAddress, UMAContractName } from '../types'
@@ -7,7 +7,7 @@ import { useWeb3Provider } from './useWeb3Provider'
 
 interface IUMAProvider {
     getContractAddress: (contractName: UMAContractName) => EthereumAddress | undefined
-    getContractInterface: (contractName: UMAContractName) => ethers.utils.Interface | undefined
+    getContractInterface: (contractName: UMAContractName) => ContractInterface | undefined
 }
 
 const UMAContext = React.createContext<IUMAProvider>({
@@ -29,7 +29,7 @@ export const UMARegistryProvider: React.FC<PropsWithChildren<unknown>> = ({ chil
     }
 
     const getContractInterface = (contractName: UMAContractName) => {
-        return interfaces.get(contractName) as ethers.utils.Interface
+        return interfaces.get(contractName) as ContractInterface
     }
 
     useEffect(() => {

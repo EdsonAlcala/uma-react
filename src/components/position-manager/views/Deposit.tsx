@@ -9,7 +9,7 @@ import { ethers } from 'ethers'
 import { fromWei, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol, toWeiSafe } from '../../../utils'
 import { useEMPProvider, usePosition, usePriceFeed, useWeb3Provider } from '../../../hooks'
 import { FormButton, FormTitle, Loader, TransactionResultArea } from '../../common'
-import { INFINITY, YES } from '../../../constants'
+import { INFINITY, NA, NON_PRICE, YES } from '../../../constants'
 
 export const Deposit: React.FC = () => {
     // internal state
@@ -43,7 +43,7 @@ export const Deposit: React.FC = () => {
         } = collateralState
 
         // expiring multi party
-        const { minSponsorTokens, collateralRequirement, priceIdentifier } = empState
+        const { collateralRequirement, priceIdentifier } = empState
         const priceIdentifierUtf8 = ethers.utils.toUtf8String(priceIdentifier)
 
         const collateralBalanceAsNumber = Number(collateralBalance)
@@ -56,9 +56,9 @@ export const Deposit: React.FC = () => {
         const resultantCollateral = positionCollateralAsNumber + collateralToDeposit
         const collateralRequirementFromWei = parseFloat(fromWei(collateralRequirement))
         const resultantCR = positionTokensAsNumber > 0 ? resultantCollateral / positionTokensAsNumber : 0
-        const pricedResultantCR = latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
+        const pricedResultantCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
 
-        const resultantLiquidationPrice = getLiquidationPrice(
+        const resultantLiquidationPrice = latestPrice === NON_PRICE ? NA : getLiquidationPrice(
             resultantCollateral,
             positionTokensAsNumber,
             collateralRequirementFromWei,

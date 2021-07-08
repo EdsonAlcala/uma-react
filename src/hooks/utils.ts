@@ -12,7 +12,7 @@ export const deployERC20 = async (signer: ethers.Signer): Promise<EthereumAddres
         totalSupply: 10000,
     }
 
-    const testnetERC20Factory = new ethers.ContractFactory(TestnetERC20Artifact.abi, TestnetERC20Artifact.bytecode, signer)
+    const testnetERC20Factory = new ethers.ContractFactory(TestnetERC20Artifact.abi, TestnetERC20Artifact.bytecode, signer as any)
     const collateralTokenContract = await testnetERC20Factory.deploy(newToken.name, newToken.symbol, newToken.decimals)
 
     await collateralTokenContract.deployTransaction.wait()
@@ -28,7 +28,7 @@ export const createPosition = async (
     const allUMAInterfaces = getUMAInterfaces()
     const expiringMultipartyInterface = allUMAInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface
 
-    const contract = new ethers.Contract(empAddress, expiringMultipartyInterface, signer)
+    const contract = new ethers.Contract(empAddress, expiringMultipartyInterface as any, signer as any)
     const receipt = await contract.create({ rawValue: toWei(`${collateralAmount}`) }, { rawValue: toWei(`${syntheticTokens}`) })
 
     await receipt.wait()

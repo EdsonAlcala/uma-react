@@ -3,11 +3,11 @@ import { ethers } from 'ethers'
 
 import { EthereumAddress } from '../types'
 
-import { useWeb3Provider } from './useWeb3Provider'
 import { useUMARegistry } from './useUMARegistry'
+import { Connection } from './Connection'
 
 export const useERC20At = (tokenAddress: EthereumAddress | undefined) => {
-    const { provider } = useWeb3Provider()
+    const { provider, signer } = Connection.useContainer()
     const { getContractInterface } = useUMARegistry()
     const [instance, setInstance] = useState<ethers.Contract | undefined>(undefined)
 
@@ -16,7 +16,7 @@ export const useERC20At = (tokenAddress: EthereumAddress | undefined) => {
             if (!getContractInterface('ERC20')) {
                 throw new Error('UMARegistryProvider is not defined')
             }
-            const newInstance = new ethers.Contract(tokenAddress, getContractInterface('ERC20') as ethers.utils.Interface, provider)
+            const newInstance = new ethers.Contract(tokenAddress, getContractInterface('ERC20'), signer as any)
             setInstance(newInstance)
         }
     }, [provider, tokenAddress])

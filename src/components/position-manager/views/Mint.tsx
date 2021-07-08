@@ -11,7 +11,7 @@ import { ethers } from 'ethers'
 
 import { useEMPProvider, usePosition, useTotals, useWeb3Provider, usePriceFeed } from '../../../hooks'
 import { fromWei, toWeiSafe, getLiquidationPrice, isPricefeedInvertedFromTokenSymbol } from '../../../utils'
-import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD } from '../../../constants'
+import { INFINITY, LIQUIDATION_PRICE_WARNING_THRESHOLD, NA, NON_PRICE } from '../../../constants'
 
 import { FormButton, FormTitle, Loader, MinLink, TransactionResultArea } from '../../common'
 
@@ -29,7 +29,6 @@ export const Mint: React.FC = () => {
     const positionState = usePosition(userAddress)
     const totalsState = useTotals()
     const { latestPrice } = usePriceFeed(syntheticState)
-
     if (collateralState && syntheticState && empState && positionState && totalsState && latestPrice) {
         // position
         const { syntheticTokens: positionTokens, collateral: positionCollateral } = positionState
@@ -37,7 +36,7 @@ export const Mint: React.FC = () => {
         const positionCollateralAsNumber = Number(positionCollateral)
 
         // tokens
-        const { decimals: tokenDecimals, symbol: tokenSymbol } = syntheticState
+        const { symbol: tokenSymbol } = syntheticState
         const {
             instance: collateralInstance,
             decimals: collateralDecimals,
@@ -60,8 +59,6 @@ export const Mint: React.FC = () => {
         const { gcr } = totalsState
         const gcrAsNumber = Number(gcr)
 
-        console.log('GCR', gcr)
-
         // input data
         const collateralToDeposit = Number(collateral) || 0
         const tokensToCreate = Number(tokens) || 0
@@ -79,7 +76,7 @@ export const Mint: React.FC = () => {
         const transactionCR = tokensToCreate > 0 ? collateralToDeposit / tokensToCreate : 0
         const transactionCRBelowGCR = transactionCR < gcrAsNumber
         const resultantCR = resultantTokens > 0 ? resultantCollateral / resultantTokens : 0
-        const pricedResultantCR = latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
+        const pricedResultantCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
 
         const resultantCRBelowGCR = resultantCR < gcrAsNumber
         const cannotMint = transactionCRBelowGCR && resultantCRBelowGCR
@@ -87,15 +84,12 @@ export const Mint: React.FC = () => {
         const resultantCRBelowRequirement = parseFloat(pricedResultantCR) >= 0 && parseFloat(pricedResultantCR) < collateralRequirementFromWei
 
         // price related
-        const prettyLatestPrice = Number(latestPrice).toFixed(4)
+        const prettyLatestPrice = latestPrice === NON_PRICE ? NA : Number(latestPrice).toFixed(4)
         // GCR: total contract collateral / total contract tokens.
-        const pricedGCR = latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : undefined
-        const pricedTransactionCR = latestPrice !== 0 ? (transactionCR / latestPrice).toFixed(4) : '0'
-        console.log('resultantCollateral', resultantCollateral)
-        console.log('resultantTokens', resultantTokens)
-        console.log('collateralRequirementFromWei', collateralRequirementFromWei)
+        const pricedGCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : undefined
+        const pricedTransactionCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (transactionCR / latestPrice).toFixed(4) : '0'
 
-        const resultantLiquidationPrice = getLiquidationPrice(
+        const resultantLiquidationPrice = latestPrice === NON_PRICE ? NA : getLiquidationPrice(
             resultantCollateral,
             resultantTokens,
             collateralRequirementFromWei,
