@@ -3,7 +3,7 @@ import ReactDom from 'react-dom'
 
 import Box from '@material-ui/core/Box'
 import { styled } from '@material-ui/core/styles'
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 
 import { Connection, Loader, ModalPositionManager, PositionManager } from '../src'
 import { EMPProvider, getAllEMPData, ReactWeb3Provider, UMARegistryProvider, useEMPAt, useWeb3Provider } from '../src'
@@ -75,11 +75,11 @@ const App: React.FC = () => {
                     const empData = await getAllEMPData(empInstance)
                     const allInterfaces = getUMAInterfaces()
                     const signer = provider.getSigner()
-                    const collateralInstance = new ethers.Contract(empData.collateralCurrency, allInterfaces.get('ERC20'), signer)
+                    const collateralInstance = new ethers.Contract(empData.collateralCurrency, allInterfaces.get('ERC20') as ContractInterface, signer)
                     const receipt = await collateralInstance.approve(empAddress, ethers.constants.MaxUint256)
                     await receipt.wait()
 
-                    const tokenInstance = new ethers.Contract(empData.tokenCurrency, allInterfaces.get('ERC20'), signer)
+                    const tokenInstance = new ethers.Contract(empData.tokenCurrency, allInterfaces.get('ERC20') as ContractInterface, signer)
                     console.log('Approve correctly')
 
                     // create position
