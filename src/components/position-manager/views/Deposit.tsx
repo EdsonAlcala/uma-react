@@ -58,12 +58,15 @@ export const Deposit: React.FC = () => {
         const resultantCR = positionTokensAsNumber > 0 ? resultantCollateral / positionTokensAsNumber : 0
         const pricedResultantCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : '0'
 
-        const resultantLiquidationPrice = latestPrice === NON_PRICE ? NA : getLiquidationPrice(
-            resultantCollateral,
-            positionTokensAsNumber,
-            collateralRequirementFromWei,
-            isPricefeedInvertedFromTokenSymbol(tokenSymbol),
-        ).toFixed(4)
+        const resultantLiquidationPrice =
+            latestPrice === NON_PRICE
+                ? NA
+                : getLiquidationPrice(
+                      resultantCollateral,
+                      positionTokensAsNumber,
+                      collateralRequirementFromWei,
+                      isPricefeedInvertedFromTokenSymbol(tokenSymbol),
+                  ).toFixed(4)
 
         // Error conditions for calling deposit:
         const balanceBelowCollateralToDeposit = collateralBalanceAsNumber < collateralToDeposit

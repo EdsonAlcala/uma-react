@@ -89,12 +89,15 @@ export const Mint: React.FC = () => {
         const pricedGCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (gcrAsNumber / latestPrice).toFixed(4) : undefined
         const pricedTransactionCR = latestPrice === NON_PRICE ? NA : latestPrice !== 0 ? (transactionCR / latestPrice).toFixed(4) : '0'
 
-        const resultantLiquidationPrice = latestPrice === NON_PRICE ? NA : getLiquidationPrice(
-            resultantCollateral,
-            resultantTokens,
-            collateralRequirementFromWei,
-            isPricefeedInvertedFromTokenSymbol(tokenSymbol),
-        ).toFixed(4)
+        const resultantLiquidationPrice =
+            latestPrice === NON_PRICE
+                ? NA
+                : getLiquidationPrice(
+                      resultantCollateral,
+                      resultantTokens,
+                      collateralRequirementFromWei,
+                      isPricefeedInvertedFromTokenSymbol(tokenSymbol),
+                  ).toFixed(4)
 
         const liquidationPriceDangerouslyFarBelowCurrentPrice =
             parseFloat(resultantLiquidationPrice) < (1 - LIQUIDATION_PRICE_WARNING_THRESHOLD) * latestPrice

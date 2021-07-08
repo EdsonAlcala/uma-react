@@ -15,7 +15,7 @@ export const useEMPAt = (empAddress?: EthereumAddress, provider?: ethers.provide
             if (!empAddress) {
                 setInstance(undefined)
             } else {
-                const newInstance = new ethers.Contract(empAddress, ExpiringMultiPartyArtifact.abi, provider ? provider : signer as any)
+                const newInstance = new ethers.Contract(empAddress, ExpiringMultiPartyArtifact.abi, provider ? provider : (signer as any))
                 setInstance(newInstance)
             }
         }
