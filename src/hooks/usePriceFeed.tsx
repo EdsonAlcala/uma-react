@@ -19,12 +19,9 @@ export const usePriceFeed = (token?: Token | TokenData, empAddress?: string) => 
                 // const price = await axios.post(`${UMA_API_URL}/latestPriceByTokenAddress`, [toChecksumAddress(token.id)])
                 // const priceParsed = Number(fromWei(price.data[1]))
                 // setLatestPrice(1 / priceParsed)
-                const price = await axios.post(
-                    `${UMA_API_URL}/latestCollateralPrice`,
-                    [toChecksumAddress(empAddress)]
-                );
+                const price = await axios.post(`${UMA_API_URL}/latestCollateralPrice`, [toChecksumAddress(empAddress)])
 
-                setLatestPrice(1 / Number(fromWei(price.data[1])));
+                setLatestPrice(1 / Number(fromWei(price.data[1])))
             } catch (error) {
                 try {
                     const symbol = token.symbol
