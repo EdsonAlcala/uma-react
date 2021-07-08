@@ -1,4 +1,4 @@
-import { ethers, Wallet, ContractInterface } from 'ethers'
+import { ContractInterface, ethers, Wallet } from 'ethers'
 import uniswap from '@studydefi/money-legos/uniswap'
 import erc20 from '@studydefi/money-legos/erc20'
 

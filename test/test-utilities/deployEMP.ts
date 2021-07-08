@@ -58,7 +58,7 @@ export const deployEMP = async (values: EMPParameters, network: ethers.providers
 
     console.log('expiringMultipartyCreatorAddress', expiringMultipartyCreatorAddress)
 
-    const expiringMultipartyCreator = new ethers.Contract(expiringMultipartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
+    const expiringMultipartyCreator = new ethers.Contract(expiringMultipartyCreatorAddress, expiringMultipartyCreatorInterface, signer as any)
 
     const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params)
     // const expiringMultiPartyAddress = await web3Contract.methods.createExpiringMultiParty(params).call({

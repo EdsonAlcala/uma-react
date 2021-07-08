@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 
 import ExpiringMultiPartyCreatorArtifact from '@uma/core/build/contracts/ExpiringMultiPartyCreator.json'
 import ERC20Artifact from '@uma/core/build/contracts/ERC20.json'

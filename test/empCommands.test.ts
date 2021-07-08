@@ -1,4 +1,4 @@
-import { ContractReceipt, ethers } from 'ethers'
+import { ContractInterface, ContractReceipt, ethers } from 'ethers'
 
 import { buildFakeEMP } from './fakers'
 import { EMPData, EthereumAddress } from '../src/types'
@@ -31,10 +31,10 @@ describe.skip('empCommands', () => {
 
         empAddress = expiringMultiPartyAddress
         const allInterfaces = getUMAInterfaces()
-        empInstance = new ethers.Contract(expiringMultiPartyAddress, allInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface, signer)
+        empInstance = new ethers.Contract(expiringMultiPartyAddress, allInterfaces.get('ExpiringMultiParty') as ContractInterface, signer as any)
         empData = await getAllEMPData(empInstance)
-        collateralInstance = new ethers.Contract(empData.collateralCurrency, allInterfaces.get('ERC20'), signer)
-        syntheticInstance = new ethers.Contract(empData.tokenCurrency, allInterfaces.get('ERC20'), signer)
+        collateralInstance = new ethers.Contract(empData.collateralCurrency, allInterfaces.get('ERC20') as ContractInterface, signer as any)
+        syntheticInstance = new ethers.Contract(empData.tokenCurrency, allInterfaces.get('ERC20') as ContractInterface, signer as any)
         collateralDecimals = await getTokenDecimals(collateralInstance)
         tokenDecimals = await getTokenDecimals(syntheticInstance)
 
