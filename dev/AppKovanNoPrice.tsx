@@ -10,7 +10,7 @@ import { ConfigProvider } from '../src/hooks/useConfig'
 
 const App: React.FC = () => {
     // external
-    const { instance: empInstance } = useEMPAt("0x1768ad4bb70183f4e36296d27793eab6b709f9f6")
+    const { instance: empInstance } = useEMPAt("0x5b296B4eB57559CECd628b59581DB9CF1b02cEda")
 
     // internal
     const [openModal, setOpenModal] = useState(false)
@@ -40,7 +40,7 @@ const App: React.FC = () => {
         <React.Fragment>
             <UMARegistryProvider>
                 <EMPProvider empInstance={empInstance}>
-                    <h1>Demo Kovan App</h1>
+                    <h1>Demo Kovan App - NO price</h1>
                     <h3>Position Manager</h3>
                     <StyledBoxContent border="1px solid black">
                         <PositionManager />
