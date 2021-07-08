@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 
 import { UMARegistryProvider, useTotals, getUMAInterfaces, EMPProvider, ReactWeb3Provider } from '../../src'
 
@@ -23,7 +23,7 @@ describe('useTotals tests', () => {
         if (!empInterface) {
             throw new Error("Couldn't find the EMP interface")
         }
-        instance = new ethers.Contract(expiringMultiPartyAddress, empInterface, signer)
+        instance = new ethers.Contract(expiringMultiPartyAddress, empInterface as ContractInterface, signer)
     })
 
     const render = () => {

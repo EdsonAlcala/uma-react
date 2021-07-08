@@ -4,10 +4,10 @@ import { ethers } from 'ethers'
 import { EthereumAddress } from '../types'
 
 import { useUMARegistry } from './useUMARegistry'
-import { Connection } from './Connection'
+import { useWeb3Provider } from './useWeb3Provider'
 
 export const useERC20At = (tokenAddress: EthereumAddress | undefined) => {
-    const { provider, signer } = Connection.useContainer()
+    const { provider, signer } = useWeb3Provider()
     const { getContractInterface } = useUMARegistry()
     const [instance, setInstance] = useState<ethers.Contract | undefined>(undefined)
 

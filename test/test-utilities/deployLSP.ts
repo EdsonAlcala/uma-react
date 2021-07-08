@@ -45,7 +45,7 @@ export const deployLSP = async (values: LSPParameters, network: ethers.providers
         throw new Error('Invalid LongShortPairCreator Address')
     }
     console.log('lspCreatorAddress', lspCreatorAddress)
-    const lspCreator = new ethers.Contract(lspCreatorAddress, lspCreatorInterface, signer)
+    const lspCreator = new ethers.Contract(lspCreatorAddress, lspCreatorInterface, signer as any)
     console.log('Params', params)
     const lspAddress = await lspCreator.callStatic.createLongShortPair(params, {
         value: 0,

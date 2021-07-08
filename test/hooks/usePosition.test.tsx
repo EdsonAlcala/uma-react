@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 import React from 'react'
 
 import { UMARegistryProvider, getUMAInterfaces, EMPProvider, ReactWeb3Provider, EthereumAddress, createPosition, usePosition } from '../../src'
@@ -34,14 +34,14 @@ describe.skip('usePosition tests', () => {
             throw new Error("Couldn't find the ERC20 interface")
         }
 
-        instance = new ethers.Contract(expiringMultiPartyAddress, empInterface, signer)
+        instance = new ethers.Contract(expiringMultiPartyAddress, empInterface as ContractInterface, signer)
         const collateralAmount = 2000
         const syntheticTokens = 100
 
         // approve collateral
         const collateralAddress = await instance.collateralCurrency()
         console.log('collateralAddress', collateralAddress)
-        const collateralInstance = new ethers.Contract(collateralAddress, erc20Interface, signer)
+        const collateralInstance = new ethers.Contract(collateralAddress, erc20Interface as ContractInterface, signer)
         const tx1 = await collateralInstance.approve(expiringMultiPartyAddress, ethers.constants.MaxUint256)
         await tx1.wait()
 

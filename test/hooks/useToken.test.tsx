@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 
 import { UMARegistryProvider, useToken, getAllEMPData, EMPData, EthereumAddress, getUMAInterfaces, EMPProvider, ReactWeb3Provider } from '../../src'
 
@@ -27,7 +27,7 @@ describe('useCollateralToken tests', () => {
 
         empAddress = expiringMultiPartyAddress
         const allInterfaces = getUMAInterfaces()
-        empInstance = new ethers.Contract(expiringMultiPartyAddress, allInterfaces.get('ExpiringMultiParty') as ethers.utils.Interface, signer)
+        empInstance = new ethers.Contract(expiringMultiPartyAddress, allInterfaces.get('ExpiringMultiParty') as ContractInterface, signer as any)
         empData = (await getAllEMPData(empInstance)) as EMPData
     })
 
