@@ -3,8 +3,8 @@ import { Fragment } from 'ethers/lib/utils'
 import ExpiringMultiPartyCreatorArtifact from '@uma/core/build/contracts/ExpiringMultiPartyCreator.json'
 import ERC20Artifact from '@uma/core/build/contracts/ERC20.json'
 import ExpiringMultiPartyArtifact from '@uma/core/build/contracts/ExpiringMultiParty.json'
-import LongShortPairCreatorArtifact from 'umacore4/build/contracts/LongShortPairCreator.json'
-import LongShortPairArtifact from 'umacore4/build/contracts/LongShortPair.json'
+import LongShortPairCreatorArtifact from 'umacore/build/contracts/LongShortPairCreator.json'
+import LongShortPairArtifact from 'umacore/build/contracts/LongShortPair.json'
 
 import { UMAContractName } from '../types'
 

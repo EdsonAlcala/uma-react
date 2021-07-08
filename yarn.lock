@@ -604,6 +604,21 @@
     "@ethersproject/properties" "^5.0.3"
     "@ethersproject/strings" "^5.0.4"
 
+"@ethersproject/abi@5.3.0":
+  version "5.3.0"
+  resolved "http://localhost:4873/@ethersproject%2fabi/-/abi-5.3.0.tgz#00f0647d906edcd32c50b16ab9c98f83e208dcf1"
+  integrity sha512-NaT4UacjOwca8qCG/gv8k+DgTcWu49xlrvdhr/p8PTFnoS8e3aMWqjI3znFME5Txa/QWXDrg2/heufIUue9rtw==
+  dependencies:
+    "@ethersproject/address" "^5.3.0"
+    "@ethersproject/bignumber" "^5.3.0"
+    "@ethersproject/bytes" "^5.3.0"
+    "@ethersproject/constants" "^5.3.0"
+    "@ethersproject/hash" "^5.3.0"
+    "@ethersproject/keccak256" "^5.3.0"
+    "@ethersproject/logger" "^5.3.0"
+    "@ethersproject/properties" "^5.3.0"
+    "@ethersproject/strings" "^5.3.0"
+
 "@ethersproject/abi@5.3.1", "@ethersproject/abi@^5.0.0", "@ethersproject/abi@^5.0.0-beta.146", "@ethersproject/abi@^5.0.10", "@ethersproject/abi@^5.0.2", "@ethersproject/abi@^5.3.0":
   version "5.3.1"
   resolved "https://registry.npmjs.org/@ethersproject/abi/-/abi-5.3.1.tgz#69a1a496729d3a83521675a57cbe21f3cc27241c"
@@ -1099,6 +1114,13 @@
   dependencies:
     "@ethersproject/logger" "^5.0.8"
 
+"@ethersproject/networks@5.3.0":
+  version "5.3.0"
+  resolved "http://localhost:4873/@ethersproject%2fnetworks/-/networks-5.3.0.tgz#d8ad06eb107c69fb8651f4c81ddd0e88944fdfea"
+  integrity sha512-XGbD9MMgqrR7SYz8o6xVgdG+25v7YT5vQG8ZdlcLj2I7elOBM7VNeQrnxfSN7rWQNcqu2z80OM29gGbQz+4Low==
+  dependencies:
+    "@ethersproject/logger" "^5.3.0"
+
 "@ethersproject/networks@5.3.1", "@ethersproject/networks@^5.0.7", "@ethersproject/networks@^5.3.0":
   version "5.3.1"
   resolved "https://registry.npmjs.org/@ethersproject/networks/-/networks-5.3.1.tgz#78fe08324cee289ce239acf8c746121934b2ef61"
@@ -1182,6 +1204,31 @@
     "@ethersproject/web" "^5.0.12"
     bech32 "1.1.4"
     ws "7.2.3"
+
+"@ethersproject/providers@5.3.0":
+  version "5.3.0"
+  resolved "http://localhost:4873/@ethersproject%2fproviders/-/providers-5.3.0.tgz#bccb49f1073a7d56e24f49abb14bb281c9b08636"
+  integrity sha512-HtL+DEbzPcRyfrkrMay7Rk/4he+NbUpzI/wHXP4Cqtra82nQOnqqCgTQc4HbdDrl75WVxG/JRMFhyneIPIMZaA==
+  dependencies:
+    "@ethersproject/abstract-provider" "^5.3.0"
+    "@ethersproject/abstract-signer" "^5.3.0"
+    "@ethersproject/address" "^5.3.0"
+    "@ethersproject/basex" "^5.3.0"
+    "@ethersproject/bignumber" "^5.3.0"
+    "@ethersproject/bytes" "^5.3.0"
+    "@ethersproject/constants" "^5.3.0"
+    "@ethersproject/hash" "^5.3.0"
+    "@ethersproject/logger" "^5.3.0"
+    "@ethersproject/networks" "^5.3.0"
+    "@ethersproject/properties" "^5.3.0"
+    "@ethersproject/random" "^5.3.0"
+    "@ethersproject/rlp" "^5.3.0"
+    "@ethersproject/sha2" "^5.3.0"
+    "@ethersproject/strings" "^5.3.0"
+    "@ethersproject/transactions" "^5.3.0"
+    "@ethersproject/web" "^5.3.0"
+    bech32 "1.1.4"
+    ws "7.4.6"
 
 "@ethersproject/providers@5.3.1", "@ethersproject/providers@^5.0.0":
   version "5.3.1"
@@ -3372,10 +3419,10 @@
     truffle-deploy-registry "^0.5.1"
     web3 "^1.3.5"
 
-"@uma/common@^2.3.0":
-  version "2.3.0"
-  resolved "http://localhost:4873/@uma%2fcommon/-/common-2.3.0.tgz#b39cc4f476f8a9f15d4eb9fbd386ae84c0652347"
-  integrity sha512-I65MMr6nHx823gCJzWVp1AcwYz9FXvXrqX20ptxF2zmKT+Q+xvj+IKDNz3eiwAwCKaKtDmAofKZhLvEZ0kFTGQ==
+"@uma/common@^2.4.0":
+  version "2.4.0"
+  resolved "http://localhost:4873/@uma%2fcommon/-/common-2.4.0.tgz#543712d0769578c02acd5ef27007219c912383fe"
+  integrity sha512-L0spszO2IwmVkn6dZQNvF1IX5UAQI7oYrcQ40mIH2AqfLegZxaIzhIDFtJxznrwjhQJdCCWQjWlt/KoCYxsMmA==
   dependencies:
     "@ethersproject/bignumber" "^5.0.5"
     "@google-cloud/kms" "^0.3.0"
@@ -8484,7 +8531,43 @@ ethers@5.0.32:
     "@ethersproject/web" "5.0.14"
     "@ethersproject/wordlists" "5.0.10"
 
-ethers@>=5.0.0, ethers@^5.0.13, ethers@^5.0.31, ethers@^5.2.0, ethers@^5.3.0:
+ethers@5.3.0:
+  version "5.3.0"
+  resolved "http://localhost:4873/ethers/-/ethers-5.3.0.tgz#1ec14d09c461e8f2554b00cd080e94a3094e7e9d"
+  integrity sha512-myN+338S4sFQZvQ9trii7xit8Hu/LnUtjA0ROFOHpUreQc3fgLZEMNVqF3vM1u2D78DIIeG1TbuozVCVlXQWvQ==
+  dependencies:
+    "@ethersproject/abi" "5.3.0"
+    "@ethersproject/abstract-provider" "5.3.0"
+    "@ethersproject/abstract-signer" "5.3.0"
+    "@ethersproject/address" "5.3.0"
+    "@ethersproject/base64" "5.3.0"
+    "@ethersproject/basex" "5.3.0"
+    "@ethersproject/bignumber" "5.3.0"
+    "@ethersproject/bytes" "5.3.0"
+    "@ethersproject/constants" "5.3.0"
+    "@ethersproject/contracts" "5.3.0"
+    "@ethersproject/hash" "5.3.0"
+    "@ethersproject/hdnode" "5.3.0"
+    "@ethersproject/json-wallets" "5.3.0"
+    "@ethersproject/keccak256" "5.3.0"
+    "@ethersproject/logger" "5.3.0"
+    "@ethersproject/networks" "5.3.0"
+    "@ethersproject/pbkdf2" "5.3.0"
+    "@ethersproject/properties" "5.3.0"
+    "@ethersproject/providers" "5.3.0"
+    "@ethersproject/random" "5.3.0"
+    "@ethersproject/rlp" "5.3.0"
+    "@ethersproject/sha2" "5.3.0"
+    "@ethersproject/signing-key" "5.3.0"
+    "@ethersproject/solidity" "5.3.0"
+    "@ethersproject/strings" "5.3.0"
+    "@ethersproject/transactions" "5.3.0"
+    "@ethersproject/units" "5.3.0"
+    "@ethersproject/wallet" "5.3.0"
+    "@ethersproject/web" "5.3.0"
+    "@ethersproject/wordlists" "5.3.0"
+
+ethers@>=5.0.0, ethers@^5.0.13, ethers@^5.0.31, ethers@^5.2.0:
   version "5.3.1"
   resolved "https://registry.npmjs.org/ethers/-/ethers-5.3.1.tgz#1f018f0aeb651576cd84fd987a45f0b99646d761"
   integrity sha512-xCKmC0gsZ9gks89ZfK3B1y6LlPdvX5fxDtu9SytnpdDJR1M7pmJI+4H0AxQPMgUYr7GtQdmECLR0gWdJQ+lZYw==
@@ -16970,13 +17053,13 @@ ultron@~1.1.0:
   resolved "https://registry.npmjs.org/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
   integrity sha512-UIEXBNeYmKptWH6z8ZnqTeS8fV74zG0/eRU9VGkpzz+LIJNs8W/zM/L+7ctCkRrgbNnnR0xxw4bKOr0cW0N0Og==
 
-"umacore4@npm:@uma/core@2.4.0":
-  version "2.4.0"
-  resolved "http://localhost:4873/@uma%2fcore/-/core-2.4.0.tgz#93478628fb314e2286510eb55ebd86c6abeddc45"
-  integrity sha512-62xSsN5U1LpTLUMzVgnJLHlimLSxgbcdvlpgx2EpUtnp3FRVabK5gGMxnzOsejLqfCKASBAkybub11JFUPD9tA==
+"umacore@npm:@uma/core@2.5.0":
+  version "2.5.0"
+  resolved "http://localhost:4873/@uma%2fcore/-/core-2.5.0.tgz#1fb67622011c13ebe418a471badad536b63ac901"
+  integrity sha512-mloYePfCgeHg7MOTPlrcUvHB2tzSRa9Lp9LGbizFghOwdazX1xhFs+m+W1bCHSNqf5egNrIIFLCmGjTU2ab6HQ==
   dependencies:
     "@truffle/contract" "^4.3.15"
-    "@uma/common" "^2.3.0"
+    "@uma/common" "^2.4.0"
     "@uma/core-1-1-0" "npm:@uma/core@1.1.0"
     "@uma/core-1-2-0" "npm:@uma/core@1.2.0"
     "@uma/core-1-2-1" "npm:@uma/core@1.2.1"

@@ -18,13 +18,18 @@ export const deployLSP = async (values: LSPParameters, network: ethers.providers
     const params = {
         expirationTimestamp: expirationTimestamp.toString(),
         collateralPerPair: toWei(`${collateralPerPair}`),
-        priceIdentifier: utils.formatBytes32String(priceIdentifier),
-        syntheticName,
-        syntheticSymbol,
-        collateralToken,
-        financialProductLibraryAddress: financialProductLibraryAddress
-            ? financialProductLibraryAddress
-            : '0x0000000000000000000000000000000000000000',
+        priceIdentifier: '0x554d415553440000000000000000000000000000000000000000000000000000',
+        longSynthName: "UMA 25 USD Call [July 2021]",
+        longSynthSymbol: "UMAc25-0721-L",
+        shortSynthName: "UMA 25 USD Covered Call [July 2021]",
+        shortSynthSymbol: "UMAc25-0721-S",
+        collateralToken: collateralToken,
+        financialProductLibrary: financialProductLibraryAddress,
+        customAncillaryData: "0",
+        prepaidProposerReward: 0,
+        pairName: "test",
+        optimisticOracleProposerBond: "0",
+        optimisticOracleLivenessTime: "0"
     }
 
     const umaABIs = getUMAAbis()
@@ -39,18 +44,18 @@ export const deployLSP = async (values: LSPParameters, network: ethers.providers
     if (!lspCreatorAddress) {
         throw new Error('Invalid LongShortPairCreator Address')
     }
-
-    console.log('lspCreatorAddress', lspCreatorAddress)
-
+    console.log("lspCreatorAddress", lspCreatorAddress)
     const lspCreator = new ethers.Contract(lspCreatorAddress, lspCreatorInterface, signer)
-
-    const lspAddress = await lspCreator.callStatic.createLongShortPair(params)
+    console.log("Params", params)
+    const lspAddress = await lspCreator.callStatic.createLongShortPair(params, {
+        value: 0
+    })
 
     console.log('lspAddress', lspAddress)
 
-    const txn = await lspCreator.createLongShortPair(params)
+    // const txn = await lspCreator.createLongShortPair(params)
 
-    const receipt: ContractReceipt = await txn.wait()
+    // const receipt: ContractReceipt = await txn.wait()
 
-    return { receipt, lspAddress }
+    return { receipt: "asd" as any, lspAddress }
 }

@@ -6,6 +6,8 @@ import { LSPParameters } from '../src/types'
 import { getTestPriceIdentifier, getTestCollaterals } from './test-utilities'
 import { deployLSP } from './test-utilities/deployLSP'
 
+import CoveredCallLongShortPairFinancialProductLibraryArtifact from 'umacore/build/contracts/CoveredCallLongShortPairFinancialProductLibrary.json'
+
 describe.skip('Deploy LSP Tests', () => {
     let signer: ethers.Signer
     let network: ethers.providers.Network
@@ -14,7 +16,6 @@ describe.skip('Deploy LSP Tests', () => {
         const provider: ethers.providers.Web3Provider = (global as any).ethersProvider
         network = await provider.getNetwork()
         signer = provider.getSigner()
-        console.log('Network', network)
     })
 
     test('that deploy LSP correctly', async () => {
@@ -26,10 +27,10 @@ describe.skip('Deploy LSP Tests', () => {
             expirationTimestamp: new Date(2022, 10, 10).getTime(),
             collateralToken: umaCollateralInfo.address,
             priceIdentifier: getTestPriceIdentifier(),
-            syntheticName: 'yUMA-JUN2021',
-            syntheticSymbol: 'Yield UMA June',
+            syntheticName: 'UMA 25 USD Call [July 2021]',
+            syntheticSymbol: 'UMAc25-0721',
             collateralPerPair: 1,
-            financialProductLibraryAddress: '', // TODO set covered call
+            financialProductLibraryAddress: CoveredCallLongShortPairFinancialProductLibraryArtifact.networks[network.chainId].address,
         }
 
         const receipt = await deployLSP(values, network, signer)

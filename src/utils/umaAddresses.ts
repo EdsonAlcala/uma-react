@@ -1,5 +1,5 @@
 import ExpiringMultiPartyCreatorArtifact from '@uma/core/build/contracts/ExpiringMultiPartyCreator.json'
-import LongShortPairCreatorArtifact from 'umacore4/build/contracts/LongShortPairCreator.json'
+import LongShortPairCreatorArtifact from 'umacore/build/contracts/LongShortPairCreator.json'
 
 import { SUPPORTED_NETWORK_IDS } from '../constants'
 import { EthereumAddress, UMAContractName } from '../types'
