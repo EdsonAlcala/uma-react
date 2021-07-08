@@ -18,6 +18,7 @@
     "analyze": "webpack-bundle-analyzer compilation-stats.json",
     "stats": "webpack --config webpack.production.js --profile --json=compilation-stats.json",
     "start:dev": "webpack-dev-server --open --mode development --config webpack.development.js",
+    "start:dev:kovan": "webpack-dev-server --open --mode development --config webpack.development.kovan.js",
     "start:demo": "start:dev",
     "build": "webpack --config webpack.production.js",
     "storybook": "start-storybook -p 6006",
