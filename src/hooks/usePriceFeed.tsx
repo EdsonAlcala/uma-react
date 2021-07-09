@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { getOffchainPriceFromTokenSymbol } from '../utils/getOffchainPrice'
-import { getSimplePriceByContract } from '../utils/getCoinGeckoTokenPrice'
 
 import { Token, TokenData } from '../types'
 import { useConfigProvider } from './useConfig'
