@@ -2,7 +2,7 @@
 module.exports = {
   title: 'UMA React SDK',
   tagline: 'Build Decentralized Synthetic Apps Faster',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://uma-react.vercel.app',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
