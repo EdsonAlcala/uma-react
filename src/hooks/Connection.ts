@@ -6,7 +6,6 @@ import Onboard from 'bnc-onboard'
 import { Observable } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
-import { SUPPORTED_NETWORK_IDS } from '../constants'
 import { Block, Network, Provider, Signer } from '../types'
 import { config } from './Config'
 import { useConfigProvider } from './useConfig'
@@ -19,7 +18,7 @@ function useConnection() {
     const [address, setAddress] = useState<string | null>(null)
     const [error, setError] = useState<Error | null>(null)
     const [block$, setBlock$] = useState<Observable<Block> | null>(null)
-    const { infuraId, onboardAPIKey } = useConfigProvider()
+    const { infuraId, onboardAPIKey, supportedNetworkIds } = useConfigProvider()
 
     const attemptConnection = async () => {
         const onboardInstance = Onboard({
@@ -31,7 +30,7 @@ function useConnection() {
                     setAddress(address)
                 },
                 network: async (networkId: any) => {
-                    if (!SUPPORTED_NETWORK_IDS.includes(networkId)) {
+                    if (!supportedNetworkIds.includes(networkId)) {
                         alert('This dApp will work only with the Mainnet network')
                     }
                     onboard?.config({ networkId: networkId })
