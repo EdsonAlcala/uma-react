@@ -11,58 +11,46 @@ module.exports = {
   projectName: 'uma-react', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'UMA React SDK',
+      title: 'React SDK',
       logo: {
         alt: 'UMA React SDK Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
       },
-      items: [
-        {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
-          label: 'Tutorial',
-        },
-        {
-          href: 'https://github.com/EdsonAlcala/uma-react',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
+      items: [],
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            }
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/EdsonAlcala/uma-react',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Defi-Academy.com`,
-    },
+    // footer: {
+    //   style: 'dark',
+    //   links: [
+    //     {
+    //       title: 'Docs',
+    //       items: [
+    //         {
+    //           label: 'Tutorial',
+    //           to: '/docs/intro',
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       title: 'Community',
+    //       items: [
+    //         {
+    //           label: 'Discord',
+    //           href: 'https://discordapp.com/invite/docusaurus',
+    //         }
+    //       ],
+    //     },
+    //     {
+    //       title: 'More',
+    //       items: [
+    //         {
+    //           label: 'GitHub',
+    //           href: 'https://github.com/EdsonAlcala/uma-react',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   copyright: `Copyright © ${new Date().getFullYear()} Defi-Academy.com`,
+    // },
   },
   presets: [
     [
@@ -70,7 +58,8 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
+          path: "docs",
+          routeBasePath: "/",
           editUrl:
             'https://github.com/EdsonAlcala/uma-react/docs-website',
         },
